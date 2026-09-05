@@ -1,0 +1,337 @@
+---
+/**
+ * Carousel3D.astro
+ * Interactive 3D coverflow/cylindrical carousel.
+ * Allows sliding, dragging, arrow navigation, and clicking on cards to bring them forward.
+ */
+interface Slide {
+  id: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  tag: string;
+  link: string;
+}
+
+const slides: Slide[] = [
+  {
+    id: 'pseudomonas',
+    title: 'Pseudomonas Biofilm',
+    subtitle: 'Confocal laser scanning microscopy (CLSM) & matrix biophysics',
+    image: '/images/pseudomonas.jpg',
+    tag: 'Pathogenesis',
+    link: '/research/pseudomonas',
+  },
+  {
+    id: 'archaea',
+    title: 'Asgard Archaea Filament',
+    subtitle: 'Cryo-EM structural reconstruction of ancient ESCRT/actin machinery',
+    image: '/images/archaea.jpg',
+    tag: 'Eukaryogenesis',
+    link: '/research/asgard-archaea',
+  },
+  {
+    id: 'ecoli',
+    title: 'E. coli Cell Division',
+    subtitle: 'Single-molecule chromosome tracking and FtsZ ring constriction',
+    image: '/images/ecoli.svg',
+    tag: 'Stress Genetics',
+    link: '/research/ecoli',
+  },
+  {
+    id: 'hydrothermal',
+    title: 'Deep-Sea Archaea Vents',
+    subtitle: 'Hydrothermal vent field sediment genomics at 2,350 m depth',
+    image: '/images/hydrothermal.svg',
+    tag: 'Metagenomics',
+    link: '/research/asgard-archaea',
+  },
+];
+---
+
+<div class="carousel-3d-wrapper relative mx-auto w-full max-w-5xl py-6 select-none" id="carousel3d">
+  <!-- 3D Viewport -->
+  <div
+    class="carousel-viewport relative mx-auto h-[380px] w-full overflow-hidden sm:h-[440px] md:h-[480px]"
+  >
+    <div class="carousel-stage flex h-full w-full items-center justify-center" id="carouselStage">
+      {
+        slides.map((slide, index) => (
+          <article
+            class="carousel-card absolute h-[320px] w-[280px] cursor-pointer rounded-2xl border border-gray-200/90 bg-white p-2.5 shadow-xl transition-all duration-500 ease-out sm:h-[380px] sm:w-[360px] md:h-[420px] md:w-[460px] dark:border-gray-800 dark:bg-zinc-900"
+            data-index={index}
+            data-link={slide.link}
+            aria-label={`${slide.title}: ${slide.subtitle}`}
+          >
+            <div class="relative h-[220px] w-full overflow-hidden rounded-xl bg-black sm:h-[280px] md:h-[310px]">
+              <img
+                src={slide.image}
+                alt={slide.title}
+                loading="lazy"
+                decoding="async"
+                class="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
+              />
+              <span class="absolute top-3 right-3 rounded-md bg-black/75 px-2.5 py-1 font-mono text-[11px] font-semibold text-white backdrop-blur-xs">
+                {slide.tag}
+              </span>
+            </div>
+
+            <div class="flex items-center justify-between p-3.5 sm:p-4">
+              <div class="min-w-0 flex-1 pr-2">
+                <h3 class="font-heading truncate text-base font-bold text-gray-900 sm:text-lg dark:text-white">
+                  {slide.title}
+                </h3>
+                <p class="truncate text-xs text-gray-500 dark:text-gray-400">{slide.subtitle}</p>
+              </div>
+
+              <a
+                href={slide.link}
+                class="hover:bg-primary-900 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-700 transition-colors hover:text-white dark:bg-zinc-800 dark:text-gray-200 dark:hover:bg-white dark:hover:text-black"
+                title={`Explore ${slide.title}`}
+                onclick="event.stopPropagation();"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Navigation Controls -->
+  <div class="mt-4 flex items-center justify-center gap-6">
+    <button
+      type="button"
+      id="prevBtn"
+      class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-100 active:scale-95 dark:border-gray-700 dark:bg-zinc-900 dark:text-gray-200 dark:hover:bg-zinc-800"
+      aria-label="Previous Slide"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+          clip-rule="evenodd"></path>
+      </svg>
+    </button>
+
+    <!-- Indicators -->
+    <div class="flex items-center gap-2" id="carouselIndicators">
+      {
+        slides.map((_, i) => (
+          <button
+            type="button"
+            class="indicator-dot h-2 w-2 rounded-full transition-all duration-300"
+            data-index={i}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))
+      }
+    </div>
+
+    <button
+      type="button"
+      id="nextBtn"
+      class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-100 active:scale-95 dark:border-gray-700 dark:bg-zinc-900 dark:text-gray-200 dark:hover:bg-zinc-800"
+      aria-label="Next Slide"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+          clip-rule="evenodd"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .carousel-viewport {
+    perspective: 1200px;
+    perspective-origin: 50% 50%;
+  }
+
+  .carousel-stage {
+    transform-style: preserve-3d;
+  }
+
+  .carousel-card {
+    will-change: transform, opacity, z-index;
+    backface-visibility: hidden;
+  }
+</style>
+
+<script>
+  function setup3DCarousel() {
+    const stage = document.getElementById('carouselStage');
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('.carousel-card'));
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dots = Array.from(document.querySelectorAll<HTMLElement>('.indicator-dot'));
+
+    if (!stage || cards.length === 0) return;
+
+    let currentIndex = 0;
+    const total = cards.length;
+
+    function updateCarousel() {
+      const isMobile = window.innerWidth < 640;
+      const zDistance = isMobile ? 180 : 260;
+      const xDistance = isMobile ? 190 : 320;
+
+      cards.forEach((card, idx) => {
+        // Calculate offset from current index (-1, 0, 1, etc.)
+        let diff = (idx - currentIndex) % total;
+        if (diff > total / 2) diff -= total;
+        if (diff < -total / 2) diff += total;
+
+        if (diff === 0) {
+          // Center active card
+          card.style.transform = `translateX(0px) translateZ(0px) rotateY(0deg) scale(1)`;
+          card.style.opacity = '1';
+          card.style.zIndex = '30';
+          card.style.pointerEvents = 'auto';
+          card.classList.add('ring-2', 'ring-primary-600', 'dark:ring-white');
+        } else if (diff === 1 || (total === 2 && diff === -1)) {
+          // Right card
+          card.style.transform = `translateX(${xDistance}px) translateZ(-${zDistance}px) rotateY(-28deg) scale(0.85)`;
+          card.style.opacity = '0.7';
+          card.style.zIndex = '15';
+          card.style.pointerEvents = 'auto';
+          card.classList.remove('ring-2', 'ring-primary-600', 'dark:ring-white');
+        } else if (diff === -1) {
+          // Left card
+          card.style.transform = `translateX(-${xDistance}px) translateZ(-${zDistance}px) rotateY(28deg) scale(0.85)`;
+          card.style.opacity = '0.7';
+          card.style.zIndex = '15';
+          card.style.pointerEvents = 'auto';
+          card.classList.remove('ring-2', 'ring-primary-600', 'dark:ring-white');
+        } else {
+          // Back hidden card(s)
+          card.style.transform = `translateX(0px) translateZ(-${zDistance * 2}px) rotateY(180deg) scale(0.6)`;
+          card.style.opacity = '0';
+          card.style.zIndex = '5';
+          card.style.pointerEvents = 'none';
+          card.classList.remove('ring-2', 'ring-primary-600', 'dark:ring-white');
+        }
+      });
+
+      // Update dots
+      dots.forEach((dot, i) => {
+        if (i === currentIndex) {
+          dot.classList.add('bg-primary-900', 'dark:bg-white', 'w-6');
+          dot.classList.remove('bg-gray-300', 'dark:bg-zinc-700', 'w-2');
+        } else {
+          dot.classList.remove('bg-primary-900', 'dark:bg-white', 'w-6');
+          dot.classList.add('bg-gray-300', 'dark:bg-zinc-700', 'w-2');
+        }
+      });
+    }
+
+    function goTo(index: number) {
+      currentIndex = (index + total) % total;
+      updateCarousel();
+    }
+
+    function next() {
+      goTo(currentIndex + 1);
+    }
+
+    function prev() {
+      goTo(currentIndex - 1);
+    }
+
+    // Button clicks
+    nextBtn?.addEventListener('click', next);
+    prevBtn?.addEventListener('click', prev);
+
+    // Dot clicks
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const idx = parseInt(dot.dataset.index || '0', 10);
+        goTo(idx);
+      });
+    });
+
+    // Card click brings to center or navigates
+    cards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const idx = parseInt(card.dataset.index || '0', 10);
+        if (idx === currentIndex) {
+          // Already active: navigate to research page if link present
+          const link = card.dataset.link;
+          if (link) window.location.href = link;
+        } else {
+          goTo(idx);
+        }
+      });
+    });
+
+    // Touch & swipe support
+    let startX = 0;
+    let isDragging = false;
+
+    stage.addEventListener(
+      'touchstart',
+      (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+      },
+      { passive: true }
+    );
+
+    stage.addEventListener('touchend', (e) => {
+      if (!isDragging) return;
+      const endX = e.changedTouches[0].clientX;
+      const diff = endX - startX;
+      if (Math.abs(diff) > 40) {
+        if (diff < 0) next();
+        else prev();
+      }
+      isDragging = false;
+    });
+
+    // Mouse drag support
+    stage.addEventListener('mousedown', (e) => {
+      startX = e.clientX;
+      isDragging = true;
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      const diff = e.clientX - startX;
+      if (Math.abs(diff) > 50) {
+        if (diff < 0) next();
+        else prev();
+      }
+      isDragging = false;
+    });
+
+    // Keyboard arrow keys
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+
+    // Responsive repositioning
+    window.addEventListener('resize', updateCarousel);
+
+    // Initial render
+    updateCarousel();
+  }
+
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setup3DCarousel);
+    } else {
+      setup3DCarousel();
+    }
+    document.addEventListener('astro:page-load', setup3DCarousel);
+  }
+</script>

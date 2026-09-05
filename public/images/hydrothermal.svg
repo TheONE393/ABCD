@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <rect width="800" height="600" fill="#020617"/>
+  <defs>
+    <radialGradient id="ventPlume" cx="50%" cy="100%" r="90%">
+      <stop offset="0%" stop-color="#ea580c" stop-opacity="0.8"/>
+      <stop offset="35%" stop-color="#9a3412" stop-opacity="0.5"/>
+      <stop offset="70%" stop-color="#1e293b" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#020617" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="columnGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#1c1917"/>
+      <stop offset="40%" stop-color="#292524"/>
+      <stop offset="100%" stop-color="#44403c"/>
+    </linearGradient>
+    <filter id="marineBlur" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+  </defs>
+
+  <!-- Deep Ocean Backdrop & Particulate Marine Snow -->
+  <rect width="800" height="600" fill="#030712"/>
+  <g opacity="0.3">
+    <circle cx="120" cy="180" r="1.5" fill="#f8fafc"/>
+    <circle cx="340" cy="90" r="1.2" fill="#f8fafc"/>
+    <circle cx="560" cy="140" r="1.8" fill="#f8fafc"/>
+    <circle cx="700" cy="220" r="1" fill="#f8fafc"/>
+    <circle cx="210" cy="310" r="2" fill="#f8fafc"/>
+    <circle cx="640" cy="380" r="1.4" fill="#f8fafc"/>
+    <circle cx="180" cy="460" r="1.5" fill="#f8fafc"/>
+  </g>
+
+  <!-- Hydrothermal Thermal Plume Shimmer -->
+  <ellipse cx="400" cy="500" rx="320" ry="220" fill="url(#ventPlume)" filter="url(#marineBlur)"/>
+  <ellipse cx="400" cy="360" rx="200" ry="160" fill="url(#ventPlume)" opacity="0.6" filter="url(#marineBlur)"/>
+
+  <!-- Chimney Basalt Structures -->
+  <path d="M260 600 L310 380 L350 320 L370 240 L390 260 L410 210 L430 250 L450 310 L480 370 L530 600 Z" fill="url(#columnGrad)" stroke="#57534e" stroke-width="1.5"/>
+  <path d="M140 600 L180 470 L210 420 L230 460 L270 600 Z" fill="#1c1917" stroke="#44403c" stroke-width="1"/>
+  <path d="M510 600 L550 450 L580 390 L610 430 L660 600 Z" fill="#1c1917" stroke="#44403c" stroke-width="1"/>
+
+  <!-- Mineral Chimney Textures & Sulfide Crust -->
+  <path d="M370 240 Q400 200 410 210 Q420 225 430 250 Q410 280 390 260 Z" fill="#78350f" opacity="0.6"/>
+  <path d="M340 330 Q370 310 420 330 Q450 350 440 370 Q380 360 340 330 Z" fill="#9a3412" opacity="0.5"/>
+
+  <!-- Thermal Upwelling Fluid Particles -->
+  <g opacity="0.7">
+    <circle cx="410" cy="180" r="3" fill="#fdba74"/>
+    <circle cx="395" cy="140" r="2.5" fill="#fb923c"/>
+    <circle cx="420" cy="110" r="3" fill="#f97316"/>
+    <circle cx="385" cy="70" r="2" fill="#fed7aa"/>
+    <circle cx="415" cy="40" r="2.5" fill="#fdba74"/>
+  </g>
+
+  <!-- Titles & Environmental Metadata -->
+  <text x="40" y="50" font-family="'Lora', Georgia, serif" font-size="20" font-weight="bold" fill="#f8fafc">Deep-Sea Hydrothermal Vent Ecosystem</text>
+  <text x="40" y="72" font-family="'Inter', system-ui, sans-serif" font-size="13" fill="#94a3b8">Loki's Castle sediment core (depth: 2,350 m) &bull; Asgard archaea metagenomic source</text>
+
+  <g transform="translate(560, 525)">
+    <rect x="0" y="0" width="200" height="48" rx="8" fill="#0f172a" fill-opacity="0.85" stroke="#334155" stroke-width="1"/>
+    <text x="20" y="20" font-family="monospace, sans-serif" font-size="11" fill="#94a3b8">DEPTH: 2,352 m</text>
+    <text x="20" y="36" font-family="monospace, sans-serif" font-size="11" fill="#fdba74">TEMP: 310°C (vent) / 2°C</text>
+  </g>
+</svg>

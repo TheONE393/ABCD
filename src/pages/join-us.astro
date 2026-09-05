@@ -201,7 +201,7 @@ const mailtoLink = `mailto:${piEmail}?subject=Application%20-%20The%20[Lastname]
               </div>
             ) : (
               /* "No current openings, but always interested" state */
-              <div class="border-primary-200 from-primary-50/70 dark:border-primary-800/80 dark:from-primary-950/40 rounded-2xl border bg-gradient-to-br to-white p-7 shadow-xs dark:to-gray-900/50">
+              <div class="rounded-2xl border border-gray-200 bg-gray-50/70 p-7 dark:border-gray-800 dark:bg-gray-900/50">
                 <div class="flex items-start gap-4">
                   <div class="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
                     <svg
@@ -287,15 +287,8 @@ const mailtoLink = `mailto:${piEmail}?subject=Application%20-%20The%20[Lastname]
       <!-- 4. Contact the PI Callout Banner -->
       <section class="mt-14">
         <div
-          class="from-primary-900 via-primary-950 relative overflow-hidden rounded-3xl bg-gradient-to-br to-gray-950 p-8 text-center shadow-lg sm:p-10"
+          class="border-primary-900/60 bg-primary-950 relative overflow-hidden rounded-2xl border p-8 text-center text-white shadow-xs sm:p-10"
         >
-          <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-            <div
-              class="bg-accent-500/10 absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
-            >
-            </div>
-          </div>
-
           <h2 class="font-heading text-2xl font-bold text-white sm:text-3xl">
             Ready to get in touch?
           </h2>
@@ -310,7 +303,7 @@ const mailtoLink = `mailto:${piEmail}?subject=Application%20-%20The%20[Lastname]
           <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
             <a
               href={mailtoLink}
-              class="bg-accent-500 hover:bg-accent-600 focus-visible:ring-accent-400 inline-flex items-center justify-center rounded-xl px-7 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:shadow-md focus:outline-none focus-visible:ring-2"
+              class="bg-accent-600 hover:bg-accent-700 focus-visible:ring-accent-400 inline-flex items-center justify-center rounded-xl px-7 py-3 text-sm font-semibold text-white shadow-xs transition-colors duration-150 focus:outline-none focus-visible:ring-2"
             >
               <svg
                 class="mr-2 h-4 w-4"
@@ -329,7 +322,7 @@ const mailtoLink = `mailto:${piEmail}?subject=Application%20-%20The%20[Lastname]
             </a>
             <a
               href="/contact"
-              class="inline-flex items-center justify-center rounded-xl border border-gray-600 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur-xs transition-all duration-150 hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              class="inline-flex items-center justify-center rounded-xl border border-gray-600 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               Lab Contact Page
             </a>

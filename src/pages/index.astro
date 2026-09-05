@@ -1,497 +1,337 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import HeroIllustration from '../components/HeroIllustration.astro';
-import { fetchNews, fetchPublications } from '../lib/fetchSheetData.js';
+import Carousel3D from '../components/Carousel3D.astro';
 
-// Placeholder data for Research Areas
-const researchAreas = [
+// Minimalist list of ongoing research programs with 2-3 word titles and metadata
+const researchTopics = [
   {
-    slug: 'pseudomonas',
-    title: 'Pseudomonas',
-    italicized: true,
-    tag: 'Pathogenesis & Physiology',
-    description:
-      'Investigating opportunistic pathogenesis, secondary metabolite regulation, and physiological plasticity in Pseudomonas aeruginosa and environmental isolates.',
-    icon: 'pseudomonas',
+    title: 'Pseudomonas Pathogenesis',
+    name: 'Pseudomonas',
+    sub: 'Pathogenesis',
+    href: '/research/pseudomonas',
+    category: 'Opportunistic Pathogen',
+    organismIcon: 'pseudomonas',
   },
   {
-    slug: 'ecoli',
-    title: 'Escherichia coli',
-    italicized: true,
-    tag: 'Stress Genetics & Evolution',
-    description:
-      'Probing foundational chromosome dynamics, cellular stress responses, and phenotypic heterogeneity in nutrient-limited and antibiotic-stressed conditions.',
-    icon: 'ecoli',
+    title: 'E. coli Dynamics',
+    name: 'E. coli',
+    sub: 'Dynamics',
+    href: '/research/ecoli',
+    category: 'Model Bacterium',
+    organismIcon: 'ecoli',
   },
   {
-    slug: 'asgard-archaea',
     title: 'Asgard Archaea',
-    italicized: false,
-    tag: 'Eukaryogenesis & Cell Biology',
-    description:
-      'Decoding the genomic and biochemical architecture of Asgard superphylum archaea to reconstruct the evolutionary emergence of complex eukaryotic cellular systems.',
-    icon: 'archaea',
+    name: 'Asgard',
+    sub: 'Archaea',
+    href: '/research/asgard-archaea',
+    category: 'Eukaryogenesis',
+    organismIcon: 'asgard',
   },
 ];
-
-// Fallback data for Latest News when Google Sheet is still a placeholder
-const fallbackNews = [
-  {
-    date: 'August 28, 2026',
-    category: 'Grant Award',
-    headline: 'Lab receives federal grant to investigate Pseudomonas membrane homeostasis',
-    excerpt:
-      'Our five-year award will support mechanistic studies into lipid remodeling pathways and outer-membrane vesicle biogenesis in multi-drug resistant isolates.',
-    link: '/news',
-  },
-  {
-    date: 'July 14, 2026',
-    category: 'Preprint',
-    headline: 'New study resolves actin-related cytoskeleton dynamics in Lokiarchaeota',
-    excerpt:
-      'Using recombinant proteins and cryo-EM, we report dynamic filament polymerization and nucleotide hydrolysis in deep-sea Asgard archaeal homologs.',
-    link: '/news',
-  },
-  {
-    date: 'June 02, 2026',
-    category: 'Conference',
-    headline: 'Lab members present evolutionary genomics talks at ASM Microbe',
-    excerpt:
-      'Postdoctoral researchers and graduate students shared latest findings on single-cell transcriptional variance during stationary-phase E. coli survival.',
-    link: '/news',
-  },
-];
-
-// Fallback data for Recent Publications when Google Sheet is still a placeholder
-const fallbackPublications = [
-  {
-    title: 'Evolutionary diversification of cytoskeletal regulators across deep-sea Asgard archaea',
-    authors: '[Lastname], A.*, Doe, J., Vance, E., & Chen, W.',
-    year: 2026,
-    journal: 'Nature Microbiology',
-    doi_or_pdf_link: 'https://doi.org/10.1038/s41564-026-0000-x',
-  },
-  {
-    title:
-      'Coordination of the stringent response and outer membrane remodeling in clinical Pseudomonas aeruginosa',
-    authors: 'Smith, K., [Lastname], A.*, & Patel, R.',
-    year: 2025,
-    journal: 'Journal of Bacteriology',
-    doi_or_pdf_link: 'https://doi.org/10.1128/jb.00123-25',
-  },
-  {
-    title:
-      'Single-molecule tracking resolves DNA repair hub dynamics in resource-limited Escherichia coli',
-    authors: 'Doe, J., Smith, K., & [Lastname], A.*',
-    year: 2025,
-    journal: 'Nucleic Acids Research',
-    doi_or_pdf_link: 'https://doi.org/10.1093/nar/gkf000',
-  },
-];
-
-// Fetch live news & publications at build time and extract the 3 most recent entries
-const fetchedNews = await fetchNews();
-const latestNews = (fetchedNews.length > 0 ? fetchedNews : fallbackNews).slice(0, 3);
-
-const fetchedPubs = await fetchPublications();
-const recentPublications = (fetchedPubs.length > 0 ? fetchedPubs : fallbackPublications).slice(
-  0,
-  3
-);
 ---
 
-<Layout title="The [Lastname] Lab | Microbial Biology & Evolutionary Genomics">
-  <!-- 1. HERO SECTION -->
-  <section
-    class="from-primary-50/40 dark:from-primary-950/30 relative overflow-hidden border-b border-gray-200/80 bg-gradient-to-b via-white to-white py-16 sm:py-24 lg:py-28 dark:border-gray-800/80 dark:via-gray-950 dark:to-gray-950"
-    aria-labelledby="hero-heading"
-  >
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-3xl text-center">
-        <!-- Sub-tagline badge -->
-        <span
-          class="border-primary-200 text-primary-800 dark:border-primary-800/70 dark:bg-primary-950/70 dark:text-primary-300 inline-flex items-center gap-2 rounded-full border bg-white/80 px-4 py-1.5 text-xs font-semibold tracking-wide shadow-xs backdrop-blur-xs"
-        >
-          <span class="bg-accent-500 h-1.5 w-1.5 animate-pulse rounded-full"></span>
-          Microbial Biology &bull; Evolutionary Cell Biology
-        </span>
-
-        <!-- Lab Name -->
-        <h1
-          id="hero-heading"
-          class="font-heading mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl dark:text-white"
-        >
-          The <span class="text-primary-800 dark:text-primary-300">[Lastname]</span> Lab
-        </h1>
-
-        <!-- Mission Statement -->
-        <p class="mt-6 text-lg leading-relaxed text-gray-600 sm:text-xl dark:text-gray-300">
-          Investigating the molecular genetics of <em
-            class="text-primary-800 dark:text-primary-200 font-medium">Pseudomonas</em
-          > pathogenesis, <em class="text-primary-800 dark:text-primary-200 font-medium">E. coli</em
-          > cellular resilience, and the archaeal origins of eukaryotic complexity.
-        </p>
-
-        <!-- CTAs -->
-        <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="/research"
-            class="bg-primary-900 hover:bg-primary-800 focus-visible:ring-primary-500 dark:bg-primary-700 dark:hover:bg-primary-600 inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:shadow-md focus:outline-none focus-visible:ring-2"
+<Layout title="The ABCD Lab">
+  <div class="bg-white text-gray-950 transition-colors duration-200 dark:bg-black dark:text-white">
+    <!-- 1. HERO & 3D CAROUSEL SCROLL SECTION -->
+    <!-- Tall scroll track (220vh) that pins the viewport and scrubs title resize & carousel emergence -->
+    <section id="hero-scroll-section" class="relative h-[220vh] w-full">
+      <div
+        id="pinned-stage"
+        class="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden px-4"
+      >
+        <!-- The ABCD Lab Title (Starts massive and centered, shrinks and docks at top as user scrolls) -->
+        <div id="title-wrapper" class="z-20 text-center will-change-transform">
+          <h1
+            id="hero-lab-name"
+            class="font-heading text-5xl font-bold tracking-tight select-none sm:text-7xl md:text-8xl lg:text-9xl dark:text-white"
           >
-            Explore Research
-            <svg class="ml-2 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path
-                fill-rule="evenodd"
-                d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </a>
-          <a
-            href="/join-us"
-            class="focus-visible:ring-primary-500 inline-flex items-center justify-center rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-800 shadow-xs transition-all duration-150 hover:border-gray-400 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:border-gray-600 dark:hover:bg-gray-800"
-          >
-            Join Our Team
-          </a>
+            The ABCD Lab
+          </h1>
+        </div>
+
+        <!-- Initial subtle scroll guide prompt -->
+        <div
+          id="scroll-prompt"
+          class="pointer-events-none absolute bottom-10 z-10 flex flex-col items-center gap-2 text-xs font-medium tracking-widest text-gray-400 uppercase transition-opacity duration-300 dark:text-gray-500"
+        >
+          <span>Scroll to explore</span>
+          <svg class="h-4 w-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </div>
+
+        <!-- 3D Carousel Container (Fades & scales in as title docks at the top) -->
+        <div
+          id="carousel-outer"
+          class="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex items-center justify-center opacity-0 will-change-transform sm:bottom-10"
+        >
+          <div class="w-full max-w-5xl px-4">
+            <Carousel3D />
+          </div>
         </div>
       </div>
+    </section>
 
-      <!-- Animated Hero Illustration: Stylized Motile Bacterium with Flagellar Wave Motion -->
-      <HeroIllustration />
-    </div>
-  </section>
-
-  <!-- 2. OUR RESEARCH SECTION -->
-  <section class="bg-white py-16 sm:py-24 dark:bg-gray-950" aria-labelledby="research-heading">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <!-- Section Header -->
-      <div class="max-w-2xl">
+    <!-- 2. QUOTE RIBBON SECTION -->
+    <section
+      id="quote-ribbon-section"
+      class="relative w-full border-y border-gray-200 bg-gray-50 px-6 py-14 transition-colors duration-200 sm:py-20 dark:border-zinc-800 dark:bg-zinc-950"
+      aria-label="Scientific Philosophy"
+    >
+      <div class="mx-auto max-w-4xl text-center">
         <span
-          class="text-accent-700 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+          class="text-primary-700 dark:text-primary-400 text-xs font-bold tracking-widest uppercase"
         >
-          Core Programs
+          Cellular Architecture &bull; Evolutionary Frontiers
         </span>
+
+        <blockquote
+          class="font-heading mt-4 text-2xl leading-snug font-medium text-gray-900 sm:text-3xl lg:text-4xl dark:text-gray-100"
+        >
+          &ldquo;In the fields of observation, chance favors only the prepared mind.&rdquo;
+        </blockquote>
+
+        <p class="mt-4 font-serif text-sm tracking-wide text-gray-500 italic dark:text-gray-400">
+          &mdash; Louis Pasteur
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. RESEARCHES GOING ON (AESTHETIC CIRCULAR BUTTONS) -->
+    <section
+      id="research-buttons-section"
+      class="relative px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
+      aria-labelledby="research-heading"
+    >
+      <div class="mx-auto max-w-5xl text-center">
+        <span
+          class="text-primary-700 dark:text-primary-400 text-xs font-bold tracking-widest uppercase"
+        >
+          Core Research Thrusts
+        </span>
+
         <h2
           id="research-heading"
-          class="font-heading mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white"
+          class="font-heading mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white"
         >
-          Our Research
+          Researches Going On
         </h2>
-        <p class="mt-3 text-base text-gray-600 dark:text-gray-300">
-          We integrate genetics, high-throughput omics, and structural biology to explore
-          fundamental microbial mechanisms and macroevolutionary transitions.
+        <p class="mx-auto mt-3 max-w-xl text-sm text-gray-500 dark:text-gray-400">
+          Explore our experimental systems across the microbial and archaeal domains of life.
         </p>
-      </div>
 
-      <!-- Three Research Cards -->
-      <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-        {
-          researchAreas.map((area) => (
-            <article
-              class="group hover:border-primary-300 dark:hover:border-primary-700/60 flex flex-col justify-between rounded-2xl border border-gray-200 bg-white p-6 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900/60"
-              data-reveal
-            >
-              <div>
-                <div class="bg-primary-50 text-primary-800 group-hover:bg-primary-900 group-hover:text-accent-400 dark:bg-primary-950 dark:text-primary-300 dark:ring-primary-800 dark:group-hover:bg-primary-900 mb-5 flex h-12 w-12 items-center justify-center rounded-xl transition-colors duration-200 dark:ring-1">
-                  {area.icon === 'pseudomonas' && (
-                    <svg
-                      class="h-6 w-6"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                      />
-                    </svg>
-                  )}
-                  {area.icon === 'ecoli' && (
-                    <svg
-                      class="h-6 w-6"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                    >
-                      <circle cx="12" cy="12" r="7" />
-                      <path
-                        stroke-linecap="round"
-                        d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10l2 2M5 19l2-2m10-10l2-2"
-                      />
-                    </svg>
-                  )}
-                  {area.icon === 'archaea' && (
-                    <svg
-                      class="h-6 w-6"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-                      />
-                    </svg>
-                  )}
-                </div>
+        <!-- Aesthetic Circular Buttons Grid -->
+        <div class="mt-16 flex flex-wrap items-center justify-center gap-10 sm:gap-14 lg:gap-16">
+          {
+            researchTopics.map((topic) => (
+              <a
+                href={topic.href}
+                class="group focus-visible:ring-primary-500 relative flex h-52 w-52 shrink-0 items-center justify-center rounded-full text-left focus:outline-none focus-visible:ring-4 sm:h-60 sm:w-60 md:h-64 md:w-64"
+                aria-label={`Explore ${topic.title}`}
+              >
+                <div class="group-hover:border-primary-600 dark:group-hover:border-primary-400 pointer-events-none absolute -inset-3.5 rounded-full border border-dashed border-gray-300 transition-all duration-700 ease-out group-hover:scale-105 group-hover:rotate-45 dark:border-zinc-800" />
 
-                <span class="text-accent-700 dark:text-accent-400 text-xs font-semibold tracking-wider uppercase">
-                  {area.tag}
-                </span>
+                <div class="pointer-events-none absolute -inset-1 rounded-full border border-gray-200/80 opacity-0 transition-all duration-300 group-hover:opacity-100 dark:border-zinc-700" />
 
-                <h3 class="font-heading mt-2 text-2xl font-bold text-gray-900 dark:text-white">
-                  {area.italicized ? <em>{area.title}</em> : area.title}
-                </h3>
-
-                <p class="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                  {area.description}
-                </p>
-              </div>
-
-              <div class="mt-6 border-t border-gray-100 pt-4 dark:border-gray-800">
-                <a
-                  href={`/research/${area.slug}`}
-                  class="text-primary-700 group-hover:text-primary-900 dark:text-primary-300 inline-flex items-center text-sm font-semibold transition-colors duration-150 dark:group-hover:text-white"
-                >
-                  Learn more
-                  <svg
-                    class="ml-1.5 h-4 w-4 transition-transform duration-150 group-hover:translate-x-1"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </a>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- 3. LATEST NEWS SECTION -->
-  <section
-    class="border-t border-gray-200/80 bg-gray-50/60 py-16 sm:py-24 dark:border-gray-800/80 dark:bg-gray-900/40"
-    aria-labelledby="news-heading"
-  >
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
-        <div>
-          <span
-            class="text-accent-700 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
-          >
-            Updates & Milestones
-          </span>
-          <h2
-            id="news-heading"
-            class="font-heading mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white"
-          >
-            Latest News
-          </h2>
-        </div>
-        <a
-          href="/news"
-          class="text-primary-700 hover:text-primary-900 dark:text-primary-300 text-sm font-semibold transition-colors duration-150 dark:hover:text-white"
-        >
-          View all news &rarr;
-        </a>
-      </div>
-
-      <!-- Row of 3 News Cards -->
-      <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-        {
-          latestNews.map((item) => {
-            const link = item.link || '/news';
-            const isExternal = link.startsWith('http');
-            return (
-              <article class="flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-6 shadow-2xs transition-all duration-200 hover:border-gray-300 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700">
-                <div>
-                  <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                    <time datetime={item.date} class="font-medium text-gray-700 dark:text-gray-300">
-                      {item.date}
-                    </time>
-                    {item.category && (
-                      <span class="rounded-md bg-gray-100 px-2 py-0.5 font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300">
-                        {item.category}
-                      </span>
+                <div class="relative z-10 flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-full border border-gray-300/80 bg-zinc-50/90 p-6 text-center shadow-md transition-all duration-500 ease-out group-hover:scale-[1.03] group-hover:border-gray-900 group-hover:shadow-2xl dark:border-zinc-800 dark:bg-zinc-950/95 dark:group-hover:border-white">
+                  <div class="pointer-events-none absolute inset-0 flex items-center justify-center opacity-10 transition-opacity duration-300 group-hover:opacity-20">
+                    {topic.organismIcon === 'pseudomonas' && (
+                      <svg
+                        class="text-primary-800 dark:text-primary-300 h-40 w-40"
+                        viewBox="0 0 100 100"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                      >
+                        <rect x="25" y="40" width="50" height="20" rx="10" />
+                        <path
+                          d="M25 50 C15 35 10 65 0 50"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                        <circle cx="70" cy="50" r="1.5" fill="currentColor" />
+                        <circle cx="50" cy="46" r="1.2" fill="currentColor" />
+                        <circle cx="35" cy="54" r="1.2" fill="currentColor" />
+                      </svg>
+                    )}
+                    {topic.organismIcon === 'ecoli' && (
+                      <svg
+                        class="text-primary-800 dark:text-primary-300 h-40 w-40"
+                        viewBox="0 0 100 100"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                      >
+                        <rect x="20" y="38" width="60" height="24" rx="12" />
+                        <line
+                          x1="50"
+                          y1="36"
+                          x2="50"
+                          y2="64"
+                          stroke-width="2"
+                          stroke-dasharray="2 2"
+                        />
+                        <ellipse cx="35" cy="50" rx="6" ry="3" />
+                        <ellipse cx="65" cy="50" rx="6" ry="3" />
+                      </svg>
+                    )}
+                    {topic.organismIcon === 'asgard' && (
+                      <svg
+                        class="text-primary-800 dark:text-primary-300 h-40 w-40"
+                        viewBox="0 0 100 100"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                      >
+                        <circle cx="50" cy="50" r="18" />
+                        <path d="M50 32 C45 20 55 12 50 5" stroke-linecap="round" />
+                        <path d="M68 50 C80 45 88 55 95 50" stroke-linecap="round" />
+                        <path d="M50 68 C55 80 45 88 50 95" stroke-linecap="round" />
+                        <path d="M32 50 C20 55 12 45 5 50" stroke-linecap="round" />
+                        <circle cx="50" cy="50" r="6" stroke-dasharray="2 2" />
+                      </svg>
                     )}
                   </div>
 
-                  <h3 class="font-heading mt-3 line-clamp-2 text-lg font-bold text-gray-900 dark:text-white">
-                    <a
-                      href={link}
-                      target={isExternal ? '_blank' : undefined}
-                      rel={isExternal ? 'noopener noreferrer' : undefined}
-                      class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
+                  <span class="text-primary-700 dark:text-primary-400 font-mono text-[10px] font-bold tracking-widest uppercase">
+                    {topic.category}
+                  </span>
+
+                  <span class="font-heading group-hover:text-primary-900 mt-2 text-xl font-bold tracking-tight text-gray-950 transition-colors duration-200 sm:text-2xl dark:text-white dark:group-hover:text-white">
+                    {topic.name}
+                  </span>
+                  <span class="font-serif text-sm font-medium text-gray-600 italic dark:text-gray-300">
+                    {topic.sub}
+                  </span>
+
+                  <span class="group-hover:bg-primary-900 mt-4 inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3.5 py-1 text-xs font-semibold text-gray-800 shadow-xs transition-all duration-300 group-hover:border-gray-900 group-hover:text-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-gray-200 dark:group-hover:border-white dark:group-hover:bg-white dark:group-hover:text-black">
+                    <span>Explore</span>
+                    <svg
+                      class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
                     >
-                      {item.headline}
-                    </a>
-                  </h3>
-
-                  <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                    {item.excerpt}
-                  </p>
-                </div>
-
-                <div class="mt-5 pt-3">
-                  <a
-                    href={link}
-                    target={isExternal ? '_blank' : undefined}
-                    rel={isExternal ? 'noopener noreferrer' : undefined}
-                    class="text-primary-700 dark:text-primary-300 inline-flex items-center text-xs font-semibold hover:underline"
-                  >
-                    Read announcement &rarr;
-                  </a>
-                </div>
-              </article>
-            );
-          })
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. RECENT PUBLICATIONS SECTION -->
-  <section class="bg-white py-16 sm:py-24 dark:bg-gray-950" aria-labelledby="publications-heading">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
-        <div>
-          <span
-            class="text-accent-700 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
-          >
-            Selected Papers
-          </span>
-          <h2
-            id="publications-heading"
-            class="font-heading mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white"
-          >
-            Recent Publications
-          </h2>
-        </div>
-        <a
-          href="/publications"
-          class="text-primary-700 hover:text-primary-900 dark:text-primary-300 text-sm font-semibold transition-colors duration-150 dark:hover:text-white"
-        >
-          View all publications &rarr;
-        </a>
-      </div>
-
-      <!-- List of 3 Publication Entries -->
-      <div class="mt-10 space-y-4">
-        {
-          recentPublications.map((pub: any) => {
-            const link = pub.doi_or_pdf_link || pub.doiUrl || '#';
-            const isDoi = link.includes('doi.org');
-            return (
-              <div class="hover:border-primary-200 dark:hover:border-primary-800/80 rounded-xl border border-gray-200 bg-white p-6 shadow-2xs transition-all duration-150 hover:shadow-xs dark:border-gray-800 dark:bg-gray-900/70">
-                <div class="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-                  <h3 class="font-heading text-lg font-bold text-gray-900 dark:text-white">
-                    <a
-                      href={link}
-                      target={link !== '#' ? '_blank' : undefined}
-                      rel={link !== '#' ? 'noopener noreferrer' : undefined}
-                      class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
-                    >
-                      {pub.title}
-                    </a>
-                  </h3>
-                  <span class="bg-primary-50 text-primary-800 dark:bg-primary-950 dark:text-primary-300 dark:ring-primary-800 shrink-0 rounded-md px-2.5 py-0.5 text-xs font-bold dark:ring-1">
-                    {pub.year}
+                      <path
+                        fill-rule="evenodd"
+                        d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
                   </span>
                 </div>
-
-                <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{pub.authors}</p>
-
-                <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
-                  <span>
-                    <em class="font-medium text-gray-800 dark:text-gray-200">{pub.journal}</em>
-                    {pub.volume ? `, ${pub.volume}` : ''}
-                  </span>
-                  {link !== '#' && (
-                    <>
-                      <span>&bull;</span>
-                      <a
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="text-primary-700 dark:text-primary-300 font-mono hover:underline"
-                      >
-                        {isDoi
-                          ? `doi:${link.split('doi.org/')[1] || link}`
-                          : 'View Publication &rarr;'}
-                      </a>
-                    </>
-                  )}
-                </div>
-              </div>
-            );
-          })
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. CALL-TO-ACTION BANNER -->
-  <section
-    class="border-t border-gray-200/80 bg-gray-50 py-16 sm:py-20 dark:border-gray-800/80 dark:bg-gray-900"
-    aria-label="Recruitment Call to Action"
-  >
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div
-        class="from-primary-900 via-primary-950 relative overflow-hidden rounded-3xl bg-gradient-to-br to-gray-950 px-6 py-12 text-center shadow-xl sm:px-12 sm:py-16"
-      >
-        <!-- Background subtle glow -->
-        <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div
-            class="bg-accent-500/10 absolute top-1/2 left-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-          >
-          </div>
-        </div>
-
-        <span class="text-accent-400 inline-block text-xs font-bold tracking-wider uppercase">
-          Open Positions
-        </span>
-
-        <h2 class="font-heading mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          Interested in joining our research group?
-        </h2>
-
-        <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-gray-300">
-          We are actively looking for curious and motivated postdoctoral fellows, graduate students,
-          and undergraduate researchers fascinated by bacterial physiology, microbial evolution, and
-          archaeal cell biology.
-        </p>
-
-        <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="/join-us"
-            class="bg-accent-500 hover:bg-accent-600 focus-visible:ring-accent-400 inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-sm font-semibold text-white shadow-md transition-all duration-150 hover:shadow-lg focus:outline-none focus-visible:ring-2"
-          >
-            Join our lab
-            <svg class="ml-2 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path
-                fill-rule="evenodd"
-                d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </a>
-          <a
-            href="/contact"
-            class="inline-flex items-center justify-center rounded-xl border border-gray-600 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-xs transition-all duration-150 hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-          >
-            Contact the PI
-          </a>
+              </a>
+            ))
+          }
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initHomeScrollAnimation() {
+    const scrollSection = document.getElementById('hero-scroll-section');
+    const titleWrapper = document.getElementById('title-wrapper');
+    const carouselOuter = document.getElementById('carousel-outer');
+    const scrollPrompt = document.getElementById('scroll-prompt');
+
+    if (!scrollSection || !titleWrapper || !carouselOuter) return;
+
+    // Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      // In reduced motion, simply keep title docked and carousel visible immediately
+      titleWrapper.style.transform = 'translateY(-34vh) scale(0.4)';
+      carouselOuter.style.opacity = '1';
+      carouselOuter.style.pointerEvents = 'auto';
+      if (scrollPrompt) scrollPrompt.style.opacity = '0';
+      return;
+    }
+
+    // Kill existing triggers on page reload / transition
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+
+    // Calculate responsive vertical travel for title
+    const isMobile = window.innerWidth < 640;
+    const targetY = isMobile ? '-32vh' : '-35vh';
+    const targetScale = isMobile ? 0.45 : 0.35;
+
+    // Timeline pinned to scrollSection with scrub
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: scrollSection,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.6,
+      },
+    });
+
+    // 1. Fade out the initial scroll prompt in the first 15% of scroll
+    if (scrollPrompt) {
+      tl.to(
+        scrollPrompt,
+        {
+          opacity: 0,
+          duration: 0.15,
+          ease: 'power1.out',
+        },
+        0
+      );
+    }
+
+    // 2. Shrink and move "The ABCD Lab" to the top
+    tl.to(
+      titleWrapper,
+      {
+        y: targetY,
+        scale: targetScale,
+        duration: 0.75,
+        ease: 'power2.inOut',
+      },
+      0
+    );
+
+    // 3. Simultaneously reveal the 3D Carousel
+    tl.fromTo(
+      carouselOuter,
+      {
+        opacity: 0,
+        scale: 0.8,
+        y: 40,
+        pointerEvents: 'none',
+      },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        pointerEvents: 'auto',
+        duration: 0.65,
+        ease: 'power2.out',
+      },
+      0.25
+    );
+  }
+
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHomeScrollAnimation);
+    } else {
+      initHomeScrollAnimation();
+    }
+    document.addEventListener('astro:page-load', initHomeScrollAnimation);
+    window.addEventListener('resize', () => {
+      ScrollTrigger.refresh();
+    });
+  }
+</script>
