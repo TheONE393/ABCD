@@ -1,0 +1,463 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { fetchPublications } from '../lib/fetchSheetData.js';
+
+interface Publication {
+  title: string;
+  authors: string;
+  journal: string;
+  year: number;
+  doi_or_pdf_link: string;
+  tags: string[];
+}
+
+// Fetch live publications at build time from the Google Sheet
+const fetchedPubs: Publication[] = await fetchPublications();
+
+// High-fidelity fallback publications used when Google Sheet URL is still a placeholder
+const fallbackPubs: Publication[] = [
+  {
+    title:
+      'Evolutionary diversification of cytoskeletal regulators across deep-sea Asgard archaea',
+    authors: '[Lastname], A.*, Doe, J., Vance, E., & Chen, W.',
+    journal: 'Nature Microbiology',
+    year: 2026,
+    doi_or_pdf_link: 'https://doi.org/10.1038/s41564-026-0000-x',
+    tags: ['Asgard Archaea', 'Structural Biology', 'Evolution'],
+  },
+  {
+    title:
+      'Coordination of the stringent response and outer membrane remodeling in clinical Pseudomonas aeruginosa',
+    authors: 'Smith, K., [Lastname], A.*, & Patel, R.',
+    journal: 'Journal of Bacteriology',
+    year: 2025,
+    doi_or_pdf_link: 'https://doi.org/10.1128/jb.00123-25',
+    tags: ['Pseudomonas', 'Membrane Biology', 'Antibiotic Resistance'],
+  },
+  {
+    title:
+      'Single-molecule tracking resolves DNA repair hub dynamics in resource-limited Escherichia coli',
+    authors: 'Doe, J., Smith, K., & [Lastname], A.*',
+    journal: 'Nucleic Acids Research',
+    year: 2025,
+    doi_or_pdf_link: 'https://doi.org/10.1093/nar/gkf000',
+    tags: ['E. coli', 'Single-Molecule', 'Genomics'],
+  },
+  {
+    title:
+      'Cryo-EM structure of a primitive ESCRT-III helical polymer from hydrothermal Heimdallarchaeota',
+    authors: 'Chen, W., Vance, E., & [Lastname], A.*',
+    journal: 'Science Advances',
+    year: 2024,
+    doi_or_pdf_link: 'https://doi.org/10.1126/sciadv.adp1234',
+    tags: ['Asgard Archaea', 'Cryo-EM', 'Structural Biology'],
+  },
+  {
+    title:
+      'Tn-seq mapping identifies essential lipid A modification determinants under cationic peptide challenge in Pseudomonas',
+    authors: 'Vance, E., Doe, J., & [Lastname], A.*',
+    journal: 'mBio',
+    year: 2024,
+    doi_or_pdf_link: 'https://doi.org/10.1128/mbio.03421-24',
+    tags: ['Pseudomonas', 'Genomics', 'Antibiotic Resistance'],
+  },
+  {
+    title:
+      'Ribosome stalling and translation slowdown drive persister cell emergence during nutrient downshifts',
+    authors: 'Patel, R., Doe, J., & [Lastname], A.*',
+    journal: 'Molecular Microbiology',
+    year: 2023,
+    doi_or_pdf_link: 'https://doi.org/10.1111/mmi.15000',
+    tags: ['E. coli', 'Translation', 'Persisters'],
+  },
+  {
+    title:
+      'Lipopolysaccharide export machinery architecture and antibiotic targeting in Gram-negative envelopes',
+    authors: '[Lastname], A.*, Vance, E., & Miller, H.',
+    journal: 'Annual Review of Microbiology',
+    year: 2022,
+    doi_or_pdf_link: 'https://doi.org/10.1146/annurev-micro-021022',
+    tags: ['Pseudomonas', 'Membrane Biology'],
+  },
+  {
+    title:
+      'Ancestral profiling reveals early origins of eukaryotic GTPase signaling cascades in Lokiarcheota',
+    authors: 'Chen, W., Smith, K., & [Lastname], A.*',
+    journal: 'Current Biology',
+    year: 2021,
+    doi_or_pdf_link: 'https://doi.org/10.1016/j.cub.2021.05.012',
+    tags: ['Asgard Archaea', 'Evolution'],
+  },
+];
+
+// Use fetched publications if available; otherwise use fallback
+const publications: Publication[] = fetchedPubs.length > 0 ? fetchedPubs : fallbackPubs;
+
+// Derive unique publication years in descending order
+const years = Array.from(new Set(publications.map((p) => p.year))).sort((a, b) => b - a);
+
+// Derive unique tags from the actual dataset (not hardcoded)
+const rawTags = publications.flatMap((p) => p.tags || []);
+const uniqueTags = Array.from(new Set(rawTags.map((t) => t.trim()))).filter(Boolean).sort();
+---
+
+<Layout
+  title="Publications & Preprints | The [Lastname] Lab"
+  description="Peer-reviewed research articles, preprints, and reviews from The [Lastname] Lab investigating Pseudomonas, E. coli, and Asgard archaea."
+>
+  <div class="py-12 sm:py-16 lg:py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb Navigation -->
+      <nav
+        class="mb-8 flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400"
+        aria-label="Breadcrumb"
+      >
+        <a
+          href="/"
+          class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
+        >
+          Home
+        </a>
+        <span>/</span>
+        <span class="font-medium text-gray-800 dark:text-gray-200">Publications</span>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="max-w-3xl">
+        <span
+          class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+        >
+          Scientific Output
+        </span>
+        <h1
+          class="font-heading mt-3 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white"
+        >
+          Publications
+        </h1>
+        <p class="mt-4 text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+          Our lab is committed to open science and rapid dissemination of findings. All papers are
+          deposited as preprints prior to peer-reviewed publication. Corresponding author indicated
+          by (*).
+        </p>
+
+        <!-- External Profile Badges -->
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+          <a
+            href="https://scholar.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-primary-800 hover:text-primary-950 dark:text-primary-300 inline-flex items-center gap-1.5 text-xs font-medium dark:hover:text-white"
+          >
+            <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+              <path
+                d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"
+              ></path>
+            </svg>
+            Google Scholar Profile &rarr;
+          </a>
+          <span class="text-gray-300 dark:text-gray-700">&bull;</span>
+          <a
+            href="https://orcid.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-primary-800 hover:text-primary-950 dark:text-primary-300 inline-flex items-center gap-1.5 text-xs font-medium dark:hover:text-white"
+          >
+            <svg class="h-3.5 w-3.5 fill-[#A6CE39]" viewBox="0 0 256 256">
+              <path
+                d="M128,0A128,128,0,1,0,256,128,128,128,0,0,0,128,0ZM86.35,186.2H70V73.47H86.35Zm-8.18-125a10.6,10.6,0,1,1,10.6-10.6A10.6,10.6,0,0,1,78.17,61.2ZM190,140.23c0,28.87-19.78,46-49.88,46H105.79V73.47h36.19C170.82,73.47,190,92.17,190,140.23Zm-67.86,31.42h18.23c21.84,0,33.18-12.78,33.18-31.42,0-20.15-12.33-31.42-33.18-31.42H122.14Z"
+              ></path>
+            </svg>
+            ORCID Record &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- Tag Filter Controls (Derived dynamically from data) -->
+      <section class="mt-12" aria-labelledby="filter-heading">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2
+            id="filter-heading"
+            class="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+          >
+            Filter by Topic
+          </h2>
+          <span
+            id="results-counter"
+            class="text-xs font-medium text-gray-500 dark:text-gray-400"
+          >
+            Showing {publications.length} publications
+          </span>
+        </div>
+
+        <div id="filter-buttons" class="mt-3 flex flex-wrap items-center gap-2">
+          <!-- "All" Button (Active by default) -->
+          <button
+            type="button"
+            data-filter="all"
+            class="filter-btn active-filter rounded-xl px-4 py-2 text-xs font-semibold shadow-xs transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          >
+            All Topics ({publications.length})
+          </button>
+
+          <!-- Dynamically derived tag buttons -->
+          {
+            uniqueTags.map((tag) => {
+              const count = publications.filter((p) => (p.tags || []).includes(tag)).length;
+              return (
+                <button
+                  type="button"
+                  data-filter={tag.toLowerCase()}
+                  class="filter-btn inactive-filter rounded-xl px-4 py-2 text-xs font-semibold shadow-2xs transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                >
+                  {tag} ({count})
+                </button>
+              );
+            })
+          }
+        </div>
+      </section>
+
+      <!-- Publications List Grouped by Year (Descending) -->
+      <div id="publications-container" class="mt-12 space-y-12">
+        {
+          years.map((year) => {
+            const yearPubs = publications.filter((p) => p.year === year);
+            return (
+              <section class="year-group" data-year={year} aria-labelledby={`year-${year}`}>
+                <!-- Year Section Heading -->
+                <div class="flex items-center gap-4 border-b border-gray-200 pb-3 dark:border-gray-800">
+                  <h2
+                    id={`year-${year}`}
+                    class="font-heading text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white"
+                  >
+                    {year}
+                  </h2>
+                  <span class="bg-primary-50 text-primary-800 dark:bg-primary-950 dark:text-primary-300 dark:ring-primary-800/80 rounded-full px-2.5 py-0.5 text-xs font-bold dark:ring-1">
+                    {yearPubs.length} {yearPubs.length === 1 ? 'article' : 'articles'}
+                  </span>
+                </div>
+
+                <!-- Year Publication Cards -->
+                <div class="mt-6 space-y-4">
+                  {yearPubs.map((pub) => {
+                    const tagString = (pub.tags || []).join(', ').toLowerCase();
+                    const isDoi = pub.doi_or_pdf_link?.includes('doi.org');
+                    const isPdf = pub.doi_or_pdf_link?.toLowerCase().endsWith('.pdf');
+
+                    return (
+                      <article
+                        class="publication-item group rounded-2xl border border-gray-200 bg-white p-6 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900/60"
+                        data-tags={tagString}
+                      >
+                        <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                          <!-- Publication Title -->
+                          <h3 class="font-heading text-lg font-bold text-gray-900 dark:text-white">
+                            {pub.doi_or_pdf_link ? (
+                              <a
+                                href={pub.doi_or_pdf_link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+                              >
+                                {pub.title}
+                              </a>
+                            ) : (
+                              pub.title
+                            )}
+                          </h3>
+
+                          <!-- Year Badge -->
+                          <span class="bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 shrink-0 self-start rounded-md px-2 py-0.5 text-xs font-mono font-semibold sm:self-auto">
+                            {pub.year}
+                          </span>
+                        </div>
+
+                        <!-- Authors list -->
+                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                          {pub.authors}
+                        </p>
+
+                        <!-- Journal Citation & Action Link -->
+                        <div class="mt-4 flex flex-wrap items-center justify-between gap-y-3 border-t border-gray-100 pt-3 dark:border-gray-800/80">
+                          <div class="flex flex-wrap items-center gap-x-2 text-xs text-gray-500 dark:text-gray-400">
+                            <span class="font-medium text-gray-800 italic dark:text-gray-200">
+                              {pub.journal}
+                            </span>
+                            {pub.doi_or_pdf_link && (
+                              <>
+                                <span>&bull;</span>
+                                <a
+                                  href={pub.doi_or_pdf_link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  class="text-primary-700 hover:text-primary-800 dark:text-primary-300 inline-flex items-center gap-1 font-mono font-medium hover:underline dark:hover:text-white"
+                                >
+                                  {isDoi && (
+                                    <>
+                                      <span>doi:</span>
+                                      <span>{pub.doi_or_pdf_link.split('doi.org/')[1]}</span>
+                                    </>
+                                  )}
+                                  {isPdf && <span>Download PDF</span>}
+                                  {!isDoi && !isPdf && <span>View Publication &rarr;</span>}
+                                  <svg
+                                    class="h-3 w-3"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                                    />
+                                  </svg>
+                                </a>
+                              </>
+                            )}
+                          </div>
+
+                          <!-- Tags pill list -->
+                          {pub.tags && pub.tags.length > 0 && (
+                            <div class="flex flex-wrap items-center gap-1.5">
+                              {pub.tags.map((t) => (
+                                <button
+                                  type="button"
+                                  data-click-tag={t.toLowerCase()}
+                                  class="tag-pill bg-gray-50 text-gray-600 hover:border-primary-300 hover:text-primary-800 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:border-primary-600 rounded-md border border-gray-200 px-2 py-0.5 text-[11px] font-medium transition-colors"
+                                >
+                                  #{t}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })
+        }
+
+        <!-- Empty state message for when filters match 0 results -->
+        <div
+          id="no-results"
+          class="hidden rounded-2xl border border-gray-200 bg-gray-50 p-10 text-center dark:border-gray-800 dark:bg-gray-900/40"
+        >
+          <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            No publications found matching the selected topic.
+          </p>
+          <button
+            type="button"
+            id="reset-filter-btn"
+            class="bg-primary-900 hover:bg-primary-800 dark:bg-primary-700 dark:hover:bg-primary-600 mt-4 inline-flex items-center rounded-xl px-4 py-2 text-xs font-semibold text-white transition-colors"
+          >
+            Reset filter to show all publications
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Simple, robust client-side filtering (Vanilla JS)
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const pubItems = document.querySelectorAll<HTMLElement>('.publication-item');
+  const yearGroups = document.querySelectorAll<HTMLElement>('.year-group');
+  const noResultsBox = document.getElementById('no-results');
+  const resultsCounter = document.getElementById('results-counter');
+  const resetBtn = document.getElementById('reset-filter-btn');
+  const tagPills = document.querySelectorAll<HTMLButtonElement>('[data-click-tag]');
+
+  const activeClasses = ['bg-primary-900', 'text-white', 'dark:bg-primary-700'];
+  const inactiveClasses = [
+    'bg-gray-100',
+    'text-gray-700',
+    'hover:bg-gray-200',
+    'dark:bg-gray-800',
+    'dark:text-gray-300',
+    'dark:hover:bg-gray-700',
+  ];
+
+  function applyFilter(selectedTag: string) {
+    let visibleCount = 0;
+
+    // 1. Update button visual states
+    filterButtons.forEach((btn) => {
+      const btnFilter = btn.dataset.filter || '';
+      if (btnFilter === selectedTag) {
+        btn.classList.remove(...inactiveClasses);
+        btn.classList.add(...activeClasses);
+      } else {
+        btn.classList.remove(...activeClasses);
+        btn.classList.add(...inactiveClasses);
+      }
+    });
+
+    // 2. Filter publication items
+    pubItems.forEach((item) => {
+      const itemTags = (item.dataset.tags || '').split(',').map((t) => t.trim().toLowerCase());
+      const matches = selectedTag === 'all' || itemTags.includes(selectedTag);
+
+      if (matches) {
+        item.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+
+    // 3. Hide empty year sections if all articles in that year are hidden
+    yearGroups.forEach((group) => {
+      const itemsInGroup = group.querySelectorAll<HTMLElement>('.publication-item');
+      const hasVisibleItems = Array.from(itemsInGroup).some(
+        (el) => !el.classList.contains('hidden')
+      );
+      if (hasVisibleItems) {
+        group.classList.remove('hidden');
+      } else {
+        group.classList.add('hidden');
+      }
+    });
+
+    // 4. Update counter and empty state
+    if (resultsCounter) {
+      resultsCounter.textContent = `Showing ${visibleCount} ${visibleCount === 1 ? 'publication' : 'publications'}`;
+    }
+
+    if (noResultsBox) {
+      if (visibleCount === 0) {
+        noResultsBox.classList.remove('hidden');
+      } else {
+        noResultsBox.classList.add('hidden');
+      }
+    }
+  }
+
+  // Bind click handlers to filter buttons
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter || 'all';
+      applyFilter(filter);
+    });
+  });
+
+  // Clicking a tag pill on any publication article also applies that filter
+  tagPills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      const tag = pill.dataset.clickTag || 'all';
+      applyFilter(tag);
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+    });
+  });
+
+  // Reset button
+  resetBtn?.addEventListener('click', () => {
+    applyFilter('all');
+  });
+</script>
+

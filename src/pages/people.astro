@@ -1,0 +1,630 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { fetchTeam } from '../lib/fetchSheetData.js';
+
+// Define typed TeamMember interface for template safety
+interface TeamMember {
+  name: string;
+  role: string;
+  photo_url?: string;
+  bio?: string;
+  year_joined?: string | number;
+  year_left?: string | number;
+  is_current?: boolean;
+  links?: string[];
+}
+
+// Fetch live team members at build time from the Google Sheet
+const fetchedMembers: TeamMember[] = await fetchTeam();
+
+// High-fidelity fallback data shown when the published Google Sheet URL is still a placeholder
+const fallbackMembers: TeamMember[] = [
+  {
+    name: 'Dr. Jane [Lastname]',
+    role: 'Principal Investigator',
+    photo_url: '',
+    bio: 'Associate Professor of Molecular & Cellular Biology. Investigating envelope biogenesis in Pseudomonas, translational fidelity in E. coli, and the cell biology of Asgard archaea. PhD from MIT, Postdoc at UC Berkeley.',
+    year_joined: 2018,
+    year_left: '',
+    is_current: true,
+    links: [
+      'mailto:pi-lastname@university-placeholder.edu',
+      'https://scholar.google.com',
+      'https://orcid.org/0000-0002-1825-0097',
+      'https://github.com',
+    ],
+  },
+  {
+    name: 'Dr. Marcus Vance',
+    role: 'Postdoctoral Fellow',
+    photo_url: '',
+    bio: 'Focus: Outer membrane lipid asymmetry and lipopolysaccharide biogenesis in Pseudomonas aeruginosa under antibiotic challenge.',
+    year_joined: 2021,
+    year_left: '',
+    is_current: true,
+    links: ['https://orcid.org', 'https://github.com', 'mailto:mvance@university.edu'],
+  },
+  {
+    name: 'Elena Rostova',
+    role: 'PhD Candidate (MCB)',
+    photo_url: '',
+    bio: 'Focus: Evolutionary cell biology of Asgard archaea, reconstructing primitive endomembrane systems and actin-like cytoskeletal dynamics.',
+    year_joined: 2022,
+    year_left: '',
+    is_current: true,
+    links: ['https://github.com', 'mailto:erostova@university.edu'],
+  },
+  {
+    name: 'Kai Chen',
+    role: 'PhD Student (Genomics)',
+    photo_url: '',
+    bio: 'Focus: High-throughput genetic screening and ribo-seq profiling of translational stalling mechanisms in E. coli stress responses.',
+    year_joined: 2023,
+    year_left: '',
+    is_current: true,
+    links: ['https://github.com', 'mailto:kchen@university.edu'],
+  },
+  {
+    name: 'Aisha Patel',
+    role: 'Laboratory Manager & Senior Research Associate',
+    photo_url: '',
+    bio: 'Oversees lab operations, anaerobic cultivation pipelines, molecular cloning core, and Asgard enrichment cultures.',
+    year_joined: 2019,
+    year_left: '',
+    is_current: true,
+    links: ['mailto:apatel@university.edu'],
+  },
+  {
+    name: 'Samuel Osei',
+    role: 'Undergraduate Researcher',
+    photo_url: '',
+    bio: 'Focus: Single-cell fluorescence microscopy tracking fluorescently tagged envelope proteins in Pseudomonas.',
+    year_joined: 2024,
+    year_left: '',
+    is_current: true,
+    links: ['mailto:sosei@university.edu'],
+  },
+  {
+    name: 'Dr. Sarah Lin',
+    role: 'Postdoctoral Fellow',
+    photo_url: '',
+    bio: 'Now: Assistant Professor of Microbiology at Univ. of Michigan. Pioneered our cryo-ET imaging pipeline for microbial ultrastructure.',
+    year_joined: 2018,
+    year_left: 2022,
+    is_current: false,
+    links: ['https://scholar.google.com'],
+  },
+  {
+    name: 'David Kim',
+    role: 'PhD Student',
+    photo_url: '',
+    bio: 'Now: Senior Scientist at Flagship Pioneering. Developed high-throughput functional assays for Asgard archaeal homologs.',
+    year_joined: 2019,
+    year_left: 2024,
+    is_current: false,
+    links: ['https://linkedin.com'],
+  },
+  {
+    name: 'Maya Rodriguez',
+    role: 'Undergraduate Researcher',
+    photo_url: '',
+    bio: 'Now: MD/PhD Candidate at Johns Hopkins School of Medicine.',
+    year_joined: 2021,
+    year_left: 2023,
+    is_current: false,
+    links: [],
+  },
+];
+
+// Use fetched members if available; otherwise use fallback
+const allMembers: TeamMember[] = fetchedMembers.length > 0 ? fetchedMembers : fallbackMembers;
+
+// 1. Identify PI explicitly
+const piMember = allMembers.find((m) => {
+  const role = (m.role || '').toLowerCase();
+  return (
+    role.includes('principal investigator') ||
+    role === 'pi' ||
+    role.includes('lab head') ||
+    role.includes('professor & pi')
+  );
+});
+
+// 2. Current members (year_left is blank, excluding the PI)
+const currentMembers = allMembers.filter((m) => {
+  const isPI = m === piMember;
+  const isCurrent = m.is_current !== false && (!m.year_left || String(m.year_left).trim() === '');
+  return !isPI && isCurrent;
+});
+
+// 3. Alumni (year_left has a value)
+const alumniMembers = allMembers.filter((m) => {
+  const hasLeft = m.is_current === false || (m.year_left && String(m.year_left).trim() !== '');
+  return hasLeft;
+});
+
+// Helper to determine link icon type
+function getLinkDetails(url: string) {
+  const lower = url.toLowerCase();
+  if (lower.startsWith('mailto:')) {
+    return { label: 'Email', type: 'email' };
+  }
+  if (lower.includes('scholar.google')) {
+    return { label: 'Google Scholar', type: 'scholar' };
+  }
+  if (lower.includes('orcid.org')) {
+    return { label: 'ORCID', type: 'orcid' };
+  }
+  if (lower.includes('github.com')) {
+    return { label: 'GitHub', type: 'github' };
+  }
+  if (lower.includes('linkedin.com')) {
+    return { label: 'LinkedIn', type: 'linkedin' };
+  }
+  if (lower.includes('twitter.com') || lower.includes('x.com')) {
+    return { label: 'X / Twitter', type: 'twitter' };
+  }
+  return { label: 'Website', type: 'web' };
+}
+---
+
+<Layout
+  title="People & Lab Members | The [Lastname] Lab"
+  description="Meet the researchers, postdocs, graduate students, and alumni of The [Lastname] Laboratory studying Pseudomonas, E. coli, and Asgard archaea."
+>
+  <div class="py-12 sm:py-16 lg:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb Navigation -->
+      <nav
+        class="mb-8 flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400"
+        aria-label="Breadcrumb"
+      >
+        <a
+          href="/"
+          class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
+        >
+          Home
+        </a>
+        <span>/</span>
+        <span class="font-medium text-gray-800 dark:text-gray-200">People</span>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="max-w-3xl">
+        <span
+          class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+        >
+          Lab Members &amp; Alumni
+        </span>
+        <h1
+          class="font-heading mt-3 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white"
+        >
+          Our Team
+        </h1>
+        <p class="mt-4 text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+          Our laboratory brings together scientists passionate about microbial genetics, envelope
+          biophysics, structural biochemistry, and evolutionary cell biology.
+        </p>
+      </div>
+
+      <!-- SECTION 1: Principal Investigator (Rendered First) -->
+      {
+        piMember && (
+          <section class="mt-14" aria-labelledby="pi-heading">
+            <h2 id="pi-heading" class="sr-only">
+              Principal Investigator
+            </h2>
+            <div class="border-primary-200 from-primary-50/50 dark:border-primary-800/60 dark:from-primary-950/40 relative overflow-hidden rounded-3xl border bg-gradient-to-br to-white p-8 shadow-xs sm:p-10 dark:to-gray-900/40">
+              <div class="grid grid-cols-1 gap-8 md:grid-cols-12 md:items-center">
+                <!-- PI Photo / Avatar -->
+                <div class="flex flex-col items-center md:col-span-4 md:items-start">
+                  <div class="relative">
+                    {piMember.photo_url ? (
+                      <img
+                        src={piMember.photo_url}
+                        alt={piMember.name}
+                        class="ring-primary-500/20 aspect-square h-48 w-48 rounded-2xl object-cover shadow-md ring-4 sm:h-56 sm:w-56"
+                      />
+                    ) : (
+                      <div class="from-primary-800 to-primary-950 text-accent-300 flex aspect-square h-48 w-48 items-center justify-center rounded-2xl bg-gradient-to-br shadow-md sm:h-56 sm:w-56">
+                        <span class="font-heading text-4xl font-bold">
+                          {piMember.name
+                            .split(' ')
+                            .filter((n) => !n.startsWith('Dr.'))
+                            .map((n) => n[0])
+                            .join('')}
+                        </span>
+                      </div>
+                    )}
+                    <span class="bg-accent-500 text-accent-950 absolute -right-2 -bottom-2 rounded-full px-3 py-1 text-xs font-bold shadow-xs">
+                      PI
+                    </span>
+                  </div>
+                </div>
+
+                <!-- PI Details & Bio -->
+                <div class="space-y-4 md:col-span-8">
+                  <div>
+                    <span class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase">
+                      {piMember.role}
+                    </span>
+                    <h3 class="font-heading mt-1 text-3xl font-bold text-gray-900 sm:text-4xl dark:text-white">
+                      {piMember.name}
+                    </h3>
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      Leading the Lab since {piMember.year_joined || '2018'}
+                    </p>
+                  </div>
+
+                  <p class="text-base leading-relaxed text-gray-700 dark:text-gray-300">
+                    {piMember.bio}
+                  </p>
+
+                  <!-- PI Link Icons -->
+                  {piMember.links && piMember.links.length > 0 && (
+                    <div class="flex flex-wrap items-center gap-3 pt-2">
+                      {piMember.links.map((link) => {
+                        const { label, type } = getLinkDetails(link);
+                        return (
+                          <a
+                            href={link}
+                            target={link.startsWith('http') ? '_blank' : undefined}
+                            rel={link.startsWith('http') ? 'noopener noreferrer' : undefined}
+                            class="hover:border-primary-400 hover:text-primary-700 dark:hover:border-primary-500 dark:hover:text-primary-300 inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-2xs transition-colors dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                            title={label}
+                          >
+                            {type === 'email' && (
+                              <svg
+                                class="h-3.5 w-3.5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                                />
+                              </svg>
+                            )}
+                            {type === 'scholar' && (
+                              <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z" />
+                              </svg>
+                            )}
+                            {type === 'orcid' && (
+                              <svg class="h-3.5 w-3.5 fill-[#A6CE39]" viewBox="0 0 256 256">
+                                <path d="M128,0A128,128,0,1,0,256,128,128,128,0,0,0,128,0ZM86.35,186.2H70V73.47H86.35Zm-8.18-125a10.6,10.6,0,1,1,10.6-10.6A10.6,10.6,0,0,1,78.17,61.2ZM190,140.23c0,28.87-19.78,46-49.88,46H105.79V73.47h36.19C170.82,73.47,190,92.17,190,140.23Zm-67.86,31.42h18.23c21.84,0,33.18-12.78,33.18-31.42,0-20.15-12.33-31.42-33.18-31.42H122.14Z" />
+                              </svg>
+                            )}
+                            {type === 'github' && (
+                              <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                              </svg>
+                            )}
+                            {type === 'linkedin' && (
+                              <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                              </svg>
+                            )}
+                            {type === 'twitter' && (
+                              <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                              </svg>
+                            )}
+                            {type === 'web' && (
+                              <svg
+                                class="h-3.5 w-3.5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253"
+                                />
+                              </svg>
+                            )}
+                            <span>{label}</span>
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        )
+      }
+
+      <!-- SECTION 2: Current Members -->
+      <section
+        class="mt-16 border-t border-gray-200 pt-12 dark:border-gray-800"
+        aria-labelledby="current-members-heading"
+      >
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <span class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase">
+              Lab Researchers
+            </span>
+            <h2
+              id="current-members-heading"
+              class="font-heading mt-1 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white"
+            >
+              Current Members
+            </h2>
+          </div>
+          <span class="text-xs font-medium text-gray-500 dark:text-gray-400">
+            {currentMembers.length} active researchers
+          </span>
+        </div>
+
+        <!-- Responsive Grid for Current Members -->
+        <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            currentMembers.map((member) => {
+              // Extract one-line focus: use bio up to the first period or truncate nicely
+              const bio = member.bio || '';
+              const firstSentence = bio.includes('.') ? bio.split('.')[0] + '.' : bio;
+              const focusText = firstSentence.replace(/^Focus:\s*/i, '');
+
+              return (
+                <div class="group flex flex-col justify-between rounded-2xl border border-gray-200 bg-white p-6 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-md dark:border-gray-800 dark:bg-gray-900/60">
+                  <div>
+                    <!-- Member Header: Photo / Avatar + Basic Info -->
+                    <div class="flex items-center gap-4">
+                      {member.photo_url ? (
+                        <img
+                          src={member.photo_url}
+                          alt={member.name}
+                          class="ring-primary-500/20 aspect-square h-16 w-16 rounded-xl object-cover ring-2"
+                        />
+                      ) : (
+                        <div class="from-primary-700 to-primary-900 text-accent-300 flex aspect-square h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br font-heading text-lg font-bold shadow-xs">
+                          {member.name
+                            .split(' ')
+                            .filter((n) => !n.startsWith('Dr.'))
+                            .map((n) => n[0])
+                            .slice(0, 2)
+                            .join('')}
+                        </div>
+                      )}
+
+                      <div class="min-w-0 flex-1">
+                        <h3 class="font-heading truncate text-lg font-bold text-gray-900 dark:text-white">
+                          {member.name}
+                        </h3>
+                        <p class="text-primary-800 dark:text-primary-300 truncate text-xs font-semibold">
+                          {member.role}
+                        </p>
+                        {member.year_joined && (
+                          <p class="text-[11px] text-gray-400 dark:text-gray-500">
+                            Joined {member.year_joined}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <!-- One-line Focus (Truncated / Clamped from bio) -->
+                    {focusText && (
+                      <div class="mt-4 border-t border-gray-100 pt-3 dark:border-gray-800/80">
+                        <p class="text-xs font-semibold tracking-wider text-gray-400 uppercase dark:text-gray-500">
+                          Research Focus
+                        </p>
+                        <p
+                          class="mt-1 line-clamp-2 text-xs leading-relaxed text-gray-600 dark:text-gray-300"
+                          title={member.bio}
+                        >
+                          {focusText}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <!-- Link Icons if Present -->
+                  {member.links && member.links.length > 0 && (
+                    <div class="mt-5 flex items-center gap-2 border-t border-gray-100 pt-3 dark:border-gray-800/80">
+                      {member.links.map((link) => {
+                        const { label, type } = getLinkDetails(link);
+                        return (
+                          <a
+                            href={link}
+                            target={link.startsWith('http') ? '_blank' : undefined}
+                            rel={link.startsWith('http') ? 'noopener noreferrer' : undefined}
+                            class="hover:text-primary-700 hover:bg-primary-50 dark:hover:text-primary-300 dark:hover:bg-primary-950 flex h-7 w-7 items-center justify-center rounded-lg text-gray-400 transition-colors dark:text-gray-500"
+                            title={`${label} (${member.name})`}
+                          >
+                            {type === 'email' && (
+                              <svg
+                                class="h-3.5 w-3.5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                                />
+                              </svg>
+                            )}
+                            {type === 'scholar' && (
+                              <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z" />
+                              </svg>
+                            )}
+                            {type === 'orcid' && (
+                              <svg class="h-3.5 w-3.5 fill-[#A6CE39]" viewBox="0 0 256 256">
+                                <path d="M128,0A128,128,0,1,0,256,128,128,128,0,0,0,128,0ZM86.35,186.2H70V73.47H86.35Zm-8.18-125a10.6,10.6,0,1,1,10.6-10.6A10.6,10.6,0,0,1,78.17,61.2ZM190,140.23c0,28.87-19.78,46-49.88,46H105.79V73.47h36.19C170.82,73.47,190,92.17,190,140.23Zm-67.86,31.42h18.23c21.84,0,33.18-12.78,33.18-31.42,0-20.15-12.33-31.42-33.18-31.42H122.14Z" />
+                              </svg>
+                            )}
+                            {type === 'github' && (
+                              <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                              </svg>
+                            )}
+                            {type === 'linkedin' && (
+                              <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                              </svg>
+                            )}
+                            {type === 'twitter' && (
+                              <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                              </svg>
+                            )}
+                            {type === 'web' && (
+                              <svg
+                                class="h-3.5 w-3.5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                                />
+                              </svg>
+                            )}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          }
+        </div>
+      </section>
+
+      <!-- SECTION 3: Alumni (Rendered Without Photos) -->
+      <section
+        class="mt-16 border-t border-gray-200 pt-12 dark:border-gray-800"
+        aria-labelledby="alumni-heading"
+      >
+        <div class="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <span class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase">
+              Lab Heritage
+            </span>
+            <h2
+              id="alumni-heading"
+              class="font-heading mt-1 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white"
+            >
+              Lab Alumni
+            </h2>
+          </div>
+          <span class="text-xs text-gray-500 dark:text-gray-400">
+            {alumniMembers.length} alumni mentors &amp; colleagues
+          </span>
+        </div>
+
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          Where our former postdocs, graduate students, and undergraduate researchers have moved next.
+        </p>
+
+        <!-- Alumni Table / List layout -->
+        <div class="mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xs dark:border-gray-800 dark:bg-gray-900/60">
+          <ul role="list" class="divide-y divide-gray-100 dark:divide-gray-800">
+            {
+              alumniMembers.map((alum) => {
+                // Parse "now at ___" or current position note from bio
+                const note = alum.bio || '';
+
+                return (
+                  <li class="p-5 transition-colors duration-150 hover:bg-gray-50/80 sm:px-6 dark:hover:bg-gray-800/40">
+                    <div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+                      <div>
+                        <div class="flex items-center gap-3">
+                          <h3 class="font-heading text-base font-bold text-gray-900 dark:text-white">
+                            {alum.name}
+                          </h3>
+                          <span class="bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 rounded-full px-2.5 py-0.5 text-xs font-medium">
+                            {alum.role}
+                          </span>
+                        </div>
+
+                        {note && (
+                          <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                            <span class="text-primary-800 dark:text-primary-300 font-medium">
+                              {note.startsWith('Now:') || note.startsWith('Now at') ? '' : 'Now: '}
+                            </span>
+                            {note}
+                          </p>
+                        )}
+                      </div>
+
+                      <div class="flex shrink-0 items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+                        {alum.year_joined && alum.year_left && (
+                          <span class="font-mono">
+                            {alum.year_joined} &ndash; {alum.year_left}
+                          </span>
+                        )}
+
+                        {alum.links && alum.links.length > 0 && (
+                          <div class="flex items-center gap-1.5">
+                            {alum.links.map((link) => (
+                              <a
+                                href={link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="hover:text-primary-700 dark:hover:text-primary-300 p-1 text-gray-400 transition-colors dark:text-gray-500"
+                                title={`External Profile (${alum.name})`}
+                              >
+                                <svg
+                                  class="h-4 w-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                                  />
+                                </svg>
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- Bottom Callout: Looking to Join? -->
+      <section class="mt-16">
+        <div class="from-primary-900 via-primary-950 flex flex-col items-center justify-between gap-6 rounded-3xl bg-gradient-to-r to-gray-950 p-8 shadow-md sm:flex-row sm:p-10">
+          <div>
+            <h3 class="font-heading text-xl font-bold text-white sm:text-2xl">
+              Interested in joining our team?
+            </h3>
+            <p class="mt-2 text-sm text-gray-300">
+              We are actively looking for curious, rigorous, and collaborative postdoctoral researchers and graduate students.
+            </p>
+          </div>
+          <a
+            href="/join-us"
+            class="bg-accent-500 hover:bg-accent-600 focus-visible:ring-accent-400 inline-flex shrink-0 items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:shadow-md focus:outline-none focus-visible:ring-2"
+          >
+            View Openings &amp; How to Apply &rarr;
+          </a>
+        </div>
+      </section>
+    </div>
+  </div>
+</Layout>

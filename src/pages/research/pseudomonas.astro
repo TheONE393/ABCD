@@ -1,28 +1,38 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { fetchPublications } from '../../lib/fetchSheetData.js';
 
-const relatedPublications = [
+// Fallback publications shown if Google Sheet has not populated matching entries yet
+const fallbackPublications = [
   {
     title:
       'Coordination of the stringent response and outer membrane remodeling in clinical Pseudomonas aeruginosa',
     authors: 'Smith, K., [Lastname], A.*, & Patel, R.',
-    year: '2025',
+    year: 2025,
     journal: 'Journal of Bacteriology',
-    volume: '207(4), e00123-25',
-    doi: '10.1128/jb.00123-25',
-    doiUrl: 'https://doi.org',
+    doi_or_pdf_link: 'https://doi.org/10.1128/jb.00123-25',
+    tags: ['Pseudomonas', 'Membrane Biology'],
   },
   {
     title:
       'Tn-seq mapping identifies essential lipid A modification determinants under cationic peptide challenge in Pseudomonas',
     authors: 'Vance, E., Doe, J., & [Lastname], A.*',
-    year: '2024',
+    year: 2024,
     journal: 'mBio',
-    volume: '15(2), e03421-24',
-    doi: '10.1128/mbio.03421-24',
-    doiUrl: 'https://doi.org',
+    doi_or_pdf_link: 'https://doi.org/10.1128/mbio.03421-24',
+    tags: ['Pseudomonas', 'Genomics'],
   },
 ];
+
+// Fetch live publications and filter by matching "Pseudomonas" tag
+const allPublications = await fetchPublications();
+const matchingPublications = allPublications.filter((pub) =>
+  (pub.tags || []).some((tag: string) => tag.toLowerCase().includes('pseudomonas'))
+);
+
+const relatedPublications =
+  matchingPublications.length > 0 ? matchingPublications : fallbackPublications;
+
 
 const keyQuestions = [
   'How do clinical isolates of Pseudomonas aeruginosa reprogram lipid A biosynthesis and outer-membrane architecture during chronic pulmonary infection?',
@@ -183,40 +193,49 @@ const techniques = [
 
         <div class="mt-6 space-y-4">
           {
-            relatedPublications.map((pub) => (
-              <div class="hover:border-primary-200 dark:hover:border-primary-800/80 rounded-xl border border-gray-200 bg-white p-6 shadow-2xs transition-all duration-150 hover:shadow-xs dark:border-gray-800 dark:bg-gray-900/60">
-                <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-                  <h3 class="font-heading text-base font-bold text-gray-900 dark:text-white">
-                    <a
-                      href={pub.doiUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
-                    >
-                      {pub.title}
-                    </a>
-                  </h3>
-                  <span class="bg-primary-50 text-primary-800 dark:bg-primary-950 dark:text-primary-300 dark:ring-primary-800 shrink-0 rounded-md px-2.5 py-0.5 text-xs font-bold dark:ring-1">
-                    {pub.year}
-                  </span>
+            relatedPublications.map((pub: any) => {
+              const link = pub.doi_or_pdf_link || pub.doiUrl || '#';
+              const isDoi = link.includes('doi.org');
+              return (
+                <div class="hover:border-primary-200 dark:hover:border-primary-800/80 rounded-xl border border-gray-200 bg-white p-6 shadow-2xs transition-all duration-150 hover:shadow-xs dark:border-gray-800 dark:bg-gray-900/60">
+                  <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                    <h3 class="font-heading text-base font-bold text-gray-900 dark:text-white">
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
+                      >
+                        {pub.title}
+                      </a>
+                    </h3>
+                    <span class="bg-primary-50 text-primary-800 dark:bg-primary-950 dark:text-primary-300 dark:ring-primary-800 shrink-0 rounded-md px-2.5 py-0.5 text-xs font-bold dark:ring-1">
+                      {pub.year}
+                    </span>
+                  </div>
+                  <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{pub.authors}</p>
+                  <div class="mt-3 flex flex-wrap items-center gap-x-3 text-xs text-gray-500 dark:text-gray-400">
+                    <span>
+                      <em>{pub.journal}</em>
+                      {pub.volume ? `, ${pub.volume}` : ''}
+                    </span>
+                    {link !== '#' && (
+                      <>
+                        <span>&bull;</span>
+                        <a
+                          href={link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="text-primary-700 dark:text-primary-300 font-mono hover:underline"
+                        >
+                          {isDoi ? `doi:${link.split('doi.org/')[1] || link}` : 'View Paper &rarr;'}
+                        </a>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{pub.authors}</p>
-                <div class="mt-3 flex flex-wrap items-center gap-x-3 text-xs text-gray-500 dark:text-gray-400">
-                  <span>
-                    <em>{pub.journal}</em>, {pub.volume}
-                  </span>
-                  <span>&bull;</span>
-                  <a
-                    href={pub.doiUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-primary-700 dark:text-primary-300 font-mono hover:underline"
-                  >
-                    doi:{pub.doi}
-                  </a>
-                </div>
-              </div>
-            ))
+              );
+            })
           }
         </div>
       </section>
