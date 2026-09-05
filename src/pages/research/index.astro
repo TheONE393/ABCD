@@ -62,7 +62,7 @@ const researchPrograms = [
       <!-- Page Header -->
       <div class="max-w-3xl">
         <span
-          class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+          class="text-accent-700 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
         >
           Scientific Investigations &amp; Experimental Systems
         </span>
@@ -85,7 +85,10 @@ const researchPrograms = [
       <div class="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-3">
         {
           researchPrograms.map((program) => (
-            <article class="group hover:border-primary-300 dark:hover:border-primary-700/60 flex flex-col justify-between rounded-2xl border border-gray-200 bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900/70">
+            <article
+              class="group hover:border-primary-300 dark:hover:border-primary-700/60 flex flex-col justify-between rounded-2xl border border-gray-200 bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900/70"
+              data-reveal
+            >
               <div>
                 <div class="bg-primary-50 text-primary-800 group-hover:bg-primary-900 group-hover:text-accent-400 dark:bg-primary-950 dark:text-primary-300 dark:ring-primary-800 dark:group-hover:bg-primary-900 mb-6 flex h-14 w-14 items-center justify-center rounded-xl transition-colors duration-200 dark:ring-1">
                   {program.icon === 'pseudomonas' && (
@@ -135,7 +138,7 @@ const researchPrograms = [
                   )}
                 </div>
 
-                <span class="text-accent-600 dark:text-accent-400 text-xs font-semibold tracking-wider uppercase">
+                <span class="text-accent-700 dark:text-accent-400 text-xs font-semibold tracking-wider uppercase">
                   {program.tag}
                 </span>
 

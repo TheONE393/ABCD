@@ -1,0 +1,6 @@
+# Robots.txt for Microbial Biology Lab
+User-agent: *
+Allow: /
+
+# XML Sitemap location (adjust domain when deploying to final custom URL)
+Sitemap: https://microbial-biology-lab.pages.dev/sitemap-index.xml

@@ -35,7 +35,6 @@ const matchingPublications = allPublications.filter((pub) =>
 const relatedPublications =
   matchingPublications.length > 0 ? matchingPublications : fallbackPublications;
 
-
 const keyQuestions = [
   'How do bacteria coordinate chromosome replication and segregation when cell growth slows to near-zero in nutrient-exhausted stationary phase?',
   'What molecular signals trigger stochastic phenotypic switching into antibiotic-tolerant persister states?',
@@ -81,7 +80,7 @@ const techniques = [
       <!-- Organism Page Header -->
       <header class="border-b border-gray-200 pb-8 dark:border-gray-800">
         <span
-          class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+          class="text-accent-700 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
         >
           Model System: Bacterial Physiology
         </span>
@@ -96,7 +95,7 @@ const techniques = [
       </header>
 
       <!-- 1. What We Study -->
-      <section class="mt-10" aria-labelledby="what-we-study-heading">
+      <section class="mt-10" aria-labelledby="what-we-study-heading" data-reveal>
         <h2
           id="what-we-study-heading"
           class="font-heading text-2xl font-bold text-gray-900 dark:text-white"
@@ -120,7 +119,7 @@ const techniques = [
       </section>
 
       <!-- 2. Key Questions -->
-      <section class="mt-12" aria-labelledby="key-questions-heading">
+      <section class="mt-12" aria-labelledby="key-questions-heading" data-reveal>
         <h2
           id="key-questions-heading"
           class="font-heading text-2xl font-bold text-gray-900 dark:text-white"
@@ -140,7 +139,7 @@ const techniques = [
       </section>
 
       <!-- 3. Techniques -->
-      <section class="mt-12" aria-labelledby="techniques-heading">
+      <section class="mt-12" aria-labelledby="techniques-heading" data-reveal>
         <h2
           id="techniques-heading"
           class="font-heading text-2xl font-bold text-gray-900 dark:text-white"
@@ -177,6 +176,7 @@ const techniques = [
       <section
         class="mt-14 border-t border-gray-200 pt-10 dark:border-gray-800"
         aria-labelledby="related-pubs-heading"
+        data-reveal
       >
         <div class="flex items-baseline justify-between">
           <h2

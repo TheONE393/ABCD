@@ -1,11 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+// Cloudflare Turnstile Site Key configuration:
+// 1. For local development and testing, Cloudflare provides dummy test keys:
+//    - '1x00000000000000000000AA' always passes
+//    - '2x00000000000000000000AB' always fails
+// 2. For production deployment on Cloudflare Pages:
+//    - Create a Turnstile widget in Cloudflare Dashboard (Turnstile -> Add Widget)
+//    - Provide PUBLIC_TURNSTILE_SITE_KEY in environment variables, or edit the fallback below:
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
 ---
 
 <Layout
   title="Contact & Location | The [Lastname] Lab"
   description="Contact information, physical lab location, and inquiry form for The [Lastname] Lab."
 >
+  <!-- Cloudflare Turnstile explicit API script -->
+  <script
+    is:inline
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoaded&render=explicit"
+    async
+    defer></script>
   <div class="py-12 sm:py-16 lg:py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <!-- Breadcrumb Navigation -->
@@ -26,7 +41,7 @@ import Layout from '../layouts/Layout.astro';
       <!-- Page Header -->
       <div class="max-w-3xl">
         <span
-          class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+          class="text-accent-700 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
         >
           Get in Touch
         </span>
@@ -159,7 +174,7 @@ import Layout from '../layouts/Layout.astro';
                   for="name"
                   class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
                 >
-                  Full Name <span class="text-accent-600 dark:text-accent-400">*</span>
+                  Full Name <span class="text-accent-700 dark:text-accent-400">*</span>
                 </label>
                 <div class="mt-2">
                   <input
@@ -183,7 +198,7 @@ import Layout from '../layouts/Layout.astro';
                   for="email"
                   class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
                 >
-                  Email Address <span class="text-accent-600 dark:text-accent-400">*</span>
+                  Email Address <span class="text-accent-700 dark:text-accent-400">*</span>
                 </label>
                 <div class="mt-2">
                   <input
@@ -229,7 +244,7 @@ import Layout from '../layouts/Layout.astro';
                   for="message"
                   class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
                 >
-                  Message <span class="text-accent-600 dark:text-accent-400">*</span>
+                  Message <span class="text-accent-700 dark:text-accent-400">*</span>
                 </label>
                 <div class="mt-2">
                   <textarea
@@ -250,35 +265,89 @@ import Layout from '../layouts/Layout.astro';
                 </div>
               </div>
 
+              <!-- Cloudflare Turnstile CAPTCHA Widget -->
+              <div class="pt-1">
+                <label
+                  class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
+                >
+                  Security Verification <span class="text-accent-700 dark:text-accent-400">*</span>
+                </label>
+                <div class="mt-2 min-h-[65px]">
+                  <div
+                    id="turnstile-container"
+                    class="cf-turnstile"
+                    data-sitekey={TURNSTILE_SITE_KEY}
+                    data-theme="auto"
+                  >
+                  </div>
+                </div>
+                <p
+                  id="turnstile-error"
+                  class="mt-1.5 hidden text-xs text-red-600 dark:text-red-400"
+                >
+                  Please complete the security check above before sending your message.
+                </p>
+              </div>
+
               <!-- Submit Button -->
               <div>
                 <button
                   type="submit"
                   id="submit-btn"
-                  class="bg-primary-900 hover:bg-primary-800 focus-visible:ring-primary-500 dark:bg-primary-700 dark:hover:bg-primary-600 inline-flex w-full items-center justify-center rounded-xl px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:shadow-md focus:outline-none focus-visible:ring-2"
+                  class="bg-primary-900 hover:bg-primary-800 focus-visible:ring-primary-500 dark:bg-primary-700 dark:hover:bg-primary-600 inline-flex w-full items-center justify-center rounded-xl px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:shadow-md focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Send Message
-                  <svg
-                    class="ml-2 h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                      clip-rule="evenodd"></path>
-                  </svg>
+                  <span id="submit-btn-text" class="inline-flex items-center">
+                    Send Message
+                    <svg
+                      class="ml-2 h-4 w-4"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+                        clip-rule="evenodd"></path>
+                    </svg>
+                  </span>
+                  <span id="submit-btn-spinner" class="hidden inline-flex items-center">
+                    <svg
+                      class="mr-2 h-4 w-4 animate-spin text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"></circle>
+                      <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Sending message...
+                  </span>
                 </button>
               </div>
 
-              <!-- Submission Feedback placeholder -->
-              <div id="form-feedback" class="hidden rounded-xl p-4 text-xs font-medium"></div>
+              <!-- Submission Feedback Notification Box -->
+              <div
+                id="form-feedback"
+                class="hidden rounded-xl border p-4 text-xs font-medium"
+                role="alert"
+                aria-live="polite"
+              >
+              </div>
 
-              <!-- Note regarding Cloudflare Turnstile & backend -->
+              <!-- Security and Privacy notice -->
               <p class="text-center text-xs text-gray-400 dark:text-gray-500">
-                This form features client-side validation. Cloudflare Turnstile security and direct
-                submission endpoints will be wired in a subsequent step.
+                Protected by Cloudflare Turnstile. Your details are solely used to respond to your
+                inquiry.
               </p>
             </form>
           </div>
@@ -288,85 +357,236 @@ import Layout from '../layouts/Layout.astro';
   </div>
 </Layout>
 
-<script>
-  // Basic client-side validation logic
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
-  const nameInput = document.getElementById('name') as HTMLInputElement | null;
-  const emailInput = document.getElementById('email') as HTMLInputElement | null;
-  const messageInput = document.getElementById('message') as HTMLTextAreaElement | null;
+<script define:vars={{ TURNSTILE_SITE_KEY }}>
+  let turnstileWidgetId = null;
 
-  const nameError = document.getElementById('name-error');
-  const emailError = document.getElementById('email-error');
-  const messageError = document.getElementById('message-error');
-  const formFeedback = document.getElementById('form-feedback');
+  function renderTurnstileWidget() {
+    const container = document.getElementById('turnstile-container');
+    if (!container) return;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (form && nameInput && emailInput && messageInput) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      let isValid = true;
-
-      // Validate Name
-      if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
-        nameError?.classList.remove('hidden');
-        nameInput.classList.add('border-red-500');
-        isValid = false;
-      } else {
-        nameError?.classList.add('hidden');
-        nameInput.classList.remove('border-red-500');
+    if (typeof window.turnstile !== 'undefined') {
+      try {
+        // If container has no child iframe, render Turnstile
+        if (!container.hasChildNodes() || container.children.length === 0) {
+          turnstileWidgetId = window.turnstile.render('#turnstile-container', {
+            sitekey: TURNSTILE_SITE_KEY,
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
+          });
+        }
+      } catch (e) {
+        console.warn('[Turnstile Widget]', e);
       }
+    }
+  }
 
-      // Validate Email
-      if (!emailInput.value.trim() || !emailRegex.test(emailInput.value.trim())) {
-        emailError?.classList.remove('hidden');
-        emailInput.classList.add('border-red-500');
-        isValid = false;
-      } else {
-        emailError?.classList.add('hidden');
-        emailInput.classList.remove('border-red-500');
-      }
+  function initContactForm() {
+    renderTurnstileWidget();
 
-      // Validate Message
-      if (!messageInput.value.trim() || messageInput.value.trim().length < 10) {
-        messageError?.classList.remove('hidden');
-        messageInput.classList.add('border-red-500');
-        isValid = false;
-      } else {
-        messageError?.classList.add('hidden');
-        messageInput.classList.remove('border-red-500');
-      }
+    const form = document.getElementById('contact-form');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const subjectInput = document.getElementById('subject');
+    const messageInput = document.getElementById('message');
 
-      if (isValid && formFeedback) {
-        formFeedback.className =
-          'rounded-xl border border-green-200 bg-green-50 p-4 text-xs font-medium text-green-800 dark:border-green-800 dark:bg-green-950/60 dark:text-green-300';
-        formFeedback.textContent =
-          'Client-side validation passed! Form submission endpoint and Cloudflare Turnstile will be wired in the upcoming step.';
-        formFeedback.classList.remove('hidden');
-      }
-    });
+    const nameError = document.getElementById('name-error');
+    const emailError = document.getElementById('email-error');
+    const messageError = document.getElementById('message-error');
+    const turnstileError = document.getElementById('turnstile-error');
 
-    // Real-time input cleanup
-    nameInput.addEventListener('input', () => {
-      if (nameInput.value.trim().length >= 2) {
-        nameError?.classList.add('hidden');
-        nameInput.classList.remove('border-red-500');
-      }
-    });
+    const submitBtn = document.getElementById('submit-btn');
+    const submitBtnText = document.getElementById('submit-btn-text');
+    const submitBtnSpinner = document.getElementById('submit-btn-spinner');
+    const formFeedback = document.getElementById('form-feedback');
 
-    emailInput.addEventListener('input', () => {
-      if (emailRegex.test(emailInput.value.trim())) {
-        emailError?.classList.add('hidden');
-        emailInput.classList.remove('border-red-500');
-      }
-    });
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    messageInput.addEventListener('input', () => {
-      if (messageInput.value.trim().length >= 10) {
-        messageError?.classList.add('hidden');
-        messageInput.classList.remove('border-red-500');
-      }
-    });
+    if (form && nameInput && emailInput && messageInput && submitBtn) {
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+
+        let isValid = true;
+
+        // 1. Validate Full Name
+        if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
+          nameError?.classList.remove('hidden');
+          nameInput.classList.add('border-red-500');
+          isValid = false;
+        } else {
+          nameError?.classList.add('hidden');
+          nameInput.classList.remove('border-red-500');
+        }
+
+        // 2. Validate Email
+        if (!emailInput.value.trim() || !emailRegex.test(emailInput.value.trim())) {
+          emailError?.classList.remove('hidden');
+          emailInput.classList.add('border-red-500');
+          isValid = false;
+        } else {
+          emailError?.classList.add('hidden');
+          emailInput.classList.remove('border-red-500');
+        }
+
+        // 3. Validate Message
+        if (!messageInput.value.trim() || messageInput.value.trim().length < 10) {
+          messageError?.classList.remove('hidden');
+          messageInput.classList.add('border-red-500');
+          isValid = false;
+        } else {
+          messageError?.classList.add('hidden');
+          messageInput.classList.remove('border-red-500');
+        }
+
+        // 4. Validate Cloudflare Turnstile token
+        let token = '';
+        if (typeof window.turnstile !== 'undefined' && turnstileWidgetId !== null) {
+          token = window.turnstile.getResponse(turnstileWidgetId) || '';
+        }
+        if (!token) {
+          const hiddenInput = form.querySelector('[name="cf-turnstile-response"]');
+          if (hiddenInput && hiddenInput.value) {
+            token = hiddenInput.value;
+          }
+        }
+
+        if (!token) {
+          turnstileError?.classList.remove('hidden');
+          isValid = false;
+        } else {
+          turnstileError?.classList.add('hidden');
+        }
+
+        if (!isValid) return;
+
+        // 5. Transition to Submitting / Loading State
+        submitBtn.disabled = true;
+        submitBtnText?.classList.add('hidden');
+        submitBtnSpinner?.classList.remove('hidden');
+        formFeedback?.classList.add('hidden');
+
+        try {
+          // 6. Asynchronous POST to Cloudflare Pages Function
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({
+              name: nameInput.value.trim(),
+              email: emailInput.value.trim(),
+              subject: subjectInput ? subjectInput.value : 'General',
+              message: messageInput.value.trim(),
+              turnstileToken: token,
+            }),
+          });
+
+          const result = await response.json().catch(() => ({}));
+
+          if (response.ok && result.success) {
+            // Success State: Clear form & display confirmation
+            form.reset();
+
+            if (formFeedback) {
+              formFeedback.className =
+                'rounded-xl border border-green-200 bg-green-50 p-4 text-xs font-medium text-green-800 dark:border-green-800 dark:bg-green-950/60 dark:text-green-300';
+              formFeedback.innerHTML = `
+                <div class="flex items-start gap-2.5">
+                  <svg class="h-4 w-4 shrink-0 text-green-600 dark:text-green-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                  </svg>
+                  <div>
+                    <strong class="block font-semibold">Message Delivered Successfully!</strong>
+                    <span>${result.message || 'Thank you! Your message has been received and our team will follow up soon.'}</span>
+                  </div>
+                </div>
+              `;
+              formFeedback.classList.remove('hidden');
+            }
+          } else {
+            // Error State from server response
+            if (formFeedback) {
+              formFeedback.className =
+                'rounded-xl border border-red-200 bg-red-50 p-4 text-xs font-medium text-red-800 dark:border-red-800 dark:bg-red-950/60 dark:text-red-300';
+              formFeedback.innerHTML = `
+                <div class="flex items-start gap-2.5">
+                  <svg class="h-4 w-4 shrink-0 text-red-600 dark:text-red-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                  </svg>
+                  <div>
+                    <strong class="block font-semibold">Submission Failed</strong>
+                    <span>${result.error || 'The server was unable to verify or send your message. Please try again or email us directly.'}</span>
+                  </div>
+                </div>
+              `;
+              formFeedback.classList.remove('hidden');
+            }
+          }
+        } catch (err) {
+          // Network error state
+          if (formFeedback) {
+            formFeedback.className =
+              'rounded-xl border border-red-200 bg-red-50 p-4 text-xs font-medium text-red-800 dark:border-red-800 dark:bg-red-950/60 dark:text-red-300';
+            formFeedback.innerHTML = `
+              <div class="flex items-start gap-2.5">
+                <svg class="h-4 w-4 shrink-0 text-red-600 dark:text-red-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                </svg>
+                <div>
+                  <strong class="block font-semibold">Network Connection Error</strong>
+                  <span>Unable to reach the server. Please check your connection or reach out via email.</span>
+                </div>
+              </div>
+            `;
+            formFeedback.classList.remove('hidden');
+          }
+        } finally {
+          // Re-enable submit button
+          submitBtn.disabled = false;
+          submitBtnText?.classList.remove('hidden');
+          submitBtnSpinner?.classList.add('hidden');
+
+          // Reset Turnstile challenge for subsequent submission attempts
+          if (typeof window.turnstile !== 'undefined' && turnstileWidgetId !== null) {
+            window.turnstile.reset(turnstileWidgetId);
+          }
+        }
+      };
+
+      // Real-time input error dismissal
+      nameInput.oninput = () => {
+        if (nameInput.value.trim().length >= 2) {
+          nameError?.classList.add('hidden');
+          nameInput.classList.remove('border-red-500');
+        }
+      };
+
+      emailInput.oninput = () => {
+        if (emailRegex.test(emailInput.value.trim())) {
+          emailError?.classList.add('hidden');
+          emailInput.classList.remove('border-red-500');
+        }
+      };
+
+      messageInput.oninput = () => {
+        if (messageInput.value.trim().length >= 10) {
+          messageError?.classList.add('hidden');
+          messageInput.classList.remove('border-red-500');
+        }
+      };
+    }
+  }
+
+  // Hook for Turnstile explicit API onload callback
+  window.onTurnstileLoaded = () => {
+    renderTurnstileWidget();
+  };
+
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initContactForm);
+    } else {
+      initContactForm();
+    }
+    document.addEventListener('astro:page-load', initContactForm);
   }
 </script>

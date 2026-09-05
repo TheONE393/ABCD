@@ -51,7 +51,60 @@
   }
 }
 
-/* Prefers-reduced-motion media query: disable animations and smooth scrolling */
+/* View Transitions API smooth cross-fade styling */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: astroFadeOut;
+}
+
+::view-transition-new(root) {
+  animation-name: astroFadeIn;
+}
+
+@keyframes astroFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes astroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Nav link subtle interactive transitions */
+header nav a,
+header a {
+  transition-property: color, background-color, border-color, transform, opacity;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 180ms;
+}
+
+/* Research, People, and Publication Card Hover transitions */
+article,
+.publication-item {
+  transition-property: transform, box-shadow, border-color, background-color;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 220ms;
+}
+
+/* Prefers-reduced-motion media query: disable animations, view transitions, and smooth scrolling */
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
@@ -60,5 +113,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

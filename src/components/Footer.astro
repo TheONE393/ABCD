@@ -75,7 +75,7 @@ const quickLinks = [
           <p class="pt-1">
             <a
               href="mailto:contact@microbiologylab-placeholder.edu"
-              class="text-primary-700 hover:text-accent-600 dark:text-primary-300 dark:hover:text-accent-400 transition-colors duration-150"
+              class="text-primary-700 hover:text-accent-700 dark:text-primary-300 dark:hover:text-accent-400 focus-visible:ring-primary-500 rounded-md transition-colors duration-150 focus:outline-none focus-visible:ring-2"
             >
               contact@microbiologylab-placeholder.edu
             </a>
@@ -88,35 +88,60 @@ const quickLinks = [
         <h3 class="font-heading text-sm font-semibold tracking-wide text-gray-900 dark:text-white">
           Research Programs
         </h3>
-        <ul class="mt-4 space-y-2 text-xs">
-          {
-            researchLinks.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  class="hover:text-primary-800 dark:hover:text-primary-300 flex items-center gap-1.5 text-gray-600 transition-colors duration-150 dark:text-gray-400"
-                >
-                  <span class="bg-accent-500 h-1 w-1 rounded-full" />
-                  <span>{item.name}</span>
-                </a>
-              </li>
-            ))
-          }
+        <ul class="mt-4 space-y-2.5 text-sm" role="list">
+          <li>
+            <a
+              href="/research/pseudomonas"
+              class="hover:text-primary-800 focus-visible:ring-primary-500 rounded-md text-gray-600 transition-colors duration-150 focus:outline-none focus-visible:ring-2 dark:text-gray-400 dark:hover:text-white"
+            >
+              <em>Pseudomonas</em> Pathogenesis
+            </a>
+          </li>
+          <li>
+            <a
+              href="/research/ecoli"
+              class="hover:text-primary-800 focus-visible:ring-primary-500 rounded-md text-gray-600 transition-colors duration-150 focus:outline-none focus-visible:ring-2 dark:text-gray-400 dark:hover:text-white"
+            >
+              <em>E. coli</em> Stress Resilience
+            </a>
+          </li>
+          <li>
+            <a
+              href="/research/asgard-archaea"
+              class="hover:text-primary-800 focus-visible:ring-primary-500 rounded-md text-gray-600 transition-colors duration-150 focus:outline-none focus-visible:ring-2 dark:text-gray-400 dark:hover:text-white"
+            >
+              Asgard Archaea &amp; Eukaryogenesis
+            </a>
+          </li>
+          <li>
+            <a
+              href="/research"
+              class="text-primary-700 hover:text-primary-900 dark:text-primary-300 focus-visible:ring-primary-500 inline-block pt-1 font-medium hover:underline focus:outline-none focus-visible:ring-2 dark:hover:text-white"
+            >
+              View all research themes &rarr;
+            </a>
+          </li>
         </ul>
       </div>
 
-      <!-- 3. Quick Links Repeating Nav -->
+      <!-- 3. Quick Links -->
       <div>
         <h3 class="font-heading text-sm font-semibold tracking-wide text-gray-900 dark:text-white">
           Quick Links
         </h3>
-        <ul class="mt-4 space-y-2 text-xs">
+        <ul class="mt-4 space-y-2.5 text-sm" role="list">
           {
-            quickLinks.map((item) => (
+            [
+              { name: 'People & Alumni', href: '/people' },
+              { name: 'Publications', href: '/publications' },
+              { name: 'Latest News', href: '/news' },
+              { name: 'Join Our Team', href: '/join-us' },
+              { name: 'Contact & Location', href: '/contact' },
+            ].map((item) => (
               <li>
                 <a
                   href={item.href}
-                  class="hover:text-primary-800 dark:hover:text-primary-300 text-gray-600 transition-colors duration-150 dark:text-gray-400"
+                  class="hover:text-primary-800 focus-visible:ring-primary-500 rounded-md text-gray-600 transition-colors duration-150 focus:outline-none focus-visible:ring-2 dark:text-gray-400 dark:hover:text-white"
                 >
                   {item.name}
                 </a>
@@ -126,24 +151,18 @@ const quickLinks = [
         </ul>
       </div>
 
-      <!-- 4. Academic Profiles & External Resources -->
+      <!-- 4. Academic Profiles & Open Science -->
       <div>
         <h3 class="font-heading text-sm font-semibold tracking-wide text-gray-900 dark:text-white">
-          Academic Profiles & Data
+          Academic Profiles
         </h3>
-        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-          Find our preprints, published datasets, open-source computational pipelines, and curated
-          genomic annotations.
-        </p>
-
-        <!-- Social / ORCID / Scholar Icons -->
         <div class="mt-4 flex flex-wrap items-center gap-2.5">
           <!-- Google Scholar -->
           <a
             href="https://scholar.google.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="hover:border-accent-500 hover:text-accent-600 dark:hover:border-accent-400 dark:hover:text-accent-400 flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 transition-all duration-150 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+            class="hover:border-accent-500 hover:text-accent-700 dark:hover:border-accent-400 dark:hover:text-accent-400 focus-visible:ring-primary-500 flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 transition-all duration-150 focus:outline-none focus-visible:ring-2 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             title="Google Scholar Profile"
             aria-label="Google Scholar Profile"
           >
@@ -161,7 +180,7 @@ const quickLinks = [
             href="https://orcid.org"
             target="_blank"
             rel="noopener noreferrer"
-            class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-green-600 transition-all duration-150 hover:border-green-500 dark:border-gray-700 dark:bg-gray-800 dark:text-green-400 dark:hover:border-green-400"
+            class="focus-visible:ring-primary-500 flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-green-600 transition-all duration-150 hover:border-green-500 focus:outline-none focus-visible:ring-2 dark:border-gray-700 dark:bg-gray-800 dark:text-green-400 dark:hover:border-green-400"
             title="ORCID Researcher Record"
             aria-label="ORCID Researcher Record"
           >
@@ -178,7 +197,7 @@ const quickLinks = [
             href="https://github.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 transition-all duration-150 hover:border-gray-900 hover:text-black dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-white dark:hover:text-white"
+            class="focus-visible:ring-primary-500 flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 transition-all duration-150 hover:border-gray-900 hover:text-black focus:outline-none focus-visible:ring-2 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-white dark:hover:text-white"
             title="GitHub Lab Repositories"
             aria-label="GitHub Lab Repositories"
           >
@@ -195,7 +214,7 @@ const quickLinks = [
             href="https://www.ncbi.nlm.nih.gov"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-primary-800 hover:border-primary-600 hover:text-primary-900 dark:text-primary-300 dark:hover:border-primary-400 flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white transition-all duration-150 dark:border-gray-700 dark:bg-gray-800 dark:hover:text-white"
+            class="text-primary-800 hover:border-primary-600 hover:text-primary-900 dark:text-primary-300 dark:hover:border-primary-400 focus-visible:ring-primary-500 flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white transition-all duration-150 focus:outline-none focus-visible:ring-2 dark:border-gray-700 dark:bg-gray-800 dark:hover:text-white"
             title="NCBI Bioprojects & Sequences"
             aria-label="NCBI Bioprojects & Sequences"
           >

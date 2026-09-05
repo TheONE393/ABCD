@@ -88,7 +88,7 @@ const navLinks = [
       <a
         href="/"
         class:list={[
-          'rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150',
+          'focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2',
           currentPath === '/'
             ? 'text-primary-700 dark:text-primary-300 font-semibold'
             : 'hover:text-primary-800 text-gray-700 hover:bg-gray-100/70 dark:text-gray-300 dark:hover:bg-gray-800/60 dark:hover:text-white',
@@ -102,7 +102,7 @@ const navLinks = [
         <a
           href="/research"
           class:list={[
-            'group-hover:text-primary-800 inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150 dark:group-hover:text-white',
+            'group-hover:text-primary-800 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2 dark:group-hover:text-white',
             currentPath.startsWith('/research')
               ? 'text-primary-700 dark:text-primary-300 font-semibold'
               : 'text-gray-700 dark:text-gray-300',
@@ -168,11 +168,11 @@ const navLinks = [
           <a
             href={link.href}
             class:list={[
-              'rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150',
+              'focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2',
               currentPath === link.href
                 ? 'text-primary-700 dark:text-primary-300 font-semibold'
                 : 'hover:text-primary-800 text-gray-700 hover:bg-gray-100/70 dark:text-gray-300 dark:hover:bg-gray-800/60 dark:hover:text-white',
-              link.name === 'Join Us' ? 'text-accent-600 dark:text-accent-400 font-semibold' : '',
+              link.name === 'Join Us' ? 'text-accent-700 dark:text-accent-400 font-semibold' : '',
             ]}
           >
             {link.name}
@@ -352,11 +352,11 @@ const navLinks = [
           <a
             href={link.href}
             class:list={[
-              'block rounded-lg px-3 py-2 text-base font-medium transition-colors duration-150',
+              'focus-visible:ring-primary-500 block rounded-lg px-3 py-2 text-base font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2',
               currentPath === link.href
                 ? 'bg-primary-50 text-primary-800 dark:bg-primary-950/60 dark:text-primary-300 font-semibold'
                 : 'text-gray-800 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-900',
-              link.name === 'Join Us' ? 'text-accent-600 dark:text-accent-400 font-semibold' : '',
+              link.name === 'Join Us' ? 'text-accent-700 dark:text-accent-400 font-semibold' : '',
             ]}
           >
             {link.name}
@@ -368,38 +368,50 @@ const navLinks = [
 </header>
 
 <script>
-  // Mobile menu toggle logic
-  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const hamburgerIcon = document.getElementById('hamburger-icon');
-  const closeIcon = document.getElementById('close-icon');
+  function initNav() {
+    // Mobile menu toggle logic
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
 
-  if (mobileMenuToggle && mobileMenu && hamburgerIcon && closeIcon) {
-    mobileMenuToggle.addEventListener('click', () => {
-      const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
-      mobileMenuToggle.setAttribute('aria-expanded', String(!isExpanded));
-      mobileMenu.classList.toggle('hidden');
-      hamburgerIcon.classList.toggle('hidden');
-      closeIcon.classList.toggle('hidden');
+    if (mobileMenuToggle && mobileMenu && hamburgerIcon && closeIcon) {
+      mobileMenuToggle.onclick = () => {
+        const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+        mobileMenuToggle.setAttribute('aria-expanded', String(!isExpanded));
+        mobileMenu.classList.toggle('hidden');
+        hamburgerIcon.classList.toggle('hidden');
+        closeIcon.classList.toggle('hidden');
+      };
+    }
+
+    // Dark Mode Toggle Logic (persists to localStorage)
+    const themeToggles = document.querySelectorAll('.theme-toggle');
+
+    const updateTheme = (theme: 'dark' | 'light') => {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      localStorage.setItem('theme', theme);
+    };
+
+    themeToggles.forEach((button) => {
+      (button as HTMLButtonElement).onclick = () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        updateTheme(isDark ? 'light' : 'dark');
+      };
     });
   }
 
-  // Dark Mode Toggle Logic (persists to localStorage)
-  const themeToggles = document.querySelectorAll('.theme-toggle');
-
-  const updateTheme = (theme: 'dark' | 'light') => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+  // Bind on initial page load and on View Transitions
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initNav);
     } else {
-      document.documentElement.classList.remove('dark');
+      initNav();
     }
-    localStorage.setItem('theme', theme);
-  };
-
-  themeToggles.forEach((button) => {
-    button.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.contains('dark');
-      updateTheme(isDark ? 'light' : 'dark');
-    });
-  });
+    document.addEventListener('astro:page-load', initNav);
+  }
 </script>

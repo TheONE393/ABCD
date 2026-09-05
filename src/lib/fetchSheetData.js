@@ -10,11 +10,16 @@
  * 5. Click "Publish" and paste the generated URL into the matching key below:
  */
 export const SHEET_URLS = {
-  // Replace these placeholder URLs with your published Google Sheet CSV links:
-  team: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vPLACEHOLDER_TEAM_SHEET_KEY/pub?gid=0&single=true&output=csv',
+  // Configured via environment variables (Cloudflare Pages / .env) or directly here:
+  team:
+    import.meta.env.SHEET_TEAM_URL ||
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vPLACEHOLDER_TEAM_SHEET_KEY/pub?gid=0&single=true&output=csv',
   publications:
+    import.meta.env.SHEET_PUBLICATIONS_URL ||
     'https://docs.google.com/spreadsheets/d/e/2PACX-1vPLACEHOLDER_PUBLICATIONS_SHEET_KEY/pub?gid=1&single=true&output=csv',
-  news: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vPLACEHOLDER_NEWS_SHEET_KEY/pub?gid=2&single=true&output=csv',
+  news:
+    import.meta.env.SHEET_NEWS_URL ||
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vPLACEHOLDER_NEWS_SHEET_KEY/pub?gid=2&single=true&output=csv',
 };
 
 /**
