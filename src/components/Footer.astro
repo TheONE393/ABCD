@@ -1,0 +1,270 @@
+---
+// Site-wide footer component with lab affiliation, quick links, academic profiles & copyright
+const currentYear = new Date().getFullYear();
+const lastUpdated = 'September 2026';
+
+const researchLinks = [
+  { name: 'Pseudomonas Pathogenesis', href: '/research/pseudomonas' },
+  { name: 'E. coli Stress & Genetics', href: '/research/ecoli' },
+  { name: 'Asgard Archaea & Cell Evolution', href: '/research/asgard-archaea' },
+  { name: 'Comparative Genomics', href: '/research#genomics' },
+  { name: 'Experimental Evolution', href: '/research#evolution' },
+];
+
+const quickLinks = [
+  { name: 'Home', href: '/' },
+  { name: 'Research Overview', href: '/research' },
+  { name: 'People & Alumni', href: '/people' },
+  { name: 'Publications', href: '/publications' },
+  { name: 'News & Announcements', href: '/news' },
+  { name: 'Join Us (Open Positions)', href: '/join-us' },
+  { name: 'Contact & Directions', href: '/contact' },
+];
+---
+
+<footer
+  class="border-t border-gray-200 bg-gray-50 text-gray-700 transition-colors duration-200 dark:border-gray-800 dark:bg-gray-900/90 dark:text-gray-300"
+  aria-labelledby="footer-heading"
+>
+  <h2 id="footer-heading" class="sr-only">Footer</h2>
+
+  <div class="mx-auto max-w-7xl px-4 pt-12 pb-8 sm:px-6 lg:px-8 lg:pt-16">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+      <!-- 1. Lab Affiliation & Address -->
+      <div class="space-y-4">
+        <div class="flex items-center space-x-2.5">
+          <div
+            class="bg-primary-900 text-accent-400 dark:bg-primary-950 dark:ring-primary-800 flex h-8 w-8 items-center justify-center rounded-lg dark:ring-1"
+          >
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="7"></circle>
+              <path d="M12 2v3"></path>
+              <path d="M12 19v3"></path>
+              <path d="M2 12h3"></path>
+              <path d="M19 12h3"></path>
+              <circle cx="12" cy="12" r="2" fill="currentColor"></circle>
+            </svg>
+          </div>
+          <span class="font-heading text-base font-bold text-gray-900 dark:text-white">
+            Microbial Biology Lab
+          </span>
+        </div>
+
+        <p class="text-xs leading-relaxed text-gray-600 dark:text-gray-400">
+          Dedicated to deciphering prokaryotic molecular physiology, stress responses, and the
+          archaeal origins of eukaryotic complex cells.
+        </p>
+
+        <!-- Affiliation & Physical Address Placeholder -->
+        <address
+          class="space-y-1 text-xs leading-relaxed text-gray-500 not-italic dark:text-gray-400"
+        >
+          <p class="font-medium text-gray-800 dark:text-gray-200">
+            Department of Molecular & Cellular Biology
+          </p>
+          <p>Institute for Evolutionary Genomics</p>
+          <p>Science & Engineering Complex, Lab 410</p>
+          <p>100 University Boulevard, Cambridge, MA 02138</p>
+          <p class="pt-1">
+            <a
+              href="mailto:contact@microbiologylab-placeholder.edu"
+              class="text-primary-700 hover:text-accent-600 dark:text-primary-300 dark:hover:text-accent-400 transition-colors duration-150"
+            >
+              contact@microbiologylab-placeholder.edu
+            </a>
+          </p>
+        </address>
+      </div>
+
+      <!-- 2. Research Focus -->
+      <div>
+        <h3 class="font-heading text-sm font-semibold tracking-wide text-gray-900 dark:text-white">
+          Research Programs
+        </h3>
+        <ul class="mt-4 space-y-2 text-xs">
+          {
+            researchLinks.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="hover:text-primary-800 dark:hover:text-primary-300 flex items-center gap-1.5 text-gray-600 transition-colors duration-150 dark:text-gray-400"
+                >
+                  <span class="bg-accent-500 h-1 w-1 rounded-full" />
+                  <span>{item.name}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- 3. Quick Links Repeating Nav -->
+      <div>
+        <h3 class="font-heading text-sm font-semibold tracking-wide text-gray-900 dark:text-white">
+          Quick Links
+        </h3>
+        <ul class="mt-4 space-y-2 text-xs">
+          {
+            quickLinks.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="hover:text-primary-800 dark:hover:text-primary-300 text-gray-600 transition-colors duration-150 dark:text-gray-400"
+                >
+                  {item.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- 4. Academic Profiles & External Resources -->
+      <div>
+        <h3 class="font-heading text-sm font-semibold tracking-wide text-gray-900 dark:text-white">
+          Academic Profiles & Data
+        </h3>
+        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+          Find our preprints, published datasets, open-source computational pipelines, and curated
+          genomic annotations.
+        </p>
+
+        <!-- Social / ORCID / Scholar Icons -->
+        <div class="mt-4 flex flex-wrap items-center gap-2.5">
+          <!-- Google Scholar -->
+          <a
+            href="https://scholar.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:border-accent-500 hover:text-accent-600 dark:hover:border-accent-400 dark:hover:text-accent-400 flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 transition-all duration-150 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+            title="Google Scholar Profile"
+            aria-label="Google Scholar Profile"
+          >
+            <!-- Scholar Graduation Cap Icon -->
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2L1 8.5L12 15L21.09 9.61V17H23V8.5L12 2Z"></path>
+              <path
+                d="M5 13.18V17.18C5 19.94 8.13 22 12 22C15.87 22 19 19.94 19 17.18V13.18L12 17.36L5 13.18Z"
+              ></path>
+            </svg>
+          </a>
+
+          <!-- ORCID ID -->
+          <a
+            href="https://orcid.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-green-600 transition-all duration-150 hover:border-green-500 dark:border-gray-700 dark:bg-gray-800 dark:text-green-400 dark:hover:border-green-400"
+            title="ORCID Researcher Record"
+            aria-label="ORCID Researcher Record"
+          >
+            <!-- ORCID (iD) Badge -->
+            <svg class="h-4 w-4" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+              <path
+                d="M128,0A128,128,0,1,0,256,128,128,128,0,0,0,128,0Zm-42,185.3H61.8V70.7H86Zm-12.1-127a14.7,14.7,0,1,1,14.7-14.7A14.7,14.7,0,0,1,73.9,58.3Zm118.2,74.9c0,32-22.3,47.8-54,47.8H106.8V70.7h33.8C169.8,70.7,192.1,87.7,192.1,133.2Zm-24.2.1c0-21.7-11.4-33.1-33.1-33.1h-7.8v66.3h7.8C156.5,166.4,167.9,155.1,167.9,133.3Z"
+              ></path>
+            </svg>
+          </a>
+
+          <!-- GitHub -->
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 transition-all duration-150 hover:border-gray-900 hover:text-black dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-white dark:hover:text-white"
+            title="GitHub Lab Repositories"
+            aria-label="GitHub Lab Repositories"
+          >
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill-rule="evenodd"
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </a>
+
+          <!-- NCBI / GenBank placeholder -->
+          <a
+            href="https://www.ncbi.nlm.nih.gov"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-primary-800 hover:border-primary-600 hover:text-primary-900 dark:text-primary-300 dark:hover:border-primary-400 flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white transition-all duration-150 dark:border-gray-700 dark:bg-gray-800 dark:hover:text-white"
+            title="NCBI Bioprojects & Sequences"
+            aria-label="NCBI Bioprojects & Sequences"
+          >
+            <!-- DNA Helix / Nucleotide icon -->
+            <svg
+              class="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M2 15c6.667-6 13.333 0 20-6"></path>
+              <path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"></path>
+              <path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"></path>
+              <path d="M17 6l-2.5-2.5"></path>
+              <path d="M14 8l-1-1"></path>
+              <path d="M7 18l2.5 2.5"></path>
+              <path d="M3.5 14.5l.5.5"></path>
+              <path d="M20 9.5l.5.5"></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Open Access & Data Note -->
+        <p class="mt-4 text-xs text-gray-500 dark:text-gray-400">
+          Our lab is committed to open science, FAIR data principles, and accessible scientific
+          communication.
+        </p>
+      </div>
+    </div>
+
+    <!-- Bottom Bar: Small print, last updated, copyright -->
+    <div
+      class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-gray-200 pt-6 text-xs text-gray-500 sm:flex-row dark:border-gray-800 dark:text-gray-400"
+    >
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 sm:justify-start">
+        <p>&copy; {currentYear} Microbial Biology Lab. All rights reserved.</p>
+        <span class="hidden sm:inline">&bull;</span>
+        <p>
+          Last updated: <time
+            datetime="2026-09"
+            class="font-medium text-gray-700 dark:text-gray-300">{lastUpdated}</time
+          >
+        </p>
+      </div>
+
+      <div class="flex items-center space-x-4 text-xs">
+        <a
+          href="/contact"
+          class="hover:text-primary-800 dark:hover:text-primary-300 transition-colors duration-150"
+        >
+          Accessibility
+        </a>
+        <span>&bull;</span>
+        <a
+          href="/contact"
+          class="hover:text-primary-800 dark:hover:text-primary-300 transition-colors duration-150"
+        >
+          Privacy Policy
+        </a>
+        <span>&bull;</span>
+        <a
+          href="#site-header"
+          class="hover:text-primary-800 dark:hover:text-primary-300 transition-colors duration-150"
+        >
+          Back to top &uarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

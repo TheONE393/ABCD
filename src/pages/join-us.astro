@@ -1,0 +1,341 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Toggle to demonstrate support for both "no current openings" and "current openings"
+const hasOpenings = false;
+
+// Structured placeholder openings (ready for when positions are funded/advertised)
+const currentOpenings = [
+  {
+    title: 'Postdoctoral Fellow in Microbial Envelope Biophysics',
+    type: 'Full-time / Funded (NIH R01)',
+    description:
+      'Seeking a PhD with expertise in lipidomics, membrane protein biochemistry, or fluorescence microscopy to lead studies on Pseudomonas outer membrane remodeling.',
+    requirements: 'PhD in Microbiology, Biochemistry, Biophysics, or related field.',
+  },
+  {
+    title: 'Graduate Research Assistant (PhD Rotation)',
+    type: 'PhD Student Rotation',
+    description:
+      'Rotation opportunities available for students admitted through the Department of Molecular & Cellular Biology Graduate Program.',
+    requirements: 'Enrolled in MCB / Genomics Graduate Program.',
+  },
+];
+
+const candidateQualities = [
+  {
+    title: 'Deep Curiosity & Scientific Rigor',
+    description:
+      'A genuine passion for exploring non-intuitive biological questions, paired with commitment to reproducibility, quantitative accuracy, and careful experimental design.',
+  },
+  {
+    title: 'Collaborative Mindset',
+    description:
+      'Willingness to share data, troubleshoot together at the bench, assist lab colleagues with protocols, and contribute actively to lab meetings and literature discussions.',
+  },
+  {
+    title: 'Inclusive & Respectful Culture',
+    description:
+      'Commitment to cultivating an inclusive, supportive environment welcoming researchers from diverse backgrounds, identities, and lived experiences.',
+  },
+  {
+    title: 'Open Science Principles',
+    description:
+      'Dedication to open protocols, preprints, FAIR data management, and clear, transparent communication of scientific findings.',
+  },
+];
+
+const applicationTracks = [
+  {
+    role: 'Postdoctoral Researchers',
+    instructions:
+      'We welcome inquiries from prospective postdocs with backgrounds in microbiology, genetics, biochemistry, or structural biology. Please email the PI with your CV, a 1–2 page research summary of past accomplishments and future interests, and contact information for three academic references.',
+  },
+  {
+    role: 'Graduate Students (PhD)',
+    instructions:
+      'Prospective graduate students must apply through the university graduate school (Department of Molecular & Cellular Biology or Institute for Evolutionary Genomics). Current graduate students interested in rotating should contact the PI directly to discuss available projects.',
+  },
+  {
+    role: 'Undergraduate Students',
+    instructions:
+      'We routinely mentor undergraduates eager to gain hands-on bench experience in molecular genetics and microbiology. We require a minimum commitment of 10–12 hours per week for at least two consecutive semesters. Send a brief cover email with your unofficial transcript and academic interests.',
+  },
+];
+
+const piEmail = 'pi-lastname@university-placeholder.edu';
+const mailtoLink = `mailto:${piEmail}?subject=Application%20-%20The%20[Lastname]%20Lab%20Position`;
+---
+
+<Layout
+  title="Join Our Team | The [Lastname] Lab"
+  description="Opportunities and application guidelines for postdoctoral researchers, graduate students, and undergraduate researchers."
+>
+  <div class="py-12 sm:py-16 lg:py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb Navigation -->
+      <nav
+        class="mb-8 flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400"
+        aria-label="Breadcrumb"
+      >
+        <a
+          href="/"
+          class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
+        >
+          Home
+        </a>
+        <span>/</span>
+        <span class="font-medium text-gray-800 dark:text-gray-200">Join Us</span>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="max-w-3xl">
+        <span
+          class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+        >
+          Opportunities &amp; Lab Culture
+        </span>
+        <h1
+          class="font-heading mt-3 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white"
+        >
+          Join Our Team
+        </h1>
+        <p class="mt-4 text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+          We are always excited to welcome passionate, motivated, and collaborative scientists to
+          our group. Whether you are an undergraduate exploring bacterial genetics, a prospective
+          graduate student interested in evolutionary cell biology, or a postdoctoral fellow
+          preparing for an independent career, we provide a rigorous, supportive, and
+          interdisciplinary training environment.
+        </p>
+      </div>
+
+      <!-- 1. What We Look For -->
+      <section
+        class="mt-14 border-t border-gray-200 pt-10 dark:border-gray-800"
+        aria-labelledby="what-we-look-for-heading"
+      >
+        <div class="max-w-2xl">
+          <span
+            class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+          >
+            Our Values
+          </span>
+          <h2
+            id="what-we-look-for-heading"
+            class="font-heading mt-2 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white"
+          >
+            What We Look For in Applicants
+          </h2>
+          <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+            Beyond specific technical competencies, we value foundational traits that foster
+            productive research and a positive lab community.
+          </p>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {
+            candidateQualities.map((item) => (
+              <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-xs transition-all duration-150 dark:border-gray-800 dark:bg-gray-900/60">
+                <div class="flex items-center gap-3">
+                  <span class="bg-primary-50 text-primary-800 dark:bg-primary-950 dark:text-primary-300 dark:ring-primary-800 flex h-8 w-8 items-center justify-center rounded-lg dark:ring-1">
+                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path
+                        fill-rule="evenodd"
+                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                  <h3 class="font-heading text-base font-bold text-gray-900 dark:text-white">
+                    {item.title}
+                  </h3>
+                </div>
+                <p class="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                  {item.description}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- 2. Current Openings (with support for both states) -->
+      <section
+        class="mt-14 border-t border-gray-200 pt-10 dark:border-gray-800"
+        aria-labelledby="openings-heading"
+      >
+        <div class="max-w-2xl">
+          <span
+            class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+          >
+            Available Positions
+          </span>
+          <h2
+            id="openings-heading"
+            class="font-heading mt-2 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white"
+          >
+            Current Openings
+          </h2>
+        </div>
+
+        <div class="mt-6">
+          {
+            hasOpenings ? (
+              <div class="space-y-4">
+                {currentOpenings.map((job) => (
+                  <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-xs dark:border-gray-800 dark:bg-gray-900/60">
+                    <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                      <h3 class="font-heading text-lg font-bold text-gray-900 dark:text-white">
+                        {job.title}
+                      </h3>
+                      <span class="bg-accent-50 text-accent-700 dark:bg-accent-950/60 dark:text-accent-300 rounded-full px-3 py-1 text-xs font-semibold">
+                        {job.type}
+                      </span>
+                    </div>
+                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{job.description}</p>
+                    <p class="mt-2 text-xs font-medium text-gray-500 dark:text-gray-400">
+                      Requirements: {job.requirements}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* "No current openings, but always interested" state */
+              <div class="border-primary-200 from-primary-50/70 dark:border-primary-800/80 dark:from-primary-950/40 rounded-2xl border bg-gradient-to-br to-white p-7 shadow-xs dark:to-gray-900/50">
+                <div class="flex items-start gap-4">
+                  <div class="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                    <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="font-heading text-base font-bold text-gray-900 dark:text-white">
+                      No active funded openings at this moment
+                    </h3>
+                    <p class="mt-2 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                      While we do not have specific advertised post-baccalaureate or staff positions
+                      open right now, we are{' '}
+                      <strong>always excited to hear from highly motivated researchers</strong>.
+                    </p>
+                    <p class="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                      We enthusiastically assist prospective postdocs and graduate students in
+                      preparing applications for external fellowships (e.g., NIH F31/F32, NSF GRFP,
+                      EMBO, Damon Runyon, Helen Hay Whitney, Life Sciences Research Foundation, or
+                      university fellowship programs).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )
+          }
+        </div>
+      </section>
+
+      <!-- 3. How to Apply -->
+      <section
+        class="mt-14 border-t border-gray-200 pt-10 dark:border-gray-800"
+        aria-labelledby="how-to-apply-heading"
+      >
+        <div class="max-w-2xl">
+          <span
+            class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+          >
+            Application Process
+          </span>
+          <h2
+            id="how-to-apply-heading"
+            class="font-heading mt-2 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white"
+          >
+            How to Apply
+          </h2>
+          <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+            Please follow the guidelines for your specific career stage:
+          </p>
+        </div>
+
+        <div class="mt-6 space-y-5">
+          {
+            applicationTracks.map((track, idx) => (
+              <div class="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900/60">
+                <div class="flex items-center gap-3">
+                  <span class="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold">
+                    {idx + 1}
+                  </span>
+                  <h3 class="font-heading text-lg font-bold text-gray-900 dark:text-white">
+                    {track.role}
+                  </h3>
+                </div>
+                <p class="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                  {track.instructions}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- 4. Contact the PI Callout Banner -->
+      <section class="mt-14">
+        <div
+          class="from-primary-900 via-primary-950 relative overflow-hidden rounded-3xl bg-gradient-to-br to-gray-950 p-8 text-center shadow-lg sm:p-10"
+        >
+          <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+            <div
+              class="bg-accent-500/10 absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
+            >
+            </div>
+          </div>
+
+          <h2 class="font-heading text-2xl font-bold text-white sm:text-3xl">
+            Ready to get in touch?
+          </h2>
+          <p class="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-300">
+            Please reach out directly to the PI with your CV and statement of interest. To help us
+            triage applications, please include <code
+              class="text-accent-300 rounded bg-white/10 px-1.5 py-0.5 text-xs"
+              >[Application] - Your Name</code
+            > in your email subject line.
+          </p>
+
+          <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href={mailtoLink}
+              class="bg-accent-500 hover:bg-accent-600 focus-visible:ring-accent-400 inline-flex items-center justify-center rounded-xl px-7 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:shadow-md focus:outline-none focus-visible:ring-2"
+            >
+              <svg
+                class="mr-2 h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                ></path>
+              </svg>
+              Email the PI ([Lastname]) &rarr;
+            </a>
+            <a
+              href="/contact"
+              class="inline-flex items-center justify-center rounded-xl border border-gray-600 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur-xs transition-all duration-150 hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              Lab Contact Page
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</Layout>

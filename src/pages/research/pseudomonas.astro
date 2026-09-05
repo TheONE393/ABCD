@@ -1,0 +1,235 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const relatedPublications = [
+  {
+    title:
+      'Coordination of the stringent response and outer membrane remodeling in clinical Pseudomonas aeruginosa',
+    authors: 'Smith, K., [Lastname], A.*, & Patel, R.',
+    year: '2025',
+    journal: 'Journal of Bacteriology',
+    volume: '207(4), e00123-25',
+    doi: '10.1128/jb.00123-25',
+    doiUrl: 'https://doi.org',
+  },
+  {
+    title:
+      'Tn-seq mapping identifies essential lipid A modification determinants under cationic peptide challenge in Pseudomonas',
+    authors: 'Vance, E., Doe, J., & [Lastname], A.*',
+    year: '2024',
+    journal: 'mBio',
+    volume: '15(2), e03421-24',
+    doi: '10.1128/mbio.03421-24',
+    doiUrl: 'https://doi.org',
+  },
+];
+
+const keyQuestions = [
+  'How do clinical isolates of Pseudomonas aeruginosa reprogram lipid A biosynthesis and outer-membrane architecture during chronic pulmonary infection?',
+  'What regulatory mechanisms govern the trade-off between planktonic virulence factor secretion and protective biofilm matrix deposition?',
+  'How do secondary metabolites and quorum-sensing signaling molecules mediate inter-species competition in polymicrobial lung and wound microbiomes?',
+  'Can synthetic small molecules or antimicrobial peptides circumvent envelope-mediated antibiotic tolerance pathways?',
+];
+
+const techniques = [
+  'Transposon insertion sequencing (Tn-seq) and high-density barcoded mutant fitness profiling',
+  'Liquid chromatography-tandem mass spectrometry (LC-MS/MS) for quantitative bacterial lipidomics',
+  'Confocal laser scanning microscopy (CLSM) in continuous-flow microfluidic biofilm chambers',
+  'Whole-genome comparative sequencing of longitudinal patient isolates from cystic fibrosis clinical cohorts',
+  'Outer-membrane vesicle (OMV) purification, nanoparticle tracking analysis, and proteomic profiling',
+];
+---
+
+<Layout
+  title="Pseudomonas Research | The [Lastname] Lab"
+  description="Investigating opportunistic pathogenesis, secondary metabolite regulation, and membrane plasticity in Pseudomonas aeruginosa."
+>
+  <div class="py-12 sm:py-16 lg:py-20">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb Navigation -->
+      <nav
+        class="mb-8 flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400"
+        aria-label="Breadcrumb"
+      >
+        <a
+          href="/"
+          class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
+          >Home</a
+        >
+        <span>/</span>
+        <a
+          href="/research"
+          class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
+          >Research</a
+        >
+        <span>/</span>
+        <span class="font-medium text-gray-800 dark:text-gray-200">Pseudomonas</span>
+      </nav>
+
+      <!-- Organism Page Header -->
+      <header class="border-b border-gray-200 pb-8 dark:border-gray-800">
+        <span
+          class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+        >
+          Model System: Opportunistic Pathogen
+        </span>
+        <h1
+          class="font-heading mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white"
+        >
+          <em>Pseudomonas aeruginosa</em> &amp; Relatives
+        </h1>
+        <p class="text-primary-800 dark:text-primary-300 mt-4 text-xl font-medium">
+          Pathogenesis, Envelope Homeostasis, and Adaptive Resistance
+        </p>
+      </header>
+
+      <!-- 1. What We Study -->
+      <section class="mt-10" aria-labelledby="what-we-study-heading">
+        <h2
+          id="what-we-study-heading"
+          class="font-heading text-2xl font-bold text-gray-900 dark:text-white"
+        >
+          What We Study
+        </h2>
+        <div class="mt-4 space-y-4 text-base leading-relaxed text-gray-700 dark:text-gray-300">
+          <p>
+            <em>Pseudomonas aeruginosa</em> is a versatile Gram-negative opportunistic bacterium capable
+            of colonizing diverse environmental niches and causing life-threatening nosocomial infections,
+            particularly in individuals with cystic fibrosis or compromised immune systems.
+          </p>
+          <p>
+            Our group investigates how <em>Pseudomonas</em> dynamically reprograms its cell envelope when
+            subjected to host immune effectors and last-line antibiotics such as polymyxins and carbapenems.
+            We are particularly interested in the intersection of secondary metabolism, outer-membrane
+            vesicle shedding, and chronic lifestyle transitions that allow this pathogen to persist for
+            decades within the host lung.
+          </p>
+        </div>
+      </section>
+
+      <!-- 2. Key Questions -->
+      <section class="mt-12" aria-labelledby="key-questions-heading">
+        <h2
+          id="key-questions-heading"
+          class="font-heading text-2xl font-bold text-gray-900 dark:text-white"
+        >
+          Key Questions
+        </h2>
+        <ul class="mt-4 space-y-3">
+          {
+            keyQuestions.map((q) => (
+              <li class="flex items-start gap-3 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                <span class="bg-accent-500 mt-1.5 h-2 w-2 shrink-0 rounded-full" />
+                <span>{q}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <!-- 3. Techniques -->
+      <section class="mt-12" aria-labelledby="techniques-heading">
+        <h2
+          id="techniques-heading"
+          class="font-heading text-2xl font-bold text-gray-900 dark:text-white"
+        >
+          Techniques &amp; Methodologies
+        </h2>
+        <div
+          class="mt-4 rounded-2xl border border-gray-200 bg-gray-50/70 p-6 dark:border-gray-800 dark:bg-gray-900/50"
+        >
+          <ul class="space-y-3">
+            {
+              techniques.map((tech) => (
+                <li class="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <svg
+                    class="text-primary-700 dark:text-primary-400 mt-0.5 h-5 w-5 shrink-0"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <span>{tech}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- 4. Related Publications -->
+      <section
+        class="mt-14 border-t border-gray-200 pt-10 dark:border-gray-800"
+        aria-labelledby="related-pubs-heading"
+      >
+        <div class="flex items-baseline justify-between">
+          <h2
+            id="related-pubs-heading"
+            class="font-heading text-2xl font-bold text-gray-900 dark:text-white"
+          >
+            Related Publications
+          </h2>
+          <a
+            href="/publications"
+            class="text-primary-700 dark:text-primary-300 text-xs font-semibold hover:underline"
+          >
+            All lab papers &rarr;
+          </a>
+        </div>
+
+        <div class="mt-6 space-y-4">
+          {
+            relatedPublications.map((pub) => (
+              <div class="hover:border-primary-200 dark:hover:border-primary-800/80 rounded-xl border border-gray-200 bg-white p-6 shadow-2xs transition-all duration-150 hover:shadow-xs dark:border-gray-800 dark:bg-gray-900/60">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                  <h3 class="font-heading text-base font-bold text-gray-900 dark:text-white">
+                    <a
+                      href={pub.doiUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
+                    >
+                      {pub.title}
+                    </a>
+                  </h3>
+                  <span class="bg-primary-50 text-primary-800 dark:bg-primary-950 dark:text-primary-300 dark:ring-primary-800 shrink-0 rounded-md px-2.5 py-0.5 text-xs font-bold dark:ring-1">
+                    {pub.year}
+                  </span>
+                </div>
+                <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{pub.authors}</p>
+                <div class="mt-3 flex flex-wrap items-center gap-x-3 text-xs text-gray-500 dark:text-gray-400">
+                  <span>
+                    <em>{pub.journal}</em>, {pub.volume}
+                  </span>
+                  <span>&bull;</span>
+                  <a
+                    href={pub.doiUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-primary-700 dark:text-primary-300 font-mono hover:underline"
+                  >
+                    doi:{pub.doi}
+                  </a>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Bottom Navigation Back to Overview -->
+      <div class="mt-14 border-t border-gray-200 pt-6 dark:border-gray-800">
+        <a
+          href="/research"
+          class="text-primary-700 hover:text-primary-900 dark:text-primary-300 inline-flex items-center text-sm font-semibold transition-colors duration-150 dark:hover:text-white"
+        >
+          &larr; Back to all research programs
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

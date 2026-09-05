@@ -1,0 +1,64 @@
+@import '@fontsource/inter/index.css';
+@import '@fontsource/lora/index.css';
+
+@import 'tailwindcss';
+@config '../../tailwind.config.js';
+
+/* Class-based dark mode selector strategy */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  /* Font smoothing and default document styling */
+  html {
+    font-family:
+      'Inter',
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Default link resets with subtle transition */
+  a {
+    color: inherit;
+    text-decoration: inherit;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  /* Default button resets */
+  button {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+/* Prefers-reduced-motion media query: disable animations and smooth scrolling */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

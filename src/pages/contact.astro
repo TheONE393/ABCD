@@ -1,0 +1,372 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Contact & Location | The [Lastname] Lab"
+  description="Contact information, physical lab location, and inquiry form for The [Lastname] Lab."
+>
+  <div class="py-12 sm:py-16 lg:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb Navigation -->
+      <nav
+        class="mb-8 flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400"
+        aria-label="Breadcrumb"
+      >
+        <a
+          href="/"
+          class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
+        >
+          Home
+        </a>
+        <span>/</span>
+        <span class="font-medium text-gray-800 dark:text-gray-200">Contact</span>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="max-w-3xl">
+        <span
+          class="text-accent-600 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
+        >
+          Get in Touch
+        </span>
+        <h1
+          class="font-heading mt-3 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white"
+        >
+          Contact &amp; Location
+        </h1>
+        <p class="mt-4 text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+          Have questions about our research, preprints, bacterial strains, or open protocols?
+          Interested in collaborating or visiting the lab? Please reach out via our contact form or
+          departmental coordinates.
+        </p>
+      </div>
+
+      <!-- Main Content Grid: Address & Map on Left, Form on Right -->
+      <div class="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <!-- LEFT COLUMN: Affiliation, Address & Map Embed Placeholder (5 cols) -->
+        <div class="space-y-8 lg:col-span-5">
+          <!-- Affiliation Card -->
+          <div
+            class="rounded-2xl border border-gray-200 bg-white p-7 shadow-xs dark:border-gray-800 dark:bg-gray-900/60"
+          >
+            <h2 class="font-heading text-xl font-bold text-gray-900 dark:text-white">
+              Laboratory Affiliation
+            </h2>
+
+            <div class="mt-4 space-y-4 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+              <div>
+                <p class="font-semibold text-gray-900 dark:text-white">The [Lastname] Laboratory</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Microbial Genetics &amp; Evolutionary Cell Biology
+                </p>
+              </div>
+
+              <!-- Address Details -->
+              <address
+                class="space-y-1 border-t border-gray-100 pt-4 text-sm not-italic dark:border-gray-800"
+              >
+                <p class="font-medium text-gray-800 dark:text-gray-200">
+                  Department of Molecular &amp; Cellular Biology
+                </p>
+                <p>Institute for Evolutionary Genomics</p>
+                <p>Science &amp; Engineering Complex, Lab 410 / Office 412</p>
+                <p>100 University Boulevard, Cambridge, MA 02138</p>
+              </address>
+
+              <!-- Direct Coordinates -->
+              <div class="space-y-2 border-t border-gray-100 pt-4 text-xs dark:border-gray-800">
+                <p class="flex items-center gap-2">
+                  <span class="font-semibold text-gray-800 dark:text-gray-200">PI Email:</span>
+                  <a
+                    href="mailto:pi-lastname@university-placeholder.edu"
+                    class="text-primary-700 dark:text-primary-300 hover:underline"
+                  >
+                    pi-lastname@university-placeholder.edu
+                  </a>
+                </p>
+                <p class="flex items-center gap-2">
+                  <span class="font-semibold text-gray-800 dark:text-gray-200">Lab Phone:</span>
+                  <span class="text-gray-600 dark:text-gray-400">+1 (617) 555-0142</span>
+                </p>
+                <p class="flex items-center gap-2">
+                  <span class="font-semibold text-gray-800 dark:text-gray-200">Shipping:</span>
+                  <span class="text-gray-600 dark:text-gray-400"
+                    >Loading Dock B (Biology Receiver)</span
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Embedded Map Placeholder -->
+          <!-- // map embed goes here -->
+          <div
+            class="relative flex aspect-[16/10] w-full flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 p-6 text-center transition-colors duration-200 dark:border-gray-800 dark:bg-gray-900/60"
+            id="map-embed-container"
+          >
+            <div class="flex flex-col items-center">
+              <div
+                class="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300 mb-2 flex h-10 w-10 items-center justify-center rounded-xl"
+              >
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                  ></path>
+                </svg>
+              </div>
+              <p
+                class="text-primary-800 dark:text-primary-300 font-mono text-xs font-semibold tracking-wider uppercase"
+              >
+                // map embed goes here
+              </p>
+              <p class="mt-1 max-w-xs text-xs text-gray-500 dark:text-gray-400">
+                Interactive campus map iframe (Google Maps / OpenStreetMap) placeholder
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Contact Form with Client-Side Validation (7 cols) -->
+        <div class="lg:col-span-7">
+          <div
+            class="rounded-2xl border border-gray-200 bg-white p-8 shadow-xs sm:p-10 dark:border-gray-800 dark:bg-gray-900/60"
+          >
+            <h2 class="font-heading text-2xl font-bold text-gray-900 dark:text-white">
+              Send Us a Message
+            </h2>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+              Please fill in your details below. Required fields are marked with an asterisk (*).
+            </p>
+
+            <!-- Contact Form (no backend yet, with HTML5 client-side validation) -->
+            <form id="contact-form" class="mt-8 space-y-6" novalidate>
+              <!-- Name field -->
+              <div>
+                <label
+                  for="name"
+                  class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
+                >
+                  Full Name <span class="text-accent-600 dark:text-accent-400">*</span>
+                </label>
+                <div class="mt-2">
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    minlength="2"
+                    placeholder="Dr. Rosalind Franklin"
+                    class="focus:border-primary-600 focus:ring-primary-500/20 dark:focus:border-primary-400 block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-2xs placeholder:text-gray-400 focus:ring-2 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
+                  />
+                  <p id="name-error" class="mt-1.5 hidden text-xs text-red-600 dark:text-red-400">
+                    Please provide your name (at least 2 characters).
+                  </p>
+                </div>
+              </div>
+
+              <!-- Email field -->
+              <div>
+                <label
+                  for="email"
+                  class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
+                >
+                  Email Address <span class="text-accent-600 dark:text-accent-400">*</span>
+                </label>
+                <div class="mt-2">
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="r.franklin@institution.edu"
+                    class="focus:border-primary-600 focus:ring-primary-500/20 dark:focus:border-primary-400 block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-2xs placeholder:text-gray-400 focus:ring-2 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
+                  />
+                  <p id="email-error" class="mt-1.5 hidden text-xs text-red-600 dark:text-red-400">
+                    Please enter a valid email address.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Subject / Topic field -->
+              <div>
+                <label
+                  for="subject"
+                  class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
+                >
+                  Inquiry Topic
+                </label>
+                <div class="mt-2">
+                  <select
+                    id="subject"
+                    name="subject"
+                    class="focus:border-primary-600 focus:ring-primary-500/20 dark:focus:border-primary-400 block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-2xs focus:ring-2 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                  >
+                    <option value="general">General Lab Inquiry</option>
+                    <option value="reagents">Reagents, Plasmids &amp; Strain Requests</option>
+                    <option value="collaboration">Research Collaboration</option>
+                    <option value="prospective">Prospective Student / Postdoc Inquiry</option>
+                    <option value="media">Media &amp; Seminar Invitation</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Message field -->
+              <div>
+                <label
+                  for="message"
+                  class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
+                >
+                  Message <span class="text-accent-600 dark:text-accent-400">*</span>
+                </label>
+                <div class="mt-2">
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="5"
+                    required
+                    minlength="10"
+                    placeholder="Please describe your inquiry, question, or reagent request..."
+                    class="focus:border-primary-600 focus:ring-primary-500/20 dark:focus:border-primary-400 block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-2xs placeholder:text-gray-400 focus:ring-2 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
+                  ></textarea>
+                  <p
+                    id="message-error"
+                    class="mt-1.5 hidden text-xs text-red-600 dark:text-red-400"
+                  >
+                    Please provide a message of at least 10 characters.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div>
+                <button
+                  type="submit"
+                  id="submit-btn"
+                  class="bg-primary-900 hover:bg-primary-800 focus-visible:ring-primary-500 dark:bg-primary-700 dark:hover:bg-primary-600 inline-flex w-full items-center justify-center rounded-xl px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:shadow-md focus:outline-none focus-visible:ring-2"
+                >
+                  Send Message
+                  <svg
+                    class="ml-2 h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+                      clip-rule="evenodd"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Submission Feedback placeholder -->
+              <div id="form-feedback" class="hidden rounded-xl p-4 text-xs font-medium"></div>
+
+              <!-- Note regarding Cloudflare Turnstile & backend -->
+              <p class="text-center text-xs text-gray-400 dark:text-gray-500">
+                This form features client-side validation. Cloudflare Turnstile security and direct
+                submission endpoints will be wired in a subsequent step.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Basic client-side validation logic
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const nameInput = document.getElementById('name') as HTMLInputElement | null;
+  const emailInput = document.getElementById('email') as HTMLInputElement | null;
+  const messageInput = document.getElementById('message') as HTMLTextAreaElement | null;
+
+  const nameError = document.getElementById('name-error');
+  const emailError = document.getElementById('email-error');
+  const messageError = document.getElementById('message-error');
+  const formFeedback = document.getElementById('form-feedback');
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (form && nameInput && emailInput && messageInput) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      let isValid = true;
+
+      // Validate Name
+      if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
+        nameError?.classList.remove('hidden');
+        nameInput.classList.add('border-red-500');
+        isValid = false;
+      } else {
+        nameError?.classList.add('hidden');
+        nameInput.classList.remove('border-red-500');
+      }
+
+      // Validate Email
+      if (!emailInput.value.trim() || !emailRegex.test(emailInput.value.trim())) {
+        emailError?.classList.remove('hidden');
+        emailInput.classList.add('border-red-500');
+        isValid = false;
+      } else {
+        emailError?.classList.add('hidden');
+        emailInput.classList.remove('border-red-500');
+      }
+
+      // Validate Message
+      if (!messageInput.value.trim() || messageInput.value.trim().length < 10) {
+        messageError?.classList.remove('hidden');
+        messageInput.classList.add('border-red-500');
+        isValid = false;
+      } else {
+        messageError?.classList.add('hidden');
+        messageInput.classList.remove('border-red-500');
+      }
+
+      if (isValid && formFeedback) {
+        formFeedback.className =
+          'rounded-xl border border-green-200 bg-green-50 p-4 text-xs font-medium text-green-800 dark:border-green-800 dark:bg-green-950/60 dark:text-green-300';
+        formFeedback.textContent =
+          'Client-side validation passed! Form submission endpoint and Cloudflare Turnstile will be wired in the upcoming step.';
+        formFeedback.classList.remove('hidden');
+      }
+    });
+
+    // Real-time input cleanup
+    nameInput.addEventListener('input', () => {
+      if (nameInput.value.trim().length >= 2) {
+        nameError?.classList.add('hidden');
+        nameInput.classList.remove('border-red-500');
+      }
+    });
+
+    emailInput.addEventListener('input', () => {
+      if (emailRegex.test(emailInput.value.trim())) {
+        emailError?.classList.add('hidden');
+        emailInput.classList.remove('border-red-500');
+      }
+    });
+
+    messageInput.addEventListener('input', () => {
+      if (messageInput.value.trim().length >= 10) {
+        messageError?.classList.add('hidden');
+        messageInput.classList.remove('border-red-500');
+      }
+    });
+  }
+</script>

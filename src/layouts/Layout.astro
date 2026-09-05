@@ -1,0 +1,71 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Microbial Biology Lab | Pseudomonas, E. coli & Asgard Archaea Research',
+  description = 'Research laboratory dedicated to investigating the molecular genetics, physiology, and evolutionary cell biology of Pseudomonas, Escherichia coli, and Asgard archaea.',
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en" class="h-full scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Favicon placeholder -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph & Social Meta -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+
+    <!-- Inline script to prevent theme flash (FOUC) -->
+    <script is:inline>
+      const getInitialTheme = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      };
+
+      const initialTheme = getInitialTheme();
+      if (initialTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  </head>
+  <body
+    class="selection:bg-accent-200 selection:text-accent-900 dark:selection:bg-accent-900/50 dark:selection:text-accent-200 flex min-h-screen flex-col bg-white font-sans text-gray-900 antialiased transition-colors duration-200 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <!-- Site Navigation (sticky top nav with dark-mode toggle & mobile menu) -->
+    <Nav currentPath={currentPath} />
+
+    <!-- Main Page Content Slot -->
+    <main class="flex-1" id="main-content">
+      <slot />
+    </main>
+
+    <!-- Site Footer (lab affiliation, quick links, academic profiles & copyright) -->
+    <Footer />
+  </body>
+</html>
