@@ -368,7 +368,7 @@ function getLinkDetails(linkUrl: string) {
               tabindex="0"
               role="region"
               aria-roledescription="carousel"
-              aria-label="Lab Life & Research Photo Gallery"
+              aria-label="Photo Gallery"
             >
               {/* Slides */}
               <div class="relative h-full w-full">
@@ -479,7 +479,7 @@ function getLinkDetails(linkUrl: string) {
                   id="gallery-caption"
                   class="pointer-events-auto hidden max-w-[65%] truncate text-xs font-medium text-white/90 drop-shadow-sm sm:block"
                 >
-                  {galleryImages[0]?.caption || 'Life, research, and moments at The ABCD Lab'}
+                  {galleryImages[0]?.caption || ''}
                 </p>
 
                 {/* Dots Pagination */}
@@ -1276,8 +1276,7 @@ function getLinkDetails(linkUrl: string) {
       lightboxImg.alt = cap || `Gallery photo ${lightboxActiveIndex + 1}`;
 
       if (lightboxCaption) {
-        lightboxCaption.textContent =
-          cap && cap.trim() !== '' ? cap : 'The ABCD Lab — Life & Research Moments';
+        lightboxCaption.textContent = cap && cap.trim() !== '' ? cap : 'The ABCD Lab';
       }
       if (lightboxCounter) {
         lightboxCounter.textContent = `${lightboxActiveIndex + 1} of ${total}`;
