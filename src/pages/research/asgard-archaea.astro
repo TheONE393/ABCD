@@ -7,20 +7,20 @@ import { url } from '../../lib/paths.js';
 const fallbackPublications = [
   {
     title: 'Evolutionary diversification of cytoskeletal regulators across deep-sea Asgard archaea',
-    authors: '[Lastname], A.*, Doe, J., Vance, E., & Chen, W.',
+    authors: 'Srinivasan, R.*, Doe, J., Vance, E., & Chen, W.',
     year: 2026,
     journal: 'Nature Microbiology',
     doi_or_pdf_link: 'https://doi.org/10.1038/s41564-026-0000-x',
-    tags: ['Asgard Archaea', 'Structural Biology', 'Evolution'],
+    tags: ['Asgard Archaea', 'Cytoskeleton', 'Evolution'],
   },
   {
     title:
       'Cryo-EM structure of a primitive ESCRT-III helical polymer from hydrothermal Heimdallarchaeota',
-    authors: 'Chen, W., Vance, E., & [Lastname], A.*',
+    authors: 'Chen, W., Vance, E., & Srinivasan, R.*',
     year: 2024,
     journal: 'Science Advances',
     doi_or_pdf_link: 'https://doi.org/10.1126/sciadv.adp1234',
-    tags: ['Asgard Archaea', 'Cryo-EM'],
+    tags: ['Asgard Archaea', 'Structural Biology', 'ESCRT-III'],
   },
 ];
 
@@ -36,10 +36,10 @@ const relatedPublications =
   matchingPublications.length > 0 ? matchingPublications : fallbackPublications;
 
 const keyQuestions = [
-  'How do Asgard archaeal actin and tubulin homologs polymerize and coordinate rudimentary membrane-remodeling events without complex eukaryotic organelles?',
-  'What was the ancestral role of eukaryotic signature proteins (ESPs)—such as ESCRT machinery, small GTPases, and ubiquitin systems—in prokaryotic physiology?',
-  'What metabolic symbioses and electron-transfer bridges bound the Asgard archaeal host and alphaproteobacterial mitochondrial ancestor during eukaryogenesis?',
-  'How do hydrothermal vent and cold-seep environmental niches shape the evolutionary conservation of archaeal cellular scaffolds?',
+  'What did the ancestral eukaryotic cytoskeleton look like, and how did complex actin/tubulin dynamics emerge prior to full endosymbiosis?',
+  'How do primitive ESCRT-III homologs in Asgard archaea mediate membrane remodeling, scission, and putative vesicle trafficking in the absence of eukaryotic accessory factors?',
+  'What bioenergetic constraints and metabolic symbioses drove the initial partnership between Lokiarchaeota and alphaproteobacterial ancestors?',
+  'Can we cultivate fastidious Asgard archaeal lineages under high-pressure, anoxic hydrothermal conditions using biomimetic microfluidic bioreactors?',
 ];
 
 const techniques = [
@@ -52,7 +52,7 @@ const techniques = [
 ---
 
 <Layout
-  title="Asgard Archaea Research | The [Lastname] Lab"
+  title="Asgard Archaea Research | The ABCD Lab"
   description="Decoding the genomic and biochemical architecture of Asgard superphylum archaea to reconstruct the origins of eukaryotic cell biology."
 >
   <div class="py-12 sm:py-16 lg:py-20">

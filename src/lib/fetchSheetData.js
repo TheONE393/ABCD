@@ -20,6 +20,9 @@ export const SHEET_URLS = {
   news:
     import.meta.env.SHEET_NEWS_URL ||
     'https://docs.google.com/spreadsheets/d/e/2PACX-1vPLACEHOLDER_NEWS_SHEET_KEY/pub?gid=2&single=true&output=csv',
+  gallery:
+    import.meta.env.SHEET_GALLERY_URL ||
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vPLACEHOLDER_GALLERY_SHEET_KEY/pub?gid=3&single=true&output=csv',
 };
 
 /**
@@ -115,7 +118,7 @@ function transformRow(row, type) {
       const yearLeft = row.year_left ? parseInt(row.year_left, 10) || row.year_left : '';
       const links = row.links
         ? row.links
-            .split(',')
+            .split(/[\n,;]+/)
             .map((l) => l.trim())
             .filter(Boolean)
         : [];
@@ -157,6 +160,16 @@ function transformRow(row, type) {
         headline: row.headline || '',
         excerpt: row.excerpt || '',
         link: row.link || '',
+        category: row.category || '',
+      };
+    }
+
+    case 'gallery': {
+      return {
+        filename: row.filename || row.image || row.file || '',
+        caption: row.caption || row.description || row.title || '',
+        location: row.location || '',
+        date: row.date || row.year || '',
       };
     }
 
@@ -270,6 +283,10 @@ export async function fetchPublications(customUrl = SHEET_URLS.publications) {
 
 export async function fetchNews(customUrl = SHEET_URLS.news) {
   return fetchSheetData(customUrl, 'news');
+}
+
+export async function fetchGallery(customUrl = SHEET_URLS.gallery) {
+  return fetchSheetData(customUrl, 'gallery');
 }
 
 export default fetchSheetData;

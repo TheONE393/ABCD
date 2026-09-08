@@ -19,66 +19,74 @@ const fetchedPubs: Publication[] = await fetchPublications();
 const fallbackPubs: Publication[] = [
   {
     title: 'Evolutionary diversification of cytoskeletal regulators across deep-sea Asgard archaea',
-    authors: '[Lastname], A.*, Doe, J., Vance, E., & Chen, W.',
+    authors: 'Srinivasan, R.*, Doe, J., Vance, E., & Chen, W.',
     journal: 'Nature Microbiology',
     year: 2026,
     doi_or_pdf_link: 'https://doi.org/10.1038/s41564-026-0000-x',
+    tags: ['Asgard Archaea', 'Cytoskeleton', 'Evolution'],
   },
   {
     title:
       'Coordination of the stringent response and outer membrane remodeling in clinical Pseudomonas aeruginosa',
-    authors: 'Smith, K., [Lastname], A.*, & Patel, R.',
+    authors: 'Smith, K., Srinivasan, R.*, & Patel, R.',
     journal: 'Journal of Bacteriology',
     year: 2025,
     doi_or_pdf_link: 'https://doi.org/10.1128/jb.00123-25',
+    tags: ['Pseudomonas', 'Membrane Biology', 'Stringent Response'],
   },
   {
     title:
       'Single-molecule tracking resolves DNA repair hub dynamics in resource-limited Escherichia coli',
-    authors: 'Doe, J., Smith, K., & [Lastname], A.*',
+    authors: 'Doe, J., Smith, K., & Srinivasan, R.*',
     journal: 'Nucleic Acids Research',
     year: 2025,
     doi_or_pdf_link: 'https://doi.org/10.1093/nar/gkf000',
+    tags: ['E. coli', 'DNA Repair', 'Single-Molecule'],
   },
   {
     title:
       'Cryo-EM structure of a primitive ESCRT-III helical polymer from hydrothermal Heimdallarchaeota',
-    authors: 'Chen, W., Vance, E., & [Lastname], A.*',
+    authors: 'Chen, W., Vance, E., & Srinivasan, R.*',
     journal: 'Science Advances',
     year: 2024,
     doi_or_pdf_link: 'https://doi.org/10.1126/sciadv.adp1234',
+    tags: ['Asgard Archaea', 'Cryo-EM', 'ESCRT-III'],
   },
   {
     title:
       'Tn-seq mapping identifies essential lipid A modification determinants under cationic peptide challenge in Pseudomonas',
-    authors: 'Vance, E., Doe, J., & [Lastname], A.*',
+    authors: 'Vance, E., Doe, J., & Srinivasan, R.*',
     journal: 'mBio',
     year: 2024,
     doi_or_pdf_link: 'https://doi.org/10.1128/mbio.03421-24',
+    tags: ['Pseudomonas', 'Tn-seq', 'Lipid A'],
   },
   {
     title:
       'Ribosome stalling and translation slowdown drive persister cell emergence during nutrient downshifts',
-    authors: 'Patel, R., Doe, J., & [Lastname], A.*',
+    authors: 'Patel, R., Doe, J., & Srinivasan, R.*',
     journal: 'Molecular Microbiology',
     year: 2023,
     doi_or_pdf_link: 'https://doi.org/10.1111/mmi.15000',
+    tags: ['E. coli', 'Ribosome', 'Persistence'],
   },
   {
     title:
       'Lipopolysaccharide export machinery architecture and antibiotic targeting in Gram-negative envelopes',
-    authors: '[Lastname], A.*, Vance, E., & Miller, H.',
+    authors: 'Srinivasan, R.*, Vance, E., & Miller, H.',
     journal: 'Annual Review of Microbiology',
     year: 2022,
     doi_or_pdf_link: 'https://doi.org/10.1146/annurev-micro-021022',
+    tags: ['LPS Export', 'Review', 'Envelope Biology'],
   },
   {
     title:
       'Ancestral profiling reveals early origins of eukaryotic GTPase signaling cascades in Lokiarcheota',
-    authors: 'Chen, W., Smith, K., & [Lastname], A.*',
+    authors: 'Chen, W., Smith, K., & Srinivasan, R.*',
     journal: 'Current Biology',
     year: 2021,
     doi_or_pdf_link: 'https://doi.org/10.1016/j.cub.2021.05.012',
+    tags: ['Asgard Archaea', 'GTPase', 'Eukaryogenesis'],
   },
 ];
 
@@ -121,7 +129,7 @@ const years = Array.from(new Set(publications.map((p) => p.year))).sort((a, b) =
         <!-- External Profile Badges -->
         <div class="mt-4 flex flex-wrap items-center gap-3">
           <a
-            href="https://scholar.google.com"
+            href="https://scholar.google.com/citations?user=dRknmPkAAAAJ&hl=en&oi=ao"
             target="_blank"
             rel="noopener noreferrer"
             class="text-primary-800 hover:text-primary-950 dark:text-primary-300 inline-flex items-center gap-1.5 text-xs font-medium dark:hover:text-white"
@@ -135,7 +143,7 @@ const years = Array.from(new Set(publications.map((p) => p.year))).sort((a, b) =
           </a>
           <span class="text-gray-300 dark:text-gray-700">&bull;</span>
           <a
-            href="https://orcid.org"
+            href="https://orcid.org/0000-0001-8071-6110"
             target="_blank"
             rel="noopener noreferrer"
             class="text-primary-800 hover:text-primary-950 dark:text-primary-300 inline-flex items-center gap-1.5 text-xs font-medium dark:hover:text-white"
@@ -176,18 +184,28 @@ const years = Array.from(new Set(publications.map((p) => p.year))).sort((a, b) =
 
                 <div class="mt-6 space-y-4">
                   {yearPubs.map((pub) => {
+                    const isExternal = pub.doi_or_pdf_link?.startsWith('http');
+                    const pubHref = pub.doi_or_pdf_link
+                      ? isExternal
+                        ? pub.doi_or_pdf_link
+                        : url(pub.doi_or_pdf_link)
+                      : undefined;
                     const isDoi = pub.doi_or_pdf_link?.includes('doi.org');
                     const isPdf = pub.doi_or_pdf_link?.toLowerCase().endsWith('.pdf');
+                    const doiClean = isDoi
+                      ? pub.doi_or_pdf_link.split('doi.org/')[1]?.replace(/\/$/, '') ||
+                        pub.doi_or_pdf_link
+                      : '';
 
                     return (
                       <article class="publication-item group rounded-2xl border border-gray-200 bg-white p-6 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900/60">
                         <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
                           <h3 class="font-heading text-lg font-bold text-gray-900 dark:text-white">
-                            {pub.doi_or_pdf_link ? (
+                            {pubHref ? (
                               <a
-                                href={pub.doi_or_pdf_link}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                href={pubHref}
+                                target={isExternal ? '_blank' : undefined}
+                                rel={isExternal ? 'noopener noreferrer' : undefined}
                                 class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
                               >
                                 {pub.title}
@@ -209,19 +227,19 @@ const years = Array.from(new Set(publications.map((p) => p.year))).sort((a, b) =
                             <span class="font-medium text-gray-800 italic dark:text-gray-200">
                               {pub.journal}
                             </span>
-                            {pub.doi_or_pdf_link && (
+                            {pubHref && (
                               <>
                                 <span>&bull;</span>
                                 <a
-                                  href={pub.doi_or_pdf_link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
+                                  href={pubHref}
+                                  target={isExternal ? '_blank' : undefined}
+                                  rel={isExternal ? 'noopener noreferrer' : undefined}
                                   class="text-primary-700 hover:text-primary-800 dark:text-primary-300 inline-flex items-center gap-1 font-mono font-medium hover:underline dark:hover:text-white"
                                 >
                                   {isDoi && (
                                     <>
                                       <span>doi:</span>
-                                      <span>{pub.doi_or_pdf_link.split('doi.org/')[1]}</span>
+                                      <span>{doiClean}</span>
                                     </>
                                   )}
                                   {isPdf && <span>Download PDF</span>}
@@ -243,6 +261,16 @@ const years = Array.from(new Set(publications.map((p) => p.year))).sort((a, b) =
                               </>
                             )}
                           </div>
+
+                          {pub.tags && pub.tags.length > 0 && (
+                            <div class="flex flex-wrap items-center gap-1.5">
+                              {pub.tags.map((tag) => (
+                                <span class="rounded-md bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </article>
                     );

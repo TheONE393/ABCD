@@ -8,39 +8,37 @@ const fallbackPublications = [
   {
     title:
       'Single-molecule tracking resolves DNA repair hub dynamics in resource-limited Escherichia coli',
-    authors: 'Doe, J., Smith, K., & [Lastname], A.*',
+    authors: 'Doe, J., Smith, K., & Srinivasan, R.*',
     year: 2025,
     journal: 'Nucleic Acids Research',
     doi_or_pdf_link: 'https://doi.org/10.1093/nar/gkf000',
-    tags: ['E. coli', 'Single-Molecule', 'Genomics'],
+    tags: ['E. coli', 'DNA Repair'],
   },
   {
     title:
       'Ribosome stalling and translation slowdown drive persister cell emergence during nutrient downshifts',
-    authors: 'Patel, R., Doe, J., & [Lastname], A.*',
+    authors: 'Patel, R., Doe, J., & Srinivasan, R.*',
     year: 2023,
     journal: 'Molecular Microbiology',
     doi_or_pdf_link: 'https://doi.org/10.1111/mmi.15000',
-    tags: ['E. coli', 'Translation'],
+    tags: ['E. coli', 'Persisters'],
   },
 ];
 
 // Fetch live publications and filter by matching "E. coli" tag
 const allPublications = await fetchPublications();
 const matchingPublications = allPublications.filter((pub) =>
-  (pub.tags || []).some(
-    (tag: string) => tag.toLowerCase().includes('e. coli') || tag.toLowerCase().includes('ecoli')
-  )
+  (pub.tags || []).some((tag: string) => tag.toLowerCase().includes('coli'))
 );
 
 const relatedPublications =
   matchingPublications.length > 0 ? matchingPublications : fallbackPublications;
 
 const keyQuestions = [
-  'How do bacteria coordinate chromosome replication and segregation when cell growth slows to near-zero in nutrient-exhausted stationary phase?',
-  'What molecular signals trigger stochastic phenotypic switching into antibiotic-tolerant persister states?',
-  'How does translation elongation velocity and tRNA availability regulate genome-wide protein synthesis under extreme thermal or osmotic shock?',
-  'What are the minimal regulatory circuits required to maintain metabolic fitness across fluctuating feast-and-famine cycles?',
+  'How do stochastic fluctuations in ATP/GTP ratios dictate whether an individual E. coli cell commits to division or stationary-phase dormancy?',
+  'What spatial organization principles govern DNA repair complex assembly and search kinetics within the crowded nucleoid?',
+  'How do cells regulate chromosome segregation and cytokinesis timing under variable growth rates and nutrient availability?',
+  'Can metabolic interventions sensitize tolerant and persister sub-populations to legacy beta-lactam and aminoglycoside antibiotics?',
 ];
 
 const techniques = [
@@ -53,7 +51,7 @@ const techniques = [
 ---
 
 <Layout
-  title="E. coli Research | The [Lastname] Lab"
+  title="E. coli Research | The ABCD Lab"
   description="Probing chromosome maintenance, cellular stress physiology, and single-cell dynamics in Escherichia coli."
 >
   <div class="py-12 sm:py-16 lg:py-20">

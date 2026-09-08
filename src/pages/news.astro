@@ -18,34 +18,34 @@ const fetchedNews: NewsItem[] = await fetchNews();
 const fallbackNews: NewsItem[] = [
   {
     date: 'August 28, 2026',
-    headline: 'Lab receives federal grant to investigate Pseudomonas membrane homeostasis',
+    headline: 'Lab receives research grant to investigate Pseudomonas membrane homeostasis',
     excerpt:
-      'Our five-year NIH R01 award will support mechanistic studies into lipid remodeling pathways, lipid A modifications, and outer-membrane vesicle biogenesis in multidrug-resistant clinical isolates.',
-    link: 'https://nih.gov',
+      'Our grant award supports mechanistic studies into lipid remodeling pathways, lipid A modifications, and outer-membrane vesicle biogenesis in multidrug-resistant clinical isolates.',
+    link: '/research/pseudomonas',
     category: 'Grant Award',
   },
   {
     date: 'July 14, 2026',
     headline: 'New preprint resolves actin-related cytoskeleton dynamics in Lokiarchaeota',
     excerpt:
-      'Using recombinant Barophilic proteins and cryogenic electron microscopy, we report dynamic filament polymerization, branching behavior, and nucleotide hydrolysis in deep-sea Asgard archaeal homologs.',
-    link: 'https://biorxiv.org',
+      'Using recombinant barophilic proteins and cryogenic electron microscopy, we report dynamic filament polymerization, branching behavior, and nucleotide hydrolysis in deep-sea Asgard archaeal homologs.',
+    link: '/publications',
     category: 'Preprint',
   },
   {
     date: 'June 02, 2026',
     headline: 'Lab members present evolutionary genomics and single-cell talks at ASM Microbe',
     excerpt:
-      'Postdoctoral researchers and graduate students shared our latest findings on single-cell transcriptional variance during stationary-phase E. coli survival and stress recovery.',
-    link: '',
+      'Scholars shared our latest findings on single-cell transcriptional variance during stationary-phase survival, stress recovery, and MreB dynamics in rod-shaped bacteria.',
+    link: '/research/ecoli',
     category: 'Conference',
   },
   {
     date: 'April 19, 2026',
-    headline: 'Elena Rostova advances to PhD candidacy with distinction',
+    headline: 'Subharupaa Sahoo advances to Ph.D. candidacy with distinction',
     excerpt:
-      'Congratulations to Elena Rostova for passing her qualifying examination on primitive endomembrane systems in Heimdallarchaeota! We look forward to her upcoming dissertation research.',
-    link: '',
+      'Congratulations to Subharupaa Sahoo for passing her comprehensive qualifying examination on primitive cytoskeletal systems in Asgard archaea! We look forward to her upcoming dissertation research.',
+    link: '/people',
     category: 'Milestone',
   },
   {
@@ -53,15 +53,15 @@ const fallbackNews: NewsItem[] = [
     headline: 'Paper published in Nature Microbiology on archaeal cytoskeletal evolution',
     excerpt:
       'Our collaborative work with international marine microbiology partners on the evolutionary diversification of cytoskeletal regulators across hydrothermal Asgard archaea is officially published.',
-    link: 'https://doi.org',
+    link: '/publications',
     category: 'Publication',
   },
   {
     date: 'November 15, 2025',
-    headline: 'Welcome undergraduate researchers Samuel Osei and Maya Rodriguez to the lab',
+    headline: 'Welcome undergraduate researchers Ananya Pattnaik and Rohan Roy to the lab',
     excerpt:
-      'We are excited to welcome Samuel and Maya, who will be investigating single-cell fluorescence microscopy and computational metagenomics pipelines during the academic year.',
-    link: '',
+      'We are excited to welcome Ananya and Rohan, who will be investigating single-cell fluorescence microscopy and computational microbial pipelines during the academic year.',
+    link: '/people',
     category: 'Team',
   },
 ];
@@ -78,8 +78,8 @@ const sortedNews = [...newsItems].sort((a, b) => {
 ---
 
 <Layout
-  title="News & Updates | The [Lastname] Lab"
-  description="Chronological news, announcements, awards, paper releases, and milestones from The [Lastname] Laboratory."
+  title="News & Updates | The ABCD Lab"
+  description="Chronological news, announcements, awards, paper releases, and milestones from The ABCD Lab at NISER Bhubaneswar."
 >
   <div class="py-12 sm:py-16 lg:py-20">
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
@@ -121,7 +121,7 @@ const sortedNews = [...newsItems].sort((a, b) => {
         {
           sortedNews.map((item, index) => {
             const hasExternalLink = item.link && item.link.startsWith('http');
-            const hasInternalLink = item.link && !item.link.startsWith('http') && item.link !== '';
+            const linkHref = item.link ? (hasExternalLink ? item.link : url(item.link)) : undefined;
 
             return (
               <article class="group relative rounded-2xl border border-gray-200 bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900/60">
@@ -144,9 +144,9 @@ const sortedNews = [...newsItems].sort((a, b) => {
                 </div>
 
                 <h2 class="font-heading mt-4 text-xl font-bold text-gray-900 sm:text-2xl dark:text-white">
-                  {item.link ? (
+                  {linkHref ? (
                     <a
-                      href={item.link}
+                      href={linkHref}
                       target={hasExternalLink ? '_blank' : undefined}
                       rel={hasExternalLink ? 'noopener noreferrer' : undefined}
                       class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
@@ -162,10 +162,10 @@ const sortedNews = [...newsItems].sort((a, b) => {
                   {item.excerpt}
                 </p>
 
-                {item.link && (
+                {linkHref && (
                   <div class="mt-5 border-t border-gray-100 pt-3 dark:border-gray-800/80">
                     <a
-                      href={item.link}
+                      href={linkHref}
                       target={hasExternalLink ? '_blank' : undefined}
                       rel={hasExternalLink ? 'noopener noreferrer' : undefined}
                       class="text-primary-700 hover:text-primary-800 dark:text-primary-300 inline-flex items-center text-xs font-semibold hover:underline dark:hover:text-white"
