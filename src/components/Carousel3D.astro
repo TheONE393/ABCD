@@ -4,6 +4,8 @@
  * Interactive 3D coverflow/cylindrical carousel.
  * Allows sliding, dragging, arrow navigation, and clicking on cards to bring them forward.
  */
+import { url } from '../lib/paths.js';
+
 interface Slide {
   id: string;
   title: string;
@@ -18,33 +20,33 @@ const slides: Slide[] = [
     id: 'pseudomonas',
     title: 'Pseudomonas Biofilm',
     subtitle: 'Confocal laser scanning microscopy (CLSM) & matrix biophysics',
-    image: '/images/pseudomonas.jpg',
+    image: url('/images/pseudomonas.jpg'),
     tag: 'Pathogenesis',
-    link: '/research/pseudomonas',
+    link: url('/research/pseudomonas'),
   },
   {
     id: 'archaea',
     title: 'Asgard Archaea Filament',
     subtitle: 'Cryo-EM structural reconstruction of ancient ESCRT/actin machinery',
-    image: '/images/archaea.jpg',
+    image: url('/images/archaea.jpg'),
     tag: 'Eukaryogenesis',
-    link: '/research/asgard-archaea',
+    link: url('/research/asgard-archaea'),
   },
   {
     id: 'ecoli',
     title: 'E. coli Cell Division',
     subtitle: 'Single-molecule chromosome tracking and FtsZ ring constriction',
-    image: '/images/ecoli.svg',
+    image: url('/images/ecoli.svg'),
     tag: 'Stress Genetics',
-    link: '/research/ecoli',
+    link: url('/research/ecoli'),
   },
   {
     id: 'hydrothermal',
     title: 'Deep-Sea Archaea Vents',
     subtitle: 'Hydrothermal vent field sediment genomics at 2,350 m depth',
-    image: '/images/hydrothermal.svg',
+    image: url('/images/hydrothermal.svg'),
     tag: 'Metagenomics',
-    link: '/research/asgard-archaea',
+    link: url('/research/asgard-archaea'),
   },
 ];
 ---

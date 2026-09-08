@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { url } from '../lib/paths.js';
 
 // Cloudflare Turnstile Site Key configuration:
 // 1. For local development and testing, Cloudflare provides dummy test keys:
@@ -29,7 +30,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000
         aria-label="Breadcrumb"
       >
         <a
-          href="/"
+          href={url('/')}
           class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
         >
           Home

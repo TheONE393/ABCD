@@ -1,24 +1,26 @@
 ---
 // Site-wide footer component with lab affiliation, quick links, academic profiles & copyright
+import { url } from '../lib/paths.js';
+
 const currentYear = new Date().getFullYear();
 const lastUpdated = 'September 2026';
 
 const researchLinks = [
-  { name: 'Pseudomonas Pathogenesis', href: '/research/pseudomonas' },
-  { name: 'E. coli Stress & Genetics', href: '/research/ecoli' },
-  { name: 'Asgard Archaea & Cell Evolution', href: '/research/asgard-archaea' },
-  { name: 'Comparative Genomics', href: '/research#genomics' },
-  { name: 'Experimental Evolution', href: '/research#evolution' },
+  { name: 'Pseudomonas Pathogenesis', href: url('/research/pseudomonas') },
+  { name: 'E. coli Stress & Genetics', href: url('/research/ecoli') },
+  { name: 'Asgard Archaea & Cell Evolution', href: url('/research/asgard-archaea') },
+  { name: 'Comparative Genomics', href: url('/research#genomics') },
+  { name: 'Experimental Evolution', href: url('/research#evolution') },
 ];
 
 const quickLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'Research Overview', href: '/research' },
-  { name: 'People & Alumni', href: '/people' },
-  { name: 'Publications', href: '/publications' },
-  { name: 'News & Announcements', href: '/news' },
-  { name: 'Join Us (Open Positions)', href: '/join-us' },
-  { name: 'Contact & Directions', href: '/contact' },
+  { name: 'Home', href: url('/') },
+  { name: 'Research Overview', href: url('/research') },
+  { name: 'People & Alumni', href: url('/people') },
+  { name: 'Publications', href: url('/publications') },
+  { name: 'News & Announcements', href: url('/news') },
+  { name: 'Join Us (Open Positions)', href: url('/join-us') },
+  { name: 'Contact & Directions', href: url('/contact') },
 ];
 ---
 
@@ -85,7 +87,7 @@ const quickLinks = [
         <ul class="mt-4 space-y-2.5 text-sm" role="list">
           <li>
             <a
-              href="/research/pseudomonas"
+              href={url('/research/pseudomonas')}
               class="hover:text-primary-800 focus-visible:ring-primary-500 rounded-md text-gray-600 transition-colors duration-150 focus:outline-none focus-visible:ring-2 dark:text-gray-400 dark:hover:text-white"
             >
               <em>Pseudomonas</em> Pathogenesis
@@ -93,7 +95,7 @@ const quickLinks = [
           </li>
           <li>
             <a
-              href="/research/ecoli"
+              href={url('/research/ecoli')}
               class="hover:text-primary-800 focus-visible:ring-primary-500 rounded-md text-gray-600 transition-colors duration-150 focus:outline-none focus-visible:ring-2 dark:text-gray-400 dark:hover:text-white"
             >
               <em>E. coli</em> Stress Resilience
@@ -101,7 +103,7 @@ const quickLinks = [
           </li>
           <li>
             <a
-              href="/research/asgard-archaea"
+              href={url('/research/asgard-archaea')}
               class="hover:text-primary-800 focus-visible:ring-primary-500 rounded-md text-gray-600 transition-colors duration-150 focus:outline-none focus-visible:ring-2 dark:text-gray-400 dark:hover:text-white"
             >
               Asgard Archaea &amp; Eukaryogenesis
@@ -109,7 +111,7 @@ const quickLinks = [
           </li>
           <li>
             <a
-              href="/research"
+              href={url('/research')}
               class="text-primary-700 hover:text-primary-900 dark:text-primary-300 focus-visible:ring-primary-500 inline-block pt-1 font-medium hover:underline focus:outline-none focus-visible:ring-2 dark:hover:text-white"
             >
               View all research themes &rarr;
@@ -126,11 +128,11 @@ const quickLinks = [
         <ul class="mt-4 space-y-2.5 text-sm" role="list">
           {
             [
-              { name: 'People & Alumni', href: '/people' },
-              { name: 'Publications', href: '/publications' },
-              { name: 'Latest News', href: '/news' },
-              { name: 'Join Our Team', href: '/join-us' },
-              { name: 'Contact & Location', href: '/contact' },
+              { name: 'People & Alumni', href: url('/people') },
+              { name: 'Publications', href: url('/publications') },
+              { name: 'Latest News', href: url('/news') },
+              { name: 'Join Our Team', href: url('/join-us') },
+              { name: 'Contact & Location', href: url('/contact') },
             ].map((item) => (
               <li>
                 <a

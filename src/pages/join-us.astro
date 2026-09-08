@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { url } from '../lib/paths.js';
 
 // Toggle to demonstrate support for both "no current openings" and "current openings"
 const hasOpenings = false;
@@ -79,7 +80,7 @@ const mailtoLink = `mailto:${piEmail}?subject=Application%20-%20The%20[Lastname]
         aria-label="Breadcrumb"
       >
         <a
-          href="/"
+          href={url('/')}
           class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
         >
           Home
@@ -321,7 +322,7 @@ const mailtoLink = `mailto:${piEmail}?subject=Application%20-%20The%20[Lastname]
               Email the PI ([Lastname]) &rarr;
             </a>
             <a
-              href="/contact"
+              href={url('/contact')}
               class="inline-flex items-center justify-center rounded-xl border border-gray-600 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               Lab Contact Page

@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { fetchNews } from '../lib/fetchSheetData.js';
+import { url } from '../lib/paths.js';
 
 interface NewsItem {
   date: string;
@@ -88,7 +89,7 @@ const sortedNews = [...newsItems].sort((a, b) => {
         aria-label="Breadcrumb"
       >
         <a
-          href="/"
+          href={url('/')}
           class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
         >
           Home
@@ -201,7 +202,7 @@ const sortedNews = [...newsItems].sort((a, b) => {
       <!-- Bottom Navigation Back to Home -->
       <div class="mt-14 border-t border-gray-200 pt-6 dark:border-gray-800">
         <a
-          href="/"
+          href={url('/')}
           class="text-primary-700 hover:text-primary-900 dark:text-primary-300 inline-flex items-center text-sm font-semibold transition-colors duration-150 dark:hover:text-white"
         >
           &larr; Back to home page

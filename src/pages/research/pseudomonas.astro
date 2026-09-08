@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { fetchPublications } from '../../lib/fetchSheetData.js';
+import { url } from '../../lib/paths.js';
 
 // Fallback publications shown if Google Sheet has not populated matching entries yet
 const fallbackPublications = [
@@ -61,13 +62,13 @@ const techniques = [
         aria-label="Breadcrumb"
       >
         <a
-          href="/"
+          href={url('/')}
           class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
           >Home</a
         >
         <span>/</span>
         <a
-          href="/research"
+          href={url('/research')}
           class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
           >Research</a
         >
@@ -184,7 +185,7 @@ const techniques = [
             Related Publications
           </h2>
           <a
-            href="/publications"
+            href={url('/publications')}
             class="text-primary-700 dark:text-primary-300 text-xs font-semibold hover:underline"
           >
             All lab papers &rarr;
@@ -243,7 +244,7 @@ const techniques = [
       <!-- Bottom Navigation Back to Overview -->
       <div class="mt-14 border-t border-gray-200 pt-6 dark:border-gray-800">
         <a
-          href="/research"
+          href={url('/research')}
           class="text-primary-700 hover:text-primary-900 dark:text-primary-300 inline-flex items-center text-sm font-semibold transition-colors duration-150 dark:hover:text-white"
         >
           &larr; Back to all research programs

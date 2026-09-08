@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Carousel3D from '../components/Carousel3D.astro';
+import { url } from '../lib/paths.js';
 
 // Minimalist list of ongoing research programs with 2-3 word titles and metadata
 const researchTopics = [
@@ -8,7 +9,7 @@ const researchTopics = [
     title: 'Pseudomonas Pathogenesis',
     name: 'Pseudomonas',
     sub: 'Pathogenesis',
-    href: '/research/pseudomonas',
+    href: url('/research/pseudomonas'),
     category: 'Opportunistic Pathogen',
     organismIcon: 'pseudomonas',
   },
@@ -16,7 +17,7 @@ const researchTopics = [
     title: 'E. coli Dynamics',
     name: 'E. coli',
     sub: 'Dynamics',
-    href: '/research/ecoli',
+    href: url('/research/ecoli'),
     category: 'Model Bacterium',
     organismIcon: 'ecoli',
   },
@@ -24,7 +25,7 @@ const researchTopics = [
     title: 'Asgard Archaea',
     name: 'Asgard',
     sub: 'Archaea',
-    href: '/research/asgard-archaea',
+    href: url('/research/asgard-archaea'),
     category: 'Eukaryogenesis',
     organismIcon: 'asgard',
   },
