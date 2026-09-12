@@ -1,25 +1,46 @@
-# build output
+# Build & cache outputs
 dist/
-# generated types
 .astro/
+.cache/
+.temp/
 
-# dependencies
+# Dependencies
 node_modules/
 
-# logs
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
-# environment variables
+# Environment variables & secrets
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.crt
+*.cert
+*.pfx
 
-# macOS-specific files
-.DS_Store
-
-# jetbrains setting folder
+# IDE & editor configurations
+.vscode/
 .idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Scratch & temporary workspace folders
+scratch/
