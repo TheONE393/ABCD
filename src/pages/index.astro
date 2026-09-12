@@ -95,7 +95,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
         <!-- Right: 2 Stacked Cards -->
         <div class="space-y-6 lg:col-span-5">
           <!-- Card 1: Navy Card -->
-          <div class="space-y-6 rounded-[30px] bg-[#001f40] p-8 text-white shadow-md sm:p-10">
+          <div class="space-y-6 rounded-[30px] bg-[#001f40] p-8 text-white shadow-md sm:p-10 card-flip-3d">
             <h4 class="font-urbanist text-2xl leading-snug font-bold sm:text-3xl whitespace-pre-line">
               {homepage.cta1_title || 'Stay up to date with \n#ABCD Lab'}
             </h4>
@@ -107,7 +107,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
           </div>
 
           <!-- Card 2: Light Blue Card with Shape Overlay -->
-          <div class="info-card style-3 shadow-md">
+          <div class="info-card style-3 shadow-md card-flip-3d">
             <div class="overlay">
               <img src={url('/images/card-shape.png')} alt="shape" />
             </div>
@@ -174,7 +174,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
               {isEven && (
                 <div class="flex justify-center lg:col-span-5 order-2 lg:order-1">
                   {blockImage ? (
-                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-lg border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] aspect-[4/3] flex items-center justify-center p-3">
+                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-lg border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] aspect-[4/3] flex items-center justify-center p-3 card-flip-3d">
                       <img
                         src={url(blockImage)}
                         class="h-full w-full object-contain rounded-2xl transition-transform duration-500 hover:scale-105"
@@ -184,7 +184,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
                       />
                     </div>
                   ) : (
-                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-md border border-gray-200/80 dark:border-white/10 bg-gradient-to-br from-[#001f40] to-slate-900 aspect-[4/3] flex items-center justify-center p-6 text-white text-center">
+                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-md border border-gray-200/80 dark:border-white/10 bg-gradient-to-br from-[#001f40] to-slate-900 aspect-[4/3] flex items-center justify-center p-6 text-white text-center card-flip-3d">
                       <span class="font-urbanist text-2xl font-bold tracking-tight opacity-80">{block.title}</span>
                     </div>
                   )}
@@ -193,7 +193,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
 
               {/* Text Card (lg:col-span-7) */}
               <div
-                class={`space-y-6 rounded-[30px] border border-gray-100 bg-white p-8 shadow-sm sm:p-12 dark:border-white/10 dark:bg-[#0c1626] lg:col-span-7 ${
+                class={`space-y-6 rounded-[30px] border border-gray-100 bg-white p-8 shadow-sm sm:p-12 dark:border-white/10 dark:bg-[#0c1626] lg:col-span-7 card-flip-3d ${
                   isEven ? 'order-1 lg:order-2' : 'order-1'
                 }`}
               >
@@ -238,7 +238,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
               {isOdd && (
                 <div class="flex justify-center lg:col-span-5 order-2">
                   {blockImage ? (
-                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-lg border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] aspect-[4/3] flex items-center justify-center p-3">
+                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-lg border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] aspect-[4/3] flex items-center justify-center p-3 card-flip-3d">
                       <img
                         src={url(blockImage)}
                         class="h-full w-full object-contain rounded-2xl transition-transform duration-500 hover:scale-105"
@@ -248,7 +248,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
                       />
                     </div>
                   ) : (
-                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-md border border-gray-200/80 dark:border-white/10 bg-gradient-to-br from-[#001f40] to-slate-900 aspect-[4/3] flex items-center justify-center p-6 text-white text-center">
+                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-md border border-gray-200/80 dark:border-white/10 bg-gradient-to-br from-[#001f40] to-slate-900 aspect-[4/3] flex items-center justify-center p-6 text-white text-center card-flip-3d">
                       <span class="font-urbanist text-2xl font-bold tracking-tight opacity-80">{block.title}</span>
                     </div>
                   )}
@@ -303,7 +303,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
             const paperUrl = pub.url || doiUrl || '#';
 
             return (
-              <div class="post-card style-2 publication-card">
+              <div class="post-card style-2 publication-card card-flip-3d">
                 <div class="content">
                   <div class="post-meta">
                     <span class="single-post-meta">{pub.authors}</span>
@@ -508,7 +508,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
       </div>
 
       <div class="grid grid-cols-1 gap-8">
-        <div class="post-card style-2 publication-card w-full">
+        <div class="post-card style-2 publication-card w-full card-flip-3d">
           <div class="content">
             <div class="post-meta">
               <span class="single-post-meta">{latestNews.date}</span>

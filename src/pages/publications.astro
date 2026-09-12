@@ -143,7 +143,7 @@ const orcidUrl =
 
             return (
               <div
-                class={`post-card style-2 publication-card ${isBeyond10 ? 'beyond-recent-10' : ''}`}
+                class={`post-card style-2 publication-card card-flip-3d ${isBeyond10 ? 'beyond-recent-10' : ''}`}
                 style={isBeyond10 ? 'display: none;' : ''}
                 data-index={index}
                 data-title={pub.title.toLowerCase()}
@@ -358,6 +358,7 @@ const orcidUrl =
           // While actively searching, search across all publications
           if (matchesSearch) {
             (card as HTMLElement).style.display = 'flex';
+            card.classList.add('is-flipped');
             visibleCount++;
           } else {
             (card as HTMLElement).style.display = 'none';

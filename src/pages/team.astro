@@ -151,7 +151,7 @@ function getInitials(name = '') {
       </div>
 
       <!-- 3. PRINCIPAL INVESTIGATOR (PI) SHOWCASE -->
-      <div class="synbio-card overflow-hidden p-6 sm:p-10">
+      <div class="synbio-card overflow-hidden p-6 sm:p-10 card-flip-3d">
         <div class="flex flex-col md:flex-row gap-8 items-start">
           
           <!-- PI Portrait Box -->
@@ -253,7 +253,7 @@ function getInitials(name = '') {
           {
             currentMembers.map((member: any) => (
               <div
-                class="group member-card relative overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-xs transition-all duration-300 hover:shadow-xl dark:border-white/10 dark:bg-[#0c1527] cursor-pointer select-none"
+                class="group member-card card-flip-3d relative overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-xs transition-all duration-300 hover:shadow-xl dark:border-white/10 dark:bg-[#0c1527] cursor-pointer select-none"
                 tabindex="0"
                 role="button"
                 aria-expanded="false"
@@ -379,7 +379,7 @@ function getInitials(name = '') {
 
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-6">
               {alumni.map((alum: any) => (
-                <div class="group flex flex-col">
+                <div class="group flex flex-col card-flip-3d">
                   <!-- Square Initials/Photo Avatar -->
                   <div class="aspect-square w-full rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border border-gray-200/70 dark:border-white/10 flex items-center justify-center shadow-xs transition-transform duration-300 group-hover:scale-102">
                     {alum.photo_url ? (

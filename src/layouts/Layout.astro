@@ -107,5 +107,63 @@ const currentPath = Astro.url.pathname;
 
     <!-- Footer -->
     <Footer />
+
+    <!-- 3D Vertical-Axis Card Flip on Scroll Controller -->
+    <script>
+      function init3DCardFlip() {
+        const cards = document.querySelectorAll('.card-flip-3d:not(.is-flipped)');
+        if (!cards.length) return;
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          cards.forEach((c) => c.classList.add('is-flipped'));
+          return;
+        }
+
+        // Set up stagger delays for cards in the same grid/container
+        const containers = document.querySelectorAll('.grid, .space-y-6, [class*="grid-cols-"]');
+        containers.forEach((container) => {
+          const childCards = container.querySelectorAll(':scope > .card-flip-3d');
+          childCards.forEach((card, idx) => {
+            const htmlCard = card as HTMLElement;
+            if (!htmlCard.dataset.flipDelay) {
+              htmlCard.dataset.flipDelay = String((idx % 4) * 90);
+            }
+          });
+        });
+
+        const observer = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const el = entry.target as HTMLElement;
+                const delay = parseInt(el.dataset.flipDelay || '0', 10);
+                el.style.transitionDelay = `${delay}ms`;
+
+                setTimeout(() => {
+                  el.classList.add('is-flipped');
+                  // Remove transition delay after animation completes so hover remains instant
+                  setTimeout(() => {
+                    el.style.transitionDelay = '0s';
+                  }, 900);
+                }, 20);
+
+                obs.unobserve(el);
+              }
+            });
+          },
+          {
+            rootMargin: '0px 0px -40px 0px',
+            threshold: 0.08,
+          }
+        );
+
+        cards.forEach((card) => observer.observe(card));
+      }
+
+      // Run on initial page load and Astro view transitions
+      init3DCardFlip();
+      document.addEventListener('astro:page-load', init3DCardFlip);
+    </script>
   </body>
 </html>
+

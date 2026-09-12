@@ -606,3 +606,32 @@
   border-color: rgba(255, 255, 255, 0.15);
   color: #fff;
 }
+
+/* ============================================================================
+   3D VERTICAL-AXIS CARD FLIP ON SCROLL
+   Flipping like a card held by its vertical axis from the center
+   ============================================================================ */
+
+.card-flip-3d {
+  opacity: 0 !important;
+  transform: perspective(1200px) rotateY(-80deg) scale(0.96) !important;
+  transform-origin: 50% 50% !important; /* Held along center vertical axis */
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.65s ease-out !important;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.card-flip-3d.is-flipped {
+  opacity: 1 !important;
+  transform: perspective(1200px) rotateY(0deg) scale(1) !important;
+}
+
+/* Fallback for users preferring reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .card-flip-3d {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
