@@ -1,0 +1,468 @@
+{
+  "https://docs.google.com/spreadsheets/d/1zAmHgB7YxQb6CLCcTibQj9ieW_az3zo7qJEQL1RmGzw/gviz/tq?tqx=out:csv&sheet=Team": {
+    "timestamp": 1789196191962,
+    "data": [
+      {
+        "name": "Dr. Ramanujam Srinivasan (Srini)",
+        "role": "Principal Investigator / Associate Professor",
+        "category": "pi",
+        "photo_url": "",
+        "bio": "Dr. Ramanujam Srinivasan (Srini) heads The ABCD Lab at the School of Biological Sciences, NISER Bhubaneswar. His laboratory focuses on understanding the molecular mechanisms of bacterial cell division, actin-like cytoskeletal polymers (such as MreB, FtsA), cell shape determination, and spatiotemporal macromolecular dynamics using advanced imaging and biochemical approaches.",
+        "email": "rsrini@niser.ac.in",
+        "scholar_url": "https://scholar.google.com/citations?user=dRknmPkAAAAJ&hl=en&oi=ao",
+        "orcid_url": "https://orcid.org/0000-0001-8071-6110",
+        "twitter_url": "#",
+        "linkedin_url": "#",
+        "year_joined": 2012,
+        "year_left": "",
+        "current_position": "Associate Professor",
+        "is_current": true,
+        "order": 1
+      },
+      {
+        "name": "Srijita",
+        "role": "Doctoral Candidate (PhD)",
+        "category": "phd",
+        "photo_url": "",
+        "bio": "Specializing in bacterial cell biology, super-resolution microscopy, and cytoskeletal filament dynamics.",
+        "email": "srijita@niser.ac.in",
+        "scholar_url": "#",
+        "orcid_url": "#",
+        "twitter_url": "#",
+        "linkedin_url": "#",
+        "year_joined": 2022,
+        "year_left": "",
+        "current_position": "",
+        "is_current": true,
+        "order": 2
+      },
+      {
+        "name": "Neelratna Das",
+        "role": "Doctoral Candidate (PhD)",
+        "category": "phd",
+        "photo_url": "",
+        "bio": "Investigating divisome assembly and spatial organization of actin-like proteins in model and non-model bacteria.",
+        "email": "nilratna@niser.ac.in",
+        "scholar_url": "#",
+        "orcid_url": "#",
+        "twitter_url": "#",
+        "linkedin_url": "#",
+        "year_joined": 2024,
+        "year_left": "",
+        "current_position": "",
+        "is_current": true,
+        "order": 3
+      },
+      {
+        "name": "Jyoti",
+        "role": "Doctoral Candidate (PhD)",
+        "category": "phd",
+        "photo_url": "",
+        "bio": "Developing live-cell imaging methods and tracking macromolecular complexes during bacterial cytokinesis.",
+        "email": "jyoti@niser.ac.in",
+        "scholar_url": "#",
+        "orcid_url": "#",
+        "twitter_url": "#",
+        "linkedin_url": "#",
+        "year_joined": 2024,
+        "year_left": "",
+        "current_position": "",
+        "is_current": true,
+        "order": 4
+      },
+      {
+        "name": "Subharupaa",
+        "role": "Doctoral Candidate (PhD)",
+        "category": "phd",
+        "photo_url": "",
+        "bio": "Focusing on structural biology and biochemical characterization of bacterial cytoskeletal polymers.",
+        "email": "subha@niser.ac.in",
+        "scholar_url": "#",
+        "orcid_url": "#",
+        "twitter_url": "#",
+        "linkedin_url": "#",
+        "year_joined": 2024,
+        "year_left": "",
+        "current_position": "",
+        "is_current": true,
+        "order": 5
+      },
+      {
+        "name": "Amolika Moharana",
+        "role": "MSc Researcher",
+        "category": "msc_bsc",
+        "photo_url": "",
+        "bio": "NA",
+        "email": "amolika@niser.ac.in",
+        "scholar_url": "#",
+        "orcid_url": "#",
+        "twitter_url": "#",
+        "linkedin_url": "#",
+        "year_joined": 2025,
+        "year_left": "",
+        "current_position": "",
+        "is_current": true,
+        "order": 6
+      },
+      {
+        "name": "Tejaswini Purty",
+        "role": "MSc Researcher",
+        "category": "msc_bsc",
+        "photo_url": "",
+        "bio": "NA",
+        "email": "tejaswini@niser.ac.in",
+        "scholar_url": "#",
+        "orcid_url": "#",
+        "twitter_url": "#",
+        "linkedin_url": "#",
+        "year_joined": 2025,
+        "year_left": "",
+        "current_position": "",
+        "is_current": true,
+        "order": 7
+      },
+      {
+        "name": "Sharada Amol",
+        "role": "MSc Researcher",
+        "category": "msc_bsc",
+        "photo_url": "",
+        "bio": "NA",
+        "email": "sharada@niser.ac.in",
+        "scholar_url": "",
+        "orcid_url": "",
+        "twitter_url": "",
+        "linkedin_url": "",
+        "year_joined": 2026,
+        "year_left": "",
+        "current_position": "",
+        "is_current": true,
+        "order": 8
+      },
+      {
+        "name": "Vaishnavi Kamlesh Pawar",
+        "role": "MSc Researcher",
+        "category": "msc_bsc",
+        "photo_url": "",
+        "bio": "NA",
+        "email": "vaishnavi@niser.ac.in",
+        "scholar_url": "",
+        "orcid_url": "",
+        "twitter_url": "",
+        "linkedin_url": "",
+        "year_joined": 2026,
+        "year_left": "",
+        "current_position": "",
+        "is_current": true,
+        "order": 9
+      },
+      {
+        "name": "Piyush Ranjan",
+        "role": "MSc Researcher",
+        "category": "msc_bsc",
+        "photo_url": "https://lh3.googleusercontent.com/d/1jETOUMeZ9s4uaUOHuiO-xBbZmdkxrOfK",
+        "bio": "NA",
+        "email": "piyush.ranjan@niser.ac.in",
+        "scholar_url": "",
+        "orcid_url": "",
+        "twitter_url": "",
+        "linkedin_url": "",
+        "year_joined": 2026,
+        "year_left": "",
+        "current_position": "",
+        "is_current": true,
+        "order": 10
+      },
+      {
+        "name": "Shourya",
+        "role": "MSc Researcher",
+        "category": "msc_bsc",
+        "photo_url": "",
+        "bio": "NA",
+        "email": "NA",
+        "scholar_url": "",
+        "orcid_url": "",
+        "twitter_url": "",
+        "linkedin_url": "",
+        "year_joined": 2024,
+        "year_left": 2026,
+        "current_position": "",
+        "is_current": false,
+        "order": 12
+      },
+      {
+        "name": "Smruti Ranjan Panda",
+        "role": "MSc Researcher",
+        "category": "msc_bsc",
+        "photo_url": "",
+        "bio": "NA",
+        "email": "NA",
+        "scholar_url": "",
+        "orcid_url": "",
+        "twitter_url": "",
+        "linkedin_url": "",
+        "year_joined": 2024,
+        "year_left": 2026,
+        "current_position": "",
+        "is_current": false,
+        "order": 13
+      },
+      {
+        "name": "Nivedita",
+        "role": "Doctoral Candidate (PhD)",
+        "category": "phd",
+        "photo_url": "",
+        "bio": "NA",
+        "email": "NA",
+        "scholar_url": "",
+        "orcid_url": "",
+        "twitter_url": "",
+        "linkedin_url": "",
+        "year_joined": 2019,
+        "year_left": 2026,
+        "current_position": "",
+        "is_current": false,
+        "order": 14
+      }
+    ]
+  },
+  "https://docs.google.com/spreadsheets/d/1zAmHgB7YxQb6CLCcTibQj9ieW_az3zo7qJEQL1RmGzw/gviz/tq?tqx=out:csv&sheet=Settings": {
+    "timestamp": 1789196193062,
+    "data": [
+      {
+        "lab_name": "The ABCD Lab",
+        "short_name": "The ABCD Lab",
+        "institution": "National Institute of Science Education and Research (NISER), Bhubaneswar",
+        "tagline": "Actin, Bacterial Cytoskeleton & Dynamics | School of Biological Sciences",
+        "hero_statement": "We investigate the molecular architecture, spatiotemporal dynamics, and regulation of bacterial cytoskeletal polymers and cell division machinery.",
+        "hero_subquote": "Deciphering the spatial and temporal regulation of cytoskeletal machineries that drive bacterial morphogenesis.",
+        "email": "rsrini@niser.ac.in",
+        "email_secondary": "rsrini@niser.ac.in",
+        "phone": "+91 674 249 4000",
+        "address_line1": "National Institute of Science Education and Research (NISER)",
+        "address_line2": "School of Biological Sciences",
+        "address_line3": "PO Bhimpur-Padanpur, Via Jatni, Khurda 752050, Odisha, India",
+        "lab_building": "SBS Building, NISER Campus",
+        "transit_info": "Accessible via Khurda Road Junction (4 km) and Biju Patnaik International Airport, Bhubaneswar (25 km).",
+        "twitter": "https://twitter.com/NISERer",
+        "linkedin": "https://linkedin.com/school/niser-bhubaneswar",
+        "github": "https://github.com/TheONE393/ABCD",
+        "team_photos": ""
+      }
+    ]
+  },
+  "https://docs.google.com/spreadsheets/d/1zAmHgB7YxQb6CLCcTibQj9ieW_az3zo7qJEQL1RmGzw/gviz/tq?tqx=out:csv&sheet=Publications": {
+    "timestamp": 1789196193552,
+    "data": [
+      {
+        "title": "Mechanisms of bacterial cell division and cytoskeletal coordination",
+        "authors": "Lai S, Gu S, Nellen P, Rietdijk H, Srinivasan R",
+        "journal": "Nature Communications",
+        "year": 2025,
+        "doi": "10.1038/s41467-024-48901-x",
+        "url": "https://doi.org/10.1038/s41467-024-48901-x",
+        "pdf_url": "#",
+        "abstract": "Investigation of spatial coordination between peptidoglycan synthesis machinery and cytoskeletal polymers during bacterial division.",
+        "tags": [
+          "Bacterial Division",
+          "Cytoskeleton",
+          "MreB"
+        ],
+        "is_featured": true
+      },
+      {
+        "title": "Polymerization dynamics and biochemical regulation of prokaryotic actin-like filaments",
+        "authors": "Nellen P, Hinneburg H, Srinivasan R",
+        "journal": "Trends in Biotechnology",
+        "year": 2024,
+        "doi": "10.1016/j.tibtech.2024.01.008",
+        "url": "https://doi.org/10.1016/j.tibtech.2024.01.008",
+        "pdf_url": "#",
+        "abstract": "Structural and thermodynamic review of prokaryotic polymer architecture and nucleotide-dependent treadmilling.",
+        "tags": [
+          "Biophysics",
+          "Cytoskeleton",
+          "Polymers"
+        ],
+        "is_featured": true
+      },
+      {
+        "title": "Quantitative single-molecule tracking of division proteins in live bacteria",
+        "authors": "Lai S, Rietdijk H, Srinivasan R",
+        "journal": "Current Opinion in Microbiology",
+        "year": 2024,
+        "doi": "10.1016/j.copbio.2023.103042",
+        "url": "https://doi.org/10.1016/j.copbio.2023.103042",
+        "pdf_url": "#",
+        "abstract": "High-resolution imaging methods revealing diffusion kinetics and cluster formation at division sites.",
+        "tags": [
+          "Microscopy",
+          "Single Molecule",
+          "Biophysics"
+        ],
+        "is_featured": false
+      },
+      {
+        "title": "Spatiotemporal organization of actin homologs in bacterial morphogenesis",
+        "authors": "Gu S, Lai S, Borah M, Srinivasan R",
+        "journal": "ACS Synthetic Biology",
+        "year": 2024,
+        "doi": "10.1021/acssynbio.4c00219",
+        "url": "https://doi.org/10.1021/acssynbio.4c00219",
+        "pdf_url": "#",
+        "abstract": "Dynamic modulation of cytoskeletal filament assembly and membrane anchoring in dividing bacterial cells.",
+        "tags": [
+          "Morphogenesis",
+          "Cytoskeleton",
+          "Cell Shape"
+        ],
+        "is_featured": true
+      },
+      {
+        "title": "Molecular regulation of divisome maturation in Gram-negative bacteria",
+        "authors": "Borah M, Gu S, Srinivasan R",
+        "journal": "Nucleic Acids Research",
+        "year": 2023,
+        "doi": "10.1093/nar/gkad382",
+        "url": "https://doi.org/10.1093/nar/gkad382",
+        "pdf_url": "#",
+        "abstract": "Characterization of regulatory checkpoints governing the transition from early to late divisome assemblies.",
+        "tags": [
+          "Bacteria",
+          "Divisome",
+          "Cytokinesis"
+        ],
+        "is_featured": false
+      },
+      {
+        "title": "Structural diversity and evolutionary plasticity of bacterial cytoskeletons",
+        "authors": "Srinivasan R, Lai S, Becker L",
+        "journal": "Microbial Cell Factories",
+        "year": 2023,
+        "doi": "10.1186/s12934-023-02104-5",
+        "url": "https://doi.org/10.1186/s12934-023-02104-5",
+        "pdf_url": "#",
+        "abstract": "Comparative evolutionary analysis of actin and tubulin homologs across diverse bacterial phyla.",
+        "tags": [
+          "Evolution",
+          "Actin",
+          "Cytoskeleton"
+        ],
+        "is_featured": false
+      }
+    ]
+  },
+  "https://docs.google.com/spreadsheets/d/1zAmHgB7YxQb6CLCcTibQj9ieW_az3zo7qJEQL1RmGzw/gviz/tq?tqx=out:csv&sheet=Research": {
+    "timestamp": 1789196194042,
+    "data": [
+      {
+        "id": "bacterial-cytoskeleton",
+        "title": "Bacterial Cytoskeleton & Cell Division (Divisome)",
+        "short_summary": "Deciphering how actin-like filaments (MreB, FtsA) coordinate with cell wall synthesis machinery to drive cytokinesis.",
+        "full_description": "We study the molecular architecture, spatiotemporal assembly, and regulation of the divisome complex during bacterial cytokinesis using advanced fluorescence and super-resolution microscopy.",
+        "funding_grant": "DAE / SERB Research Grant",
+        "lead_members": "Dr. Ramanujam Srinivasan, Dr. Sandie Lai, Shanna Gu",
+        "image_url": "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=80&w=800",
+        "status": "Active",
+        "tags": [
+          "Cytoskeleton",
+          "Divisome",
+          "Cell Division"
+        ],
+        "order": 1
+      },
+      {
+        "id": "plasmid-segregation",
+        "title": "DNA Segregation & Cytoskeletal Motors",
+        "short_summary": "Investigating ParM and actin-like spindle dynamics responsible for plasmid and chromosome partitioning.",
+        "full_description": "Bacterial plasmids utilize actin-like filaments to push replicated DNA molecules to opposite cell poles. We dissect the biophysics of filament elongation, dynamic instability, and force generation.",
+        "funding_grant": "Wellcome Trust / DBT India Alliance",
+        "lead_members": "Madhushruti Borah, Hugo Rietdijk",
+        "image_url": "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=800",
+        "status": "Active",
+        "tags": [
+          "DNA Partitioning",
+          "ParM",
+          "Spindle Dynamics"
+        ],
+        "order": 2
+      },
+      {
+        "id": "cell-shape-morphogenesis",
+        "title": "Bacterial Morphogenesis & Cell Shape Control",
+        "short_summary": "Understanding how bacteria maintain rod, crescent, and helical geometries through peptidoglycan patterning.",
+        "full_description": "Cell shape determination is a tightly regulated morphogenetic process. We study how cytoskeletal polymers guide cell wall synthases across different growth phases.",
+        "funding_grant": "DBT Research Project",
+        "lead_members": "Shanna Gu, Alex Wall",
+        "image_url": "https://images.unsplash.com/photo-1582725406089-98e3b5e4070a?auto=format&fit=crop&q=80&w=800",
+        "status": "Active",
+        "tags": [
+          "Cell Shape",
+          "Morphogenesis",
+          "Peptidoglycan"
+        ],
+        "order": 3
+      },
+      {
+        "id": "super-resolution-imaging",
+        "title": "Advanced Live-Cell & Super-Resolution Imaging",
+        "short_summary": "Developing quantitative single-molecule tracking and TIRF/STED imaging platforms for bacterial biophysics.",
+        "full_description": "Prokaryotic structures operate below the diffraction limit of light. We employ TIRF, PALM/STORM, and structured illumination microscopy to capture macromolecular dynamics in real time.",
+        "funding_grant": "NISER Central Imaging Facility Grant",
+        "lead_members": "Patrick Nellen, Dr. Ramanujam Srinivasan",
+        "image_url": "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80&w=800",
+        "status": "Active",
+        "tags": [
+          "Super-Resolution",
+          "Live-Cell",
+          "TIRF"
+        ],
+        "order": 4
+      }
+    ]
+  },
+  "https://docs.google.com/spreadsheets/d/1zAmHgB7YxQb6CLCcTibQj9ieW_az3zo7qJEQL1RmGzw/gviz/tq?tqx=out:csv&sheet=News": {
+    "timestamp": 1789196195032,
+    "data": [
+      {
+        "date": "2026-03-01",
+        "title": "The ABCD Lab welcomes new batch of research scholars at SBS, NISER",
+        "category": "Team",
+        "excerpt": "New PhD and Master students have joined the laboratory to explore bacterial cytoskeletal dynamics and division.",
+        "content": "We welcome our new cohort of enthusiastic researchers embarking on their scientific journeys in prokaryotic cell biology.",
+        "link": "/team",
+        "image_url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800",
+        "is_featured": true
+      },
+      {
+        "date": "2025-11-15",
+        "title": "Research grant awarded for high-resolution bacterial imaging",
+        "category": "Grant",
+        "excerpt": "The ABCD Lab has been awarded research funding to advance quantitative microscopy of macromolecular division assemblies.",
+        "content": "",
+        "link": "/research",
+        "image_url": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&q=80&w=800",
+        "is_featured": true
+      },
+      {
+        "date": "2025-08-20",
+        "title": "Breakthrough findings on bacterial cytoskeletal polymer architecture",
+        "category": "Publication",
+        "excerpt": "Our team uncovered novel insights into the spatial coordination of actin-like filaments during cell division.",
+        "content": "",
+        "link": "/publications",
+        "image_url": "",
+        "is_featured": false
+      },
+      {
+        "date": "2025-05-10",
+        "title": "Paper published on single-molecule tracking of divisome complexes",
+        "category": "Publication",
+        "excerpt": "Our study describing divisome maturation kinetics is now available open access.",
+        "content": "",
+        "link": "/publications",
+        "image_url": "",
+        "is_featured": false
+      }
+    ]
+  }
+}

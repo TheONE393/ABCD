@@ -1,5 +1,5 @@
+@import '@fontsource/urbanist/index.css';
 @import '@fontsource/inter/index.css';
-@import '@fontsource/lora/index.css';
 
 @import 'tailwindcss';
 @config '../../tailwind.config.js';
@@ -7,117 +7,602 @@
 /* Class-based dark mode selector strategy */
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+  --page-bg: #ffffff;
+  --synbio-navy: #001f40;
+  --synbio-blue-card: #c8dff5;
+}
+
+:where(.dark) {
+  --page-bg: #070c18;
+  --synbio-navy: #001f40;
+  --synbio-blue-card: #132238;
+}
+
 @layer base {
-  /* Font smoothing and default document styling */
   html {
-    font-family:
-      'Inter',
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      Roboto,
-      sans-serif;
+    font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    background-color: var(--page-bg);
   }
 
-  /* Default link resets with subtle transition */
+  body {
+    background-color: var(--page-bg);
+    color: #1a1a1a;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Urbanist', sans-serif;
+    letter-spacing: -0.01em;
+  }
+
   a {
     color: inherit;
-    text-decoration: inherit;
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
-
-  /* Default button resets */
-  button {
-    font-family: inherit;
-    font-size: 100%;
-    line-height: inherit;
-    color: inherit;
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-  }
-
-  button:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
+    text-decoration: none;
+    transition: all 0.3s ease;
   }
 }
 
-/* View Transitions API smooth cross-fade styling */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 200ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+/* ============================================================================
+   EXACT SYNBIO BUTTONS
+   ============================================================================ */
+
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 34px;
+  border-radius: 9999px;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #ffffff;
+  background-color: #001f40;
+  border: 1.5px solid #001f40;
+  transition: all 0.35s ease-out;
+  text-decoration: none;
+  line-height: 1.5;
+  cursor: pointer;
 }
 
-::view-transition-old(root) {
-  animation-name: astroFadeOut;
+.theme-btn:hover {
+  background-color: #0a3366;
+  border-color: #0a3366;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 31, 64, 0.25);
 }
 
-::view-transition-new(root) {
-  animation-name: astroFadeIn;
+.theme-btn.theme-btn-white {
+  background-color: #ffffff;
+  color: #001f40;
+  border-color: #ffffff;
 }
 
-@keyframes astroFadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
+.theme-btn.theme-btn-white:hover {
+  background-color: #f0f4fa;
+  color: #001f40;
 }
 
-@keyframes astroFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.circle-arrow-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #001f40;
+  color: #ffffff;
+  font-size: 17px;
+  transition: all 0.35s ease-out;
+  text-decoration: none;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
-/* Nav link subtle interactive transitions */
-header nav a,
-header a {
-  transition-property: color, background-color, border-color, transform, opacity;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  transition-duration: 180ms;
+.circle-arrow-btn:hover {
+  background-color: #f7941d;
+  color: #ffffff;
+  transform: scale(1.06);
 }
 
-/* Research, People, and Publication Card Hover transitions */
-article,
-.publication-item {
-  transition-property: transform, box-shadow, border-color, background-color;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  transition-duration: 220ms;
+.circle-arrow-btn i,
+.circle-arrow-btn svg {
+  display: inline-block;
+  transform: rotate(0deg);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Prefers-reduced-motion media query: disable animations, view transitions, and smooth scrolling */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  ::before,
-  ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+.circle-arrow-btn:hover i,
+.circle-arrow-btn:hover svg,
+.btn-wrapper:hover .circle-arrow-btn i,
+.btn-wrapper:hover .circle-arrow-btn svg {
+  transform: rotate(-45deg);
+}
 
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
-  }
+.circle-arrow-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  fill: none;
+}
+
+/* ============================================================================
+   THE SIGNATURE TOP-RIGHT NOTCH CUTOUT & HOVER ANIMATION (EXACT REPLICA)
+   ============================================================================ */
+
+.post-card.style-2 {
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.5s ease-out;
+}
+
+.post-card.style-2 .content {
+  background-color: var(--synbio-blue-card);
+  padding: 42px 44px 44px;
+  border-radius: 30px;
+  transition: background-color 0.4s ease-out;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.post-card.style-2 .content .post-meta {
+  margin-top: 0;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.post-card.style-2 .content .post-meta .single-post-meta {
+  color: #292929;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+:where(.dark) .post-card.style-2 .content .post-meta .single-post-meta {
+  color: #c0d0e6;
+}
+
+.post-card.style-2 .content .post-meta .dots {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #8a99ad;
+  margin: 0 10px;
+  vertical-align: middle;
+}
+
+.post-card.style-2 .content .tag-wrapper {
+  margin-bottom: 18px;
+}
+
+.post-card.style-2 .content .tag-wrapper .single-tag {
+  background-color: #001f40;
+  color: #ffffff;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 18px;
+  border-radius: 30px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+:where(.dark) .post-card.style-2 .content .tag-wrapper .single-tag {
+  background-color: #001f40;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.post-card.style-2 .content .title {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #001f40;
+  margin-bottom: 24px;
+  text-decoration: none;
+}
+
+:where(.dark) .post-card.style-2 .content .title {
+  color: #ffffff;
+}
+
+.post-card.style-2 .content .title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.post-card.style-2 .content .title a:hover {
+  color: #0d3260;
+}
+
+:where(.dark) .post-card.style-2 .content .title a:hover {
+  color: #f7941d;
+}
+
+.post-card.style-2 .content .btn-wrapper {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.post-card.style-2 .content .btn-wrapper .text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  color: #001f40;
+  text-decoration: none;
+  transition: all 0.4s ease-out;
+}
+
+:where(.dark) .post-card.style-2 .content .btn-wrapper .text-btn {
+  color: #ffffff;
+}
+
+.post-card.style-2 .content .btn-wrapper .text-btn:hover {
+  gap: 12px;
+}
+
+.post-card.style-2 .content .btn-wrapper .text-btn i {
+  transform: rotate(-45deg);
+  transition: all 0.4s ease-out;
+}
+
+.post-card.style-2 .content .btn-wrapper .text-btn:hover i {
+  transform: rotate(0deg);
+}
+
+/* Position of top-right notch & arrow button */
+.post-card.style-2 > .btn-wrapper {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  right: 0;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.post-card.style-2 > .btn-wrapper .circle-arrow-btn {
+  width: 64px;
+  height: 64px;
+  font-size: 20px;
+  box-shadow: 0 4px 16px rgba(0, 31, 64, 0.25);
+  background-color: #001f40;
+}
+
+/* Card notch button: stays diagonally upwards only, does NOT rotate on hover */
+.post-card.style-2 > .btn-wrapper .circle-arrow-btn i,
+.post-card.style-2 > .btn-wrapper .circle-arrow-btn svg {
+  transform: rotate(-45deg) !important;
+  transition: transform 0.4s ease-out;
+}
+
+.post-card.style-2:hover > .btn-wrapper .circle-arrow-btn i,
+.post-card.style-2:hover > .btn-wrapper .circle-arrow-btn svg {
+  transform: rotate(-45deg) !important; /* Keep diagonally upwards only */
+}
+
+/* Card Read more button: Linked diagonal X-Y transition without colors */
+.post-card.style-2 .content .btn-wrapper .text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: inherit;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.post-card.style-2 .content .btn-wrapper .text-btn span:first-child {
+  display: inline-block;
+  color: inherit;
+}
+
+.post-card.style-2 .content .btn-wrapper .text-btn i,
+.post-card.style-2 .content .btn-wrapper .text-btn svg {
+  display: inline-block;
+  transform: rotate(-45deg) !important; /* Keep diagonally upwards only */
+  transition: none;
+}
+
+/* On card hover OR button hover: text and arrow transition diagonally together on the same plane, exact same amount, no color change */
+.post-card.style-2:hover .content .btn-wrapper .text-btn,
+.post-card.style-2 .content .btn-wrapper .text-btn:hover {
+  transform: translate(-8px, 8px);
+  gap: 6px;
+  color: inherit;
+}
+
+.post-card.style-2:hover .content .btn-wrapper .text-btn span:first-child,
+.post-card.style-2 .content .btn-wrapper .text-btn:hover span:first-child {
+  color: inherit;
+  text-shadow: none;
+}
+
+.post-card.style-2:hover .content .btn-wrapper .text-btn i,
+.post-card.style-2:hover .content .btn-wrapper .text-btn svg,
+.post-card.style-2 .content .btn-wrapper .text-btn:hover i,
+.post-card.style-2 .content .btn-wrapper .text-btn:hover svg {
+  transform: rotate(-45deg) !important;
+}
+
+/* Inverted Corner Cutout Notch Shape */
+.post-card.style-2 .shape {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.post-card.style-2 .shape svg path {
+  fill: var(--page-bg);
+  transition: fill 0.3s ease;
+}
+
+/* THE HOVER BEHAVIOR: Notch disappears, button shifts slightly into the card */
+.post-card.style-2:hover > .btn-wrapper {
+  transform: translate(-8px, 8px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.post-card.style-2:hover .shape {
+  visibility: hidden;
+  opacity: 0;
+  transform: translate(60px, -60px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================================
+   TEAM PHOTO OVERLAY SECTION
+   ============================================================================ */
+
+.hp-tbg {
+  position: relative;
+  overflow: hidden !important;
+  min-height: 540px;
+  border-radius: 35px;
+  cursor: pointer;
+}
+
+.hp-tbg .hp-bg-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  z-index: 0;
+  transition: transform 0.6s ease;
+}
+
+.hp-tbg:hover .hp-bg-photo {
+  transform: scale(1.02);
+}
+
+.hp-tbg .hp-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 20, 50, 0.0) 0%, rgba(0, 20, 50, 0.0) 100%);
+  z-index: 1;
+  transition: background 0.4s ease;
+}
+
+.hp-tbg:hover .hp-bg-overlay {
+  background: linear-gradient(rgba(0, 20, 50, 0.2) 0%, rgba(0, 20, 50, 0.72) 100%);
+}
+
+.hp-pi-portrait {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-direction: row-reverse;
+}
+
+.hp-pi-portrait img {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 3px solid #f7941d;
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.4);
+  display: block;
+  flex-shrink: 0;
+}
+
+.hp-pi-label {
+  background: rgba(0, 20, 50, 0.78);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.45;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border-left: 3px solid #f7941d;
+  text-align: right;
+  backdrop-blur: 4px;
+}
+
+.hp-pi-label strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  color: #f7941d;
+  margin-bottom: 2px;
+}
+
+.hp-team-caption {
+  position: absolute;
+  bottom: 32px;
+  left: 32px;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.hp-tbg:hover .hp-team-caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hp-team-caption a.hp-team-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #f7941d;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 12px 26px;
+  border-radius: 30px;
+  box-shadow: 0 4px 16px rgba(247, 148, 29, 0.4);
+  transition: all 0.3s ease;
+}
+
+.hp-team-caption a.hp-team-link:hover {
+  background: #fff;
+  color: #001f40;
+}
+
+.hp-team-caption a.hp-team-link svg {
+  display: inline-block;
+  transform: rotate(0deg);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hp-team-caption a.hp-team-link:hover svg {
+  transform: rotate(-45deg);
+}
+
+/* ============================================================================
+   INFO CARD STYLE 3 (Callout box in Hero)
+   ============================================================================ */
+
+.info-card.style-3 {
+  position: relative;
+  background-color: #c8dff5;
+  border-radius: 30px;
+  padding: 40px 36px;
+  overflow: hidden;
+}
+
+:where(.dark) .info-card.style-3 {
+  background-color: #12223d;
+}
+
+.info-card.style-3 .overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.info-card.style-3 .overlay img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info-card.style-3 .info-card-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.info-card.style-3 .content .desc {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #001f40;
+  margin-bottom: 24px;
+}
+
+:where(.dark) .info-card.style-3 .content .desc {
+  color: #e2e8f0;
+}
+
+/* ============================================================================
+   NAVBAR & HEADER EXACT REPLICA
+   ============================================================================ */
+
+.header-menu-area {
+  padding: 16px 0;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+:where(.dark) .header-menu-area {
+  background-color: #070c18;
+}
+
+.main-menu ul {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-menu ul li a {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #001f40;
+  text-decoration: none;
+  position: relative;
+  padding: 6px 0;
+}
+
+:where(.dark) .main-menu ul li a {
+  color: #ffffff;
+}
+
+.main-menu ul li.active a,
+.main-menu ul li a:hover {
+  color: #f7941d;
+}
+
+.search-input-field input {
+  width: 180px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: 1px solid #d1d5db;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  outline: none;
+  background-color: #f9fafb;
+}
+
+:where(.dark) .search-input-field input {
+  background-color: #121c2e;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
 }

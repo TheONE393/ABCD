@@ -1,286 +1,304 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { fetchPublications } from '../lib/fetchSheetData.js';
-import { url } from '../lib/paths.js';
 
-interface Publication {
-  title: string;
-  authors: string;
-  journal: string;
-  year: number;
-  doi_or_pdf_link: string;
-  tags?: string[];
-}
+const publications = await fetchPublications();
 
-// Fetch live publications at build time from the Google Sheet
-const fetchedPubs: Publication[] = await fetchPublications();
-
-// High-fidelity fallback publications used when Google Sheet URL is still a placeholder
-const fallbackPubs: Publication[] = [
-  {
-    title: 'Evolutionary diversification of cytoskeletal regulators across deep-sea Asgard archaea',
-    authors: 'Srinivasan, R.*, Doe, J., Vance, E., & Chen, W.',
-    journal: 'Nature Microbiology',
-    year: 2026,
-    doi_or_pdf_link: 'https://doi.org/10.1038/s41564-026-0000-x',
-    tags: ['Asgard Archaea', 'Cytoskeleton', 'Evolution'],
-  },
-  {
-    title:
-      'Coordination of the stringent response and outer membrane remodeling in clinical Pseudomonas aeruginosa',
-    authors: 'Smith, K., Srinivasan, R.*, & Patel, R.',
-    journal: 'Journal of Bacteriology',
-    year: 2025,
-    doi_or_pdf_link: 'https://doi.org/10.1128/jb.00123-25',
-    tags: ['Pseudomonas', 'Membrane Biology', 'Stringent Response'],
-  },
-  {
-    title:
-      'Single-molecule tracking resolves DNA repair hub dynamics in resource-limited Escherichia coli',
-    authors: 'Doe, J., Smith, K., & Srinivasan, R.*',
-    journal: 'Nucleic Acids Research',
-    year: 2025,
-    doi_or_pdf_link: 'https://doi.org/10.1093/nar/gkf000',
-    tags: ['E. coli', 'DNA Repair', 'Single-Molecule'],
-  },
-  {
-    title:
-      'Cryo-EM structure of a primitive ESCRT-III helical polymer from hydrothermal Heimdallarchaeota',
-    authors: 'Chen, W., Vance, E., & Srinivasan, R.*',
-    journal: 'Science Advances',
-    year: 2024,
-    doi_or_pdf_link: 'https://doi.org/10.1126/sciadv.adp1234',
-    tags: ['Asgard Archaea', 'Cryo-EM', 'ESCRT-III'],
-  },
-  {
-    title:
-      'Tn-seq mapping identifies essential lipid A modification determinants under cationic peptide challenge in Pseudomonas',
-    authors: 'Vance, E., Doe, J., & Srinivasan, R.*',
-    journal: 'mBio',
-    year: 2024,
-    doi_or_pdf_link: 'https://doi.org/10.1128/mbio.03421-24',
-    tags: ['Pseudomonas', 'Tn-seq', 'Lipid A'],
-  },
-  {
-    title:
-      'Ribosome stalling and translation slowdown drive persister cell emergence during nutrient downshifts',
-    authors: 'Patel, R., Doe, J., & Srinivasan, R.*',
-    journal: 'Molecular Microbiology',
-    year: 2023,
-    doi_or_pdf_link: 'https://doi.org/10.1111/mmi.15000',
-    tags: ['E. coli', 'Ribosome', 'Persistence'],
-  },
-  {
-    title:
-      'Lipopolysaccharide export machinery architecture and antibiotic targeting in Gram-negative envelopes',
-    authors: 'Srinivasan, R.*, Vance, E., & Miller, H.',
-    journal: 'Annual Review of Microbiology',
-    year: 2022,
-    doi_or_pdf_link: 'https://doi.org/10.1146/annurev-micro-021022',
-    tags: ['LPS Export', 'Review', 'Envelope Biology'],
-  },
-  {
-    title:
-      'Ancestral profiling reveals early origins of eukaryotic GTPase signaling cascades in Lokiarcheota',
-    authors: 'Chen, W., Smith, K., & Srinivasan, R.*',
-    journal: 'Current Biology',
-    year: 2021,
-    doi_or_pdf_link: 'https://doi.org/10.1016/j.cub.2021.05.012',
-    tags: ['Asgard Archaea', 'GTPase', 'Eukaryogenesis'],
-  },
-];
-
-// Use fetched publications if available; otherwise use fallback
-const publications: Publication[] = fetchedPubs.length > 0 ? fetchedPubs : fallbackPubs;
-
-// Derive unique publication years in descending order
+// Extract unique years for filtering
 const years = Array.from(new Set(publications.map((p) => p.year))).sort((a, b) => b - a);
+
+// Extract unique tags for filtering
+const allTags = Array.from(new Set(publications.flatMap((p) => p.tags))).slice(0, 8);
 ---
 
 <Layout
-  title="Publications & Preprints | The ABCD Lab"
-  description="Peer-reviewed research articles, preprints, and reviews from The ABCD Lab investigating Pseudomonas, E. coli, and Asgard archaea."
+  title="Publications | The ABCD Lab"
+  description="Explore peer-reviewed scientific publications, research articles, and preprints from Dr. Ramanujam Srinivasan's ABCD Lab at NISER Bhubaneswar, India."
 >
-  <div class="py-12 sm:py-16 lg:py-20">
-    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-      <!-- Breadcrumb Navigation -->
-      <nav
-        class="mb-8 flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400"
-        aria-label="Breadcrumb"
-      >
-        <a
-          href={url('/')}
-          class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
-        >
-          Home
-        </a>
-        <span>/</span>
-        <span class="font-medium text-gray-800 dark:text-gray-200">Publications</span>
-      </nav>
+  <PageHeader
+    title="Publications"
+    subtitle="Peer-reviewed research articles, molecular toolkits, and reviews advancing synthetic biology and sustainable biotechnology."
+    badge="Scientific Output"
+  />
 
-      <!-- Page Header -->
-      <div class="max-w-3xl">
-        <h1
-          class="font-heading mt-3 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white"
-        >
-          Publications
-        </h1>
+  <section class="py-12 sm:py-20 bg-synbio-tint/20 dark:bg-transparent">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10">
+      <!-- Search & Filters Toolbar -->
+      <div class="synbio-card p-6 sm:p-8 space-y-6">
+        <!-- Search bar -->
+        <div class="relative">
+          <svg class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="search"
+            id="pub-search-input"
+            placeholder="Filter by title, author name (e.g. 'Srinivasan'), journal, or topic..."
+            class="w-full rounded-2xl border border-gray-200 bg-white py-3.5 pl-12 pr-4 text-sm font-medium text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-synbio-orange focus:ring-2 focus:ring-synbio-orange/20 dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white dark:placeholder-gray-500"
+          />
+        </div>
 
-        <!-- External Profile Badges -->
-        <div class="mt-4 flex flex-wrap items-center gap-3">
-          <a
-            href="https://scholar.google.com/citations?user=dRknmPkAAAAJ&hl=en&oi=ao"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-primary-800 hover:text-primary-950 dark:text-primary-300 inline-flex items-center gap-1.5 text-xs font-medium dark:hover:text-white"
-          >
-            <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
-              <path
-                d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"
-              ></path>
-            </svg>
-            Google Scholar Profile &rarr;
-          </a>
-          <span class="text-gray-300 dark:text-gray-700">&bull;</span>
-          <a
-            href="https://orcid.org/0000-0001-8071-6110"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-primary-800 hover:text-primary-950 dark:text-primary-300 inline-flex items-center gap-1.5 text-xs font-medium dark:hover:text-white"
-          >
-            <svg class="h-3.5 w-3.5 fill-[#A6CE39]" viewBox="0 0 256 256">
-              <path
-                d="M128,0A128,128,0,1,0,256,128,128,128,0,0,0,128,0ZM86.35,186.2H70V73.47H86.35Zm-8.18-125a10.6,10.6,0,1,1,10.6-10.6A10.6,10.6,0,0,1,78.17,61.2ZM190,140.23c0,28.87-19.78,46-49.88,46H105.79V73.47h36.19C170.82,73.47,190,92.17,190,140.23Zm-67.86,31.42h18.23c21.84,0,33.18-12.78,33.18-31.42,0-20.15-12.33-31.42-33.18-31.42H122.14Z"
-              ></path>
-            </svg>
-            ORCID Record &rarr;
-          </a>
+        <!-- Filter Chips Row -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-gray-100 dark:border-white/5">
+          <!-- Year filter -->
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 mr-1 dark:text-gray-400">Year:</span>
+            <button class="pub-year-btn active rounded-full bg-synbio-navy px-3 py-1 text-xs font-bold text-white dark:bg-synbio-orange" data-year="all">
+              All ({publications.length})
+            </button>
+            {
+              years.map((yr) => (
+                <button class="pub-year-btn rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-700 hover:bg-gray-200 dark:bg-white/10 dark:text-gray-300 dark:hover:bg-white/20" data-year={String(yr)}>
+                  {yr}
+                </button>
+              ))
+            }
+          </div>
+
+          <!-- Scholar / External Links -->
+          <div class="flex items-center gap-3 text-xs font-semibold">
+            <a
+              href="https://scholar.google.com/citations?user=rsrini_niser"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 text-synbio-navy hover:text-synbio-orange dark:text-gray-300 dark:hover:text-synbio-orange transition-colors"
+            >
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 24a12 12 0 1 1 0-24 12 12 0 0 1 0 24zm-.26-6.42a4.42 4.42 0 0 0 4.42-4.42v-5.2h-2.2v5.2a2.22 2.22 0 0 1-4.42 0v-5.2h-2.2v5.2a4.42 4.42 0 0 0 4.4 4.42z" />
+              </svg>
+              <span>Google Scholar</span>
+            </a>
+            <span>&bull;</span>
+            <a
+              href="https://orcid.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 text-synbio-navy hover:text-synbio-orange dark:text-gray-300 dark:hover:text-synbio-orange transition-colors"
+            >
+              <span class="rounded bg-[#a6ce39] px-1 text-[10px] font-bold text-white">iD</span>
+              <span>ORCID</span>
+            </a>
+          </div>
         </div>
       </div>
 
-      <!-- Publications List Grouped by Year (Descending) -->
-      <div id="publications-container" class="mt-12 space-y-12">
+      <!-- Publications List Container -->
+      <div class="space-y-6" id="publications-list">
         {
-          years.map((year) => {
-            const yearPubs = publications.filter((p) => p.year === year);
+          publications.map((pub, idx) => {
+            // Generate bibtex string for instant copy
+            const bibtex = `@article{srinivasan_${pub.year}_${idx},
+  title={${pub.title}},
+  author={${pub.authors}},
+  journal={${pub.journal}},
+  year={${pub.year}},
+  doi={${pub.doi}}
+}`;
+
             return (
-              <section
-                class="year-group"
-                data-year={year}
-                aria-labelledby={`year-${year}`}
-                data-reveal
+              <article
+                class="pub-card synbio-card p-6 sm:p-8 transition-all duration-200"
+                data-title={pub.title.toLowerCase()}
+                data-authors={pub.authors.toLowerCase()}
+                data-journal={pub.journal.toLowerCase()}
+                data-year={String(pub.year)}
+                data-tags={pub.tags.join(' ').toLowerCase()}
               >
-                <div class="flex items-center gap-4 border-b border-gray-200 pb-3 dark:border-gray-800">
-                  <h2
-                    id={`year-${year}`}
-                    class="font-heading text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white"
-                  >
-                    {year}
-                  </h2>
-                  <span class="bg-primary-50 text-primary-800 dark:bg-primary-950 dark:text-primary-300 dark:ring-primary-800/80 rounded-full px-2.5 py-0.5 text-xs font-bold dark:ring-1">
-                    {yearPubs.length} {yearPubs.length === 1 ? 'article' : 'articles'}
-                  </span>
-                </div>
+                <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+                  <div class="space-y-3 flex-1">
+                    <!-- Top Metadata Badges -->
+                    <div class="flex flex-wrap items-center gap-2.5">
+                      <span class="rounded-full bg-synbio-navy px-3 py-1 text-xs font-bold text-white dark:bg-synbio-orange">
+                        {pub.journal}
+                      </span>
+                      <span class="text-xs font-mono font-bold text-synbio-orange">
+                        {pub.year}
+                      </span>
+                      {pub.doi && (
+                        <span class="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                          DOI: {pub.doi}
+                        </span>
+                      )}
+                    </div>
 
-                <div class="mt-6 space-y-4">
-                  {yearPubs.map((pub) => {
-                    const isExternal = pub.doi_or_pdf_link?.startsWith('http');
-                    const pubHref = pub.doi_or_pdf_link
-                      ? isExternal
-                        ? pub.doi_or_pdf_link
-                        : url(pub.doi_or_pdf_link)
-                      : undefined;
-                    const isDoi = pub.doi_or_pdf_link?.includes('doi.org');
-                    const isPdf = pub.doi_or_pdf_link?.toLowerCase().endsWith('.pdf');
-                    const doiClean = isDoi
-                      ? pub.doi_or_pdf_link.split('doi.org/')[1]?.replace(/\/$/, '') ||
-                        pub.doi_or_pdf_link
-                      : '';
+                    <!-- Title -->
+                    <h2 class="font-urbanist text-xl sm:text-2xl font-bold leading-snug text-gray-950 dark:text-white">
+                      <a href={pub.url} target="_blank" rel="noopener noreferrer" class="hover:text-synbio-orange transition-colors">
+                        {pub.title}
+                      </a>
+                    </h2>
 
-                    return (
-                      <article class="publication-item group rounded-2xl border border-gray-200 bg-white p-6 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900/60">
-                        <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-                          <h3 class="font-heading text-lg font-bold text-gray-900 dark:text-white">
-                            {pubHref ? (
-                              <a
-                                href={pubHref}
-                                target={isExternal ? '_blank' : undefined}
-                                rel={isExternal ? 'noopener noreferrer' : undefined}
-                                class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
-                              >
-                                {pub.title}
-                              </a>
-                            ) : (
-                              pub.title
-                            )}
-                          </h3>
+                    <!-- Authors List -->
+                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300 leading-relaxed">
+                      {pub.authors}
+                    </p>
 
-                          <span class="shrink-0 self-start rounded-md bg-gray-100 px-2 py-0.5 font-mono text-xs font-semibold text-gray-700 sm:self-auto dark:bg-gray-800 dark:text-gray-300">
-                            {pub.year}
-                          </span>
+                    <!-- Keyword Tags -->
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                      {pub.tags.map((tag) => (
+                        <span class="rounded bg-synbio-tint/80 px-2 py-0.5 text-[11px] font-semibold text-synbio-navy dark:bg-white/10 dark:text-gray-300">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <!-- Expandable Abstract Accordion -->
+                    {pub.abstract && (
+                      <div class="pt-3">
+                        <button
+                          class="abstract-toggle-btn text-xs font-bold uppercase tracking-wider text-synbio-orange hover:underline flex items-center gap-1.5"
+                          data-target={`abstract-${idx}`}
+                        >
+                          <span>Show Abstract</span>
+                          <span class="text-[10px]">▼</span>
+                        </button>
+
+                        <div id={`abstract-${idx}`} class="abstract-content hidden mt-3 rounded-2xl bg-gray-50 p-4 text-xs leading-relaxed text-gray-600 dark:bg-white/5 dark:text-gray-300">
+                          <p class="font-semibold text-gray-900 dark:text-white mb-1">Abstract:</p>
+                          <p>{pub.abstract}</p>
                         </div>
+                      </div>
+                    )}
+                  </div>
 
-                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{pub.authors}</p>
+                  <!-- Action Buttons Stack -->
+                  <div class="flex flex-wrap lg:flex-col items-center gap-2.5 shrink-0 self-start">
+                    {pub.url && (
+                      <a
+                        href={pub.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="theme-btn text-xs px-5 py-2.5 w-full text-center"
+                      >
+                        View Article
+                      </a>
+                    )}
 
-                        <div class="mt-4 flex flex-wrap items-center justify-between gap-y-3 border-t border-gray-100 pt-3 dark:border-gray-800/80">
-                          <div class="flex flex-wrap items-center gap-x-2 text-xs text-gray-500 dark:text-gray-400">
-                            <span class="font-medium text-gray-800 italic dark:text-gray-200">
-                              {pub.journal}
-                            </span>
-                            {pubHref && (
-                              <>
-                                <span>&bull;</span>
-                                <a
-                                  href={pubHref}
-                                  target={isExternal ? '_blank' : undefined}
-                                  rel={isExternal ? 'noopener noreferrer' : undefined}
-                                  class="text-primary-700 hover:text-primary-800 dark:text-primary-300 inline-flex items-center gap-1 font-mono font-medium hover:underline dark:hover:text-white"
-                                >
-                                  {isDoi && (
-                                    <>
-                                      <span>doi:</span>
-                                      <span>{doiClean}</span>
-                                    </>
-                                  )}
-                                  {isPdf && <span>Download PDF</span>}
-                                  {!isDoi && !isPdf && <span>View Publication &rarr;</span>}
-                                  <svg
-                                    class="h-3 w-3"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                  >
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                                    />
-                                  </svg>
-                                </a>
-                              </>
-                            )}
-                          </div>
-
-                          {pub.tags && pub.tags.length > 0 && (
-                            <div class="flex flex-wrap items-center gap-1.5">
-                              {pub.tags.map((tag) => (
-                                <span class="rounded-md bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300">
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </article>
-                    );
-                  })}
+                    <button
+                      class="copy-bibtex-btn rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 shadow-sm hover:border-synbio-orange hover:text-synbio-orange dark:border-white/10 dark:bg-synbio-darkSurface dark:text-gray-300 w-full text-center transition-colors"
+                      data-bibtex={bibtex}
+                    >
+                      Copy BibTeX
+                    </button>
+                  </div>
                 </div>
-              </section>
+              </article>
             );
           })
         }
       </div>
+
+      <div id="no-pub-results" class="hidden py-16 text-center text-gray-500 dark:text-gray-400">
+        <p class="font-urbanist text-lg font-bold">No publications found matching your search.</p>
+        <p class="text-xs mt-1">Try clearing your filters or searching for another author or keyword.</p>
+      </div>
     </div>
-  </div>
+  </section>
 </Layout>
+
+<script>
+  function setupPubInteractions() {
+    const searchInput = document.getElementById('pub-search-input') as HTMLInputElement;
+    const yearBtns = document.querySelectorAll('.pub-year-btn');
+    const cards = document.querySelectorAll('.pub-card');
+    const noResults = document.getElementById('no-pub-results');
+    const abstractBtns = document.querySelectorAll('.abstract-toggle-btn');
+    const bibtexBtns = document.querySelectorAll('.copy-bibtex-btn');
+
+    let activeYear = 'all';
+
+    function filterPubs() {
+      const q = searchInput?.value.toLowerCase().trim() || '';
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const title = card.getAttribute('data-title') || '';
+        const authors = card.getAttribute('data-authors') || '';
+        const journal = card.getAttribute('data-journal') || '';
+        const year = card.getAttribute('data-year') || '';
+        const tags = card.getAttribute('data-tags') || '';
+
+        const matchesYear = activeYear === 'all' || year === activeYear;
+        const matchesQuery =
+          !q ||
+          title.includes(q) ||
+          authors.includes(q) ||
+          journal.includes(q) ||
+          tags.includes(q);
+
+        if (matchesYear && matchesQuery) {
+          (card as HTMLElement).style.display = 'block';
+          visibleCount++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+
+      if (noResults) {
+        if (visibleCount === 0) {
+          noResults.classList.remove('hidden');
+        } else {
+          noResults.classList.add('hidden');
+        }
+      }
+    }
+
+    searchInput?.addEventListener('input', filterPubs);
+
+    yearBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        yearBtns.forEach((b) => {
+          b.classList.remove('active', 'bg-synbio-navy', 'text-white', 'dark:bg-synbio-orange');
+          b.classList.add('bg-gray-100', 'text-gray-700', 'dark:bg-white/10', 'dark:text-gray-300');
+        });
+        btn.classList.add('active', 'bg-synbio-navy', 'text-white', 'dark:bg-synbio-orange');
+        btn.classList.remove('bg-gray-100', 'text-gray-700', 'dark:bg-white/10', 'dark:text-gray-300');
+
+        activeYear = btn.getAttribute('data-year') || 'all';
+        filterPubs();
+      });
+    });
+
+    // Abstract Toggle
+    abstractBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        if (!targetId) return;
+        const drawer = document.getElementById(targetId);
+        if (!drawer) return;
+
+        const isHidden = drawer.classList.contains('hidden');
+        if (isHidden) {
+          drawer.classList.remove('hidden');
+          btn.innerHTML = `<span>Hide Abstract</span> <span class="text-[10px]">▲</span>`;
+        } else {
+          drawer.classList.add('hidden');
+          btn.innerHTML = `<span>Show Abstract</span> <span class="text-[10px]">▼</span>`;
+        }
+      });
+    });
+
+    // BibTeX Copy
+    bibtexBtns.forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const bibtex = btn.getAttribute('data-bibtex');
+        if (!bibtex) return;
+
+        try {
+          await navigator.clipboard.writeText(bibtex);
+          // @ts-ignore
+          if (window.showToast) {
+            // @ts-ignore
+            window.showToast('BibTeX citation copied to clipboard!');
+          }
+        } catch {
+          prompt('Copy BibTeX citation:', bibtex);
+        }
+      });
+    });
+  }
+
+  setupPubInteractions();
+  document.addEventListener('astro:after-swap', setupPubInteractions);
+</script>

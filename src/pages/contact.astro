@@ -1,592 +1,232 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { url } from '../lib/paths.js';
+import PageHeader from '../components/PageHeader.astro';
+import { fetchSettings } from '../lib/fetchSheetData.js';
 
-// Cloudflare Turnstile Site Key configuration:
-// 1. For local development and testing, Cloudflare provides dummy test keys:
-//    - '1x00000000000000000000AA' always passes
-//    - '2x00000000000000000000AB' always fails
-// 2. For production deployment on Cloudflare Pages:
-//    - Create a Turnstile widget in Cloudflare Dashboard (Turnstile -> Add Widget)
-//    - Provide PUBLIC_TURNSTILE_SITE_KEY in environment variables, or edit the fallback below:
-const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+const settings = await fetchSettings();
 ---
 
 <Layout
   title="Contact & Location | The ABCD Lab"
-  description="Contact information, physical lab location, and inquiry form for The ABCD Lab at NISER Bhubaneswar."
+  description="Contact Dr. Ramanujam Srinivasan's ABCD Laboratory at NISER Bhubaneswar, India. Location, address, visitor guide, and inquiry form."
 >
-  <!-- Cloudflare Turnstile explicit API script -->
-  <script
-    is:inline
-    src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoaded&render=explicit"
-    async
-    defer></script>
-  <div class="py-12 sm:py-16 lg:py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <!-- Breadcrumb Navigation -->
-      <nav
-        class="mb-8 flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400"
-        aria-label="Breadcrumb"
-      >
-        <a
-          href={url('/')}
-          class="hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-150"
-        >
-          Home
-        </a>
-        <span>/</span>
-        <span class="font-medium text-gray-800 dark:text-gray-200">Contact</span>
-      </nav>
+  <PageHeader
+    title="Contact & Visit Us"
+    subtitle="Reach out for scientific inquiries, collaborations, postdoc/doctoral applications, or visiting our laboratories."
+    badge="Connect With Us"
+  />
 
-      <!-- Page Header -->
-      <div class="max-w-3xl">
-        <span
-          class="text-accent-700 dark:text-accent-400 text-xs font-bold tracking-wider uppercase"
-        >
-          Get in Touch
-        </span>
-        <h1
-          class="font-heading mt-3 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white"
-        >
-          Contact &amp; Location
-        </h1>
-        <p class="mt-4 text-lg leading-relaxed text-gray-600 dark:text-gray-300">
-          Have questions about our research, preprints, bacterial strains, or open protocols?
-          Interested in collaborating or visiting the lab? Please reach out via our contact form or
-          departmental coordinates.
-        </p>
-      </div>
-
-      <!-- Main Content Grid: Address & Map on Left, Form on Right -->
-      <div class="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-12">
-        <!-- LEFT COLUMN: Affiliation, Address & Map Embed Placeholder (5 cols) -->
-        <div class="space-y-8 lg:col-span-5">
-          <!-- Affiliation Card -->
-          <div
-            class="rounded-2xl border border-gray-200 bg-white p-7 shadow-xs dark:border-gray-800 dark:bg-gray-900/60"
-          >
-            <h2 class="font-heading text-xl font-bold text-gray-900 dark:text-white">
-              Laboratory Affiliation
+  <section class="py-16 sm:py-24 bg-synbio-tint/20 dark:bg-transparent">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <!-- Left Column: Lab Directory & Arrival Guide -->
+        <div class="lg:col-span-5 space-y-8">
+          <div class="synbio-card p-8 sm:p-10 space-y-6">
+            <span class="sec-sub-badge">Official Address</span>
+            <h2 class="font-urbanist text-2xl font-extrabold text-synbio-navy dark:text-white">
+              Laboratory Location
             </h2>
 
-            <div class="mt-4 space-y-4 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+            <div class="space-y-4 text-sm text-gray-700 dark:text-gray-300">
               <div>
-                <p class="font-semibold text-gray-900 dark:text-white">The ABCD Laboratory</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">
-                  Microbial Genetics &amp; Evolutionary Cell Biology
-                </p>
+                <p class="font-bold text-gray-950 dark:text-white">{settings.institution}</p>
+                <p>{settings.address_line2}</p>
+                <p>{settings.address_line3}</p>
               </div>
 
-              <!-- Address Details -->
-              <address
-                class="space-y-1 border-t border-gray-100 pt-4 text-sm not-italic dark:border-gray-800"
-              >
-                <p class="font-medium text-gray-800 dark:text-gray-200">
-                  School of Biological Sciences
-                </p>
-                <p>National Institute of Science Education and Research (NISER)</p>
-                <p>Jatni, Khurda, Odisha 752050, India</p>
-              </address>
+              <div class="rounded-xl bg-synbio-tint/60 p-4 dark:bg-white/5 border border-synbio-navy/10 dark:border-white/10">
+                <span class="text-xs font-bold uppercase tracking-wider text-synbio-orange block mb-1">
+                  Rooms & Facilities
+                </span>
+                <p class="font-semibold text-gray-900 dark:text-white">{settings.lab_building}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">PI Office: Room 314 &bull; Research Labs: SBS Building, NISER</p>
+              </div>
 
-              <!-- Direct Coordinates -->
-              <div class="space-y-2 border-t border-gray-100 pt-4 text-xs dark:border-gray-800">
-                <p class="flex items-center gap-2">
-                  <span class="font-semibold text-gray-800 dark:text-gray-200">PI Email:</span>
-                  <a
-                    href="mailto:rsrini@niser.ac.in"
-                    class="text-primary-700 dark:text-primary-300 hover:underline"
-                  >
-                    rsrini@niser.ac.in
+              <div class="space-y-2 pt-2 border-t border-gray-100 dark:border-white/10">
+                <div class="flex items-center gap-3">
+                  <svg class="h-5 w-5 text-synbio-orange shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <a href={`mailto:${settings.email}`} class="font-semibold text-synbio-navy hover:text-synbio-orange dark:text-white">
+                    {settings.email}
                   </a>
-                </p>
-                <p class="flex items-center gap-2">
-                  <span class="font-semibold text-gray-800 dark:text-gray-200">Lab Phone:</span>
-                  <span class="text-gray-600 dark:text-gray-400">+1 (617) 555-0142</span>
-                </p>
-                <p class="flex items-center gap-2">
-                  <span class="font-semibold text-gray-800 dark:text-gray-200">Shipping:</span>
-                  <span class="text-gray-600 dark:text-gray-400"
-                    >Loading Dock B (Biology Receiver)</span
-                  >
-                </p>
+                </div>
+
+                {settings.email_secondary && (
+                  <div class="flex items-center gap-3">
+                    <svg class="h-5 w-5 text-synbio-orange shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <a href={`mailto:${settings.email_secondary}`} class="text-xs text-gray-500 hover:text-synbio-orange dark:text-gray-400">
+                      {settings.email_secondary}
+                    </a>
+                  </div>
+                )}
+
+                <div class="flex items-center gap-3">
+                  <svg class="h-5 w-5 text-synbio-orange shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  <a href={`tel:${settings.phone?.replace(/\s+/g, '')}`} class="font-semibold text-synbio-navy hover:text-synbio-orange dark:text-white">
+                    {settings.phone}
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Embedded Map Placeholder -->
-          <!-- // map embed goes here -->
-          <div
-            class="relative flex aspect-[16/10] w-full flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 p-6 text-center transition-colors duration-200 dark:border-gray-800 dark:bg-gray-900/60"
-            id="map-embed-container"
-          >
-            <div class="flex flex-col items-center">
-              <div
-                class="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300 mb-2 flex h-10 w-10 items-center justify-center rounded-xl"
-              >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                  ></path>
-                </svg>
+          <!-- Public Transit Guide Card -->
+          <div class="synbio-card p-8 space-y-4">
+            <span class="sec-sub-badge">Arrival & Transit</span>
+            <h3 class="font-urbanist text-xl font-bold text-gray-950 dark:text-white">
+              How to Reach NISER Campus
+            </h3>
+            <div class="space-y-3 text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+              <div class="flex items-start gap-2.5">
+                <span class="rounded bg-blue-600 px-1.5 py-0.5 font-bold text-white">Air</span>
+                <span><strong>Biju Patnaik Airport (BBI):</strong> ~25 km from NISER campus (~45 min by taxi).</span>
               </div>
-              <p
-                class="text-primary-800 dark:text-primary-300 font-mono text-xs font-semibold tracking-wider uppercase"
-              >
-                // map embed goes here
-              </p>
-              <p class="mt-1 max-w-xs text-xs text-gray-500 dark:text-gray-400">
-                Interactive campus map iframe (Google Maps / OpenStreetMap) placeholder
-              </p>
+              <div class="flex items-start gap-2.5">
+                <span class="rounded bg-green-700 px-1.5 py-0.5 font-bold text-white">Rail</span>
+                <span><strong>Khurda Road Junction (KUR):</strong> ~4 km from NISER main gate (~10 min auto/cab).</span>
+              </div>
+              <div class="flex items-start gap-2.5">
+                <span class="rounded bg-red-600 px-1.5 py-0.5 font-bold text-white">Road</span>
+                <span><strong>NH-16:</strong> Well connected via Bhubaneswar / Jatni road network.</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- RIGHT COLUMN: Contact Form with Client-Side Validation (7 cols) -->
-        <div class="lg:col-span-7">
-          <div
-            class="rounded-2xl border border-gray-200 bg-white p-8 shadow-xs sm:p-10 dark:border-gray-800 dark:bg-gray-900/60"
-          >
-            <h2 class="font-heading text-2xl font-bold text-gray-900 dark:text-white">
-              Send Us a Message
-            </h2>
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
-              Please fill in your details below. Required fields are marked with an asterisk (*).
-            </p>
+        <!-- Right Column: Interactive Inquiry Form -->
+        <div class="lg:col-span-7 synbio-card p-8 sm:p-12">
+          <span class="sec-sub-badge">Online Inquiry</span>
+          <h2 class="mt-2 font-urbanist text-2xl sm:text-3xl font-extrabold text-synbio-navy dark:text-white">
+            Send a Direct Message
+          </h2>
+          <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+            Fill in the form below to contact Dr. Ramanujam Srinivasan or the laboratory team. We typically respond within 2-3 business days.
+          </p>
 
-            <!-- Contact Form (no backend yet, with HTML5 client-side validation) -->
-            <form id="contact-form" class="mt-8 space-y-6" novalidate>
-              <!-- Name field -->
+          <form id="contact-form" class="mt-8 space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <label
-                  for="name"
-                  class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
-                >
-                  Full Name <span class="text-accent-700 dark:text-accent-400">*</span>
+                <label for="contact-name" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
+                  Your Full Name *
                 </label>
-                <div class="mt-2">
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    minlength="2"
-                    placeholder="Dr. Rosalind Franklin"
-                    class="focus:border-primary-600 focus:ring-primary-500/20 dark:focus:border-primary-400 block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-2xs placeholder:text-gray-400 focus:ring-2 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
-                  />
-                  <p id="name-error" class="mt-1.5 hidden text-xs text-red-600 dark:text-red-400">
-                    Please provide your name (at least 2 characters).
-                  </p>
-                </div>
+                <input
+                  type="text"
+                  id="contact-name"
+                  required
+                  placeholder="e.g. Dr. Alex Doe"
+                  class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none focus:border-synbio-orange focus:bg-white dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white"
+                />
               </div>
 
-              <!-- Email field -->
               <div>
-                <label
-                  for="email"
-                  class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
-                >
-                  Email Address <span class="text-accent-700 dark:text-accent-400">*</span>
+                <label for="contact-email" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
+                  Your Email Address *
                 </label>
-                <div class="mt-2">
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    placeholder="r.franklin@institution.edu"
-                    class="focus:border-primary-600 focus:ring-primary-500/20 dark:focus:border-primary-400 block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-2xs placeholder:text-gray-400 focus:ring-2 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
-                  />
-                  <p id="email-error" class="mt-1.5 hidden text-xs text-red-600 dark:text-red-400">
-                    Please enter a valid email address.
-                  </p>
-                </div>
+                <input
+                  type="email"
+                  id="contact-email"
+                  required
+                  placeholder="name@university.edu"
+                  class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none focus:border-synbio-orange focus:bg-white dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white"
+                />
               </div>
+            </div>
 
-              <!-- Subject / Topic field -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <label
-                  for="subject"
-                  class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
-                >
-                  Inquiry Topic
+                <label for="contact-subject" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
+                  Inquiry Topic *
                 </label>
-                <div class="mt-2">
-                  <select
-                    id="subject"
-                    name="subject"
-                    class="focus:border-primary-600 focus:ring-primary-500/20 dark:focus:border-primary-400 block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-2xs focus:ring-2 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                  >
-                    <option value="general">General Lab Inquiry</option>
-                    <option value="reagents">Reagents, Plasmids &amp; Strain Requests</option>
-                    <option value="collaboration">Research Collaboration</option>
-                    <option value="prospective">Prospective Student / Postdoc Inquiry</option>
-                    <option value="media">Media &amp; Seminar Invitation</option>
-                  </select>
-                </div>
+                <select
+                  id="contact-subject"
+                  required
+                  class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none focus:border-synbio-orange focus:bg-white dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white"
+                >
+                  <option value="Research Collaboration">Research Collaboration</option>
+                  <option value="Postdoctoral Fellowship">Postdoctoral Fellowship (DFG/MSCA/EMBO)</option>
+                  <option value="PhD Position Application">PhD Position Application</option>
+                  <option value="Master Thesis / Internship">Master's Thesis / Student Internship</option>
+                  <option value="Undergraduate Research">Undergraduate Summer Research</option>
+                  <option value="Reagent / Plasmid Request">Reagent / Plasmid Request</option>
+                  <option value="General Inquiry">General Inquiry</option>
+                </select>
               </div>
 
-              <!-- Message field -->
               <div>
-                <label
-                  for="message"
-                  class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
-                >
-                  Message <span class="text-accent-700 dark:text-accent-400">*</span>
+                <label for="contact-affiliation" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
+                  Institution / Organization
                 </label>
-                <div class="mt-2">
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="5"
-                    required
-                    minlength="10"
-                    placeholder="Please describe your inquiry, question, or reagent request..."
-                    class="focus:border-primary-600 focus:ring-primary-500/20 dark:focus:border-primary-400 block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-2xs placeholder:text-gray-400 focus:ring-2 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
-                  ></textarea>
-                  <p
-                    id="message-error"
-                    class="mt-1.5 hidden text-xs text-red-600 dark:text-red-400"
-                  >
-                    Please provide a message of at least 10 characters.
-                  </p>
-                </div>
+                <input
+                  type="text"
+                  id="contact-affiliation"
+                  placeholder="e.g. University / Company"
+                  class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none focus:border-synbio-orange focus:bg-white dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white"
+                />
               </div>
+            </div>
 
-              <!-- Cloudflare Turnstile CAPTCHA Widget -->
-              <div class="pt-1">
-                <label
-                  class="block text-xs font-semibold tracking-wider text-gray-700 uppercase dark:text-gray-300"
-                >
-                  Security Verification <span class="text-accent-700 dark:text-accent-400">*</span>
-                </label>
-                <div class="mt-2 min-h-[65px]">
-                  <div
-                    id="turnstile-container"
-                    class="cf-turnstile"
-                    data-sitekey={TURNSTILE_SITE_KEY}
-                    data-theme="auto"
-                  >
-                  </div>
-                </div>
-                <p
-                  id="turnstile-error"
-                  class="mt-1.5 hidden text-xs text-red-600 dark:text-red-400"
-                >
-                  Please complete the security check above before sending your message.
-                </p>
-              </div>
+            <div>
+              <label for="contact-message" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
+                Message / Research Background *
+              </label>
+              <textarea
+                id="contact-message"
+                rows="5"
+                required
+                placeholder="Describe your inquiry, project proposal, or background..."
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none focus:border-synbio-orange focus:bg-white dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white"
+              ></textarea>
+            </div>
 
-              <!-- Submit Button -->
-              <div>
-                <button
-                  type="submit"
-                  id="submit-btn"
-                  class="bg-primary-900 hover:bg-primary-800 focus-visible:ring-primary-500 dark:bg-primary-700 dark:hover:bg-primary-600 inline-flex w-full items-center justify-center rounded-xl px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:shadow-md focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  <span id="submit-btn-text" class="inline-flex items-center">
-                    Send Message
-                    <svg
-                      class="ml-2 h-4 w-4"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                        clip-rule="evenodd"></path>
-                    </svg>
-                  </span>
-                  <span id="submit-btn-spinner" class="hidden inline-flex items-center">
-                    <svg
-                      class="mr-2 h-4 w-4 animate-spin text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        class="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        stroke-width="4"></circle>
-                      <path
-                        class="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Sending message...
-                  </span>
-                </button>
-              </div>
-
-              <!-- Submission Feedback Notification Box -->
-              <div
-                id="form-feedback"
-                class="hidden rounded-xl border p-4 text-xs font-medium"
-                role="alert"
-                aria-live="polite"
+            <div class="flex items-center justify-between pt-2">
+              <button
+                type="submit"
+                id="contact-submit-btn"
+                class="theme-btn text-sm px-8 py-3.5"
               >
-              </div>
-
-              <!-- Security and Privacy notice -->
-              <p class="text-center text-xs text-gray-400 dark:text-gray-500">
-                Protected by Cloudflare Turnstile. Your details are solely used to respond to your
-                inquiry.
-              </p>
-            </form>
-          </div>
+                Send Message
+              </button>
+              <span class="text-xs text-gray-400">Directly routed to Dr. Ramanujam Srinivasan (rsrini@niser.ac.in)</span>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </Layout>
 
-<script define:vars={{ TURNSTILE_SITE_KEY }}>
-  let turnstileWidgetId = null;
+<script>
+  function setupContactForm() {
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    if (!form) return;
 
-  function renderTurnstileWidget() {
-    const container = document.getElementById('turnstile-container');
-    if (!container) return;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('contact-name') as HTMLInputElement)?.value;
+      const email = (document.getElementById('contact-email') as HTMLInputElement)?.value;
+      const subject = (document.getElementById('contact-subject') as HTMLSelectElement)?.value;
+      const msg = (document.getElementById('contact-message') as HTMLTextAreaElement)?.value;
 
-    if (typeof window.turnstile !== 'undefined') {
-      try {
-        // If container has no child iframe, render Turnstile
-        if (!container.hasChildNodes() || container.children.length === 0) {
-          turnstileWidgetId = window.turnstile.render('#turnstile-container', {
-            sitekey: TURNSTILE_SITE_KEY,
-            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
-          });
-        }
-      } catch (e) {
-        console.warn('[Turnstile Widget]', e);
+      // Construct mailto fallback
+      const mailtoLink = `mailto:rsrini@niser.ac.in?subject=${encodeURIComponent(`[${subject}] Inquiry from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`)}`;
+
+      // @ts-ignore
+      if (window.showToast) {
+        // @ts-ignore
+        window.showToast('Preparing email inquiry...');
       }
-    }
+
+      setTimeout(() => {
+        window.location.href = mailtoLink;
+      }, 400);
+    });
   }
 
-  function initContactForm() {
-    renderTurnstileWidget();
-
-    const form = document.getElementById('contact-form');
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const subjectInput = document.getElementById('subject');
-    const messageInput = document.getElementById('message');
-
-    const nameError = document.getElementById('name-error');
-    const emailError = document.getElementById('email-error');
-    const messageError = document.getElementById('message-error');
-    const turnstileError = document.getElementById('turnstile-error');
-
-    const submitBtn = document.getElementById('submit-btn');
-    const submitBtnText = document.getElementById('submit-btn-text');
-    const submitBtnSpinner = document.getElementById('submit-btn-spinner');
-    const formFeedback = document.getElementById('form-feedback');
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (form && nameInput && emailInput && messageInput && submitBtn) {
-      form.onsubmit = async (e) => {
-        e.preventDefault();
-
-        let isValid = true;
-
-        // 1. Validate Full Name
-        if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
-          nameError?.classList.remove('hidden');
-          nameInput.classList.add('border-red-500');
-          isValid = false;
-        } else {
-          nameError?.classList.add('hidden');
-          nameInput.classList.remove('border-red-500');
-        }
-
-        // 2. Validate Email
-        if (!emailInput.value.trim() || !emailRegex.test(emailInput.value.trim())) {
-          emailError?.classList.remove('hidden');
-          emailInput.classList.add('border-red-500');
-          isValid = false;
-        } else {
-          emailError?.classList.add('hidden');
-          emailInput.classList.remove('border-red-500');
-        }
-
-        // 3. Validate Message
-        if (!messageInput.value.trim() || messageInput.value.trim().length < 10) {
-          messageError?.classList.remove('hidden');
-          messageInput.classList.add('border-red-500');
-          isValid = false;
-        } else {
-          messageError?.classList.add('hidden');
-          messageInput.classList.remove('border-red-500');
-        }
-
-        // 4. Validate Cloudflare Turnstile token
-        let token = '';
-        if (typeof window.turnstile !== 'undefined' && turnstileWidgetId !== null) {
-          token = window.turnstile.getResponse(turnstileWidgetId) || '';
-        }
-        if (!token) {
-          const hiddenInput = form.querySelector('[name="cf-turnstile-response"]');
-          if (hiddenInput && hiddenInput.value) {
-            token = hiddenInput.value;
-          }
-        }
-
-        if (!token) {
-          turnstileError?.classList.remove('hidden');
-          isValid = false;
-        } else {
-          turnstileError?.classList.add('hidden');
-        }
-
-        if (!isValid) return;
-
-        // 5. Transition to Submitting / Loading State
-        submitBtn.disabled = true;
-        submitBtnText?.classList.add('hidden');
-        submitBtnSpinner?.classList.remove('hidden');
-        formFeedback?.classList.add('hidden');
-
-        try {
-          // 6. Asynchronous POST to Cloudflare Pages Function
-          const response = await fetch('/api/contact', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify({
-              name: nameInput.value.trim(),
-              email: emailInput.value.trim(),
-              subject: subjectInput ? subjectInput.value : 'General',
-              message: messageInput.value.trim(),
-              turnstileToken: token,
-            }),
-          });
-
-          const result = await response.json().catch(() => ({}));
-
-          if (response.ok && result.success) {
-            // Success State: Clear form & display confirmation
-            form.reset();
-
-            if (formFeedback) {
-              formFeedback.className =
-                'rounded-xl border border-green-200 bg-green-50 p-4 text-xs font-medium text-green-800 dark:border-green-800 dark:bg-green-950/60 dark:text-green-300';
-              formFeedback.innerHTML = `
-                <div class="flex items-start gap-2.5">
-                  <svg class="h-4 w-4 shrink-0 text-green-600 dark:text-green-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-                  </svg>
-                  <div>
-                    <strong class="block font-semibold">Message Delivered Successfully!</strong>
-                    <span>${result.message || 'Thank you! Your message has been received and our team will follow up soon.'}</span>
-                  </div>
-                </div>
-              `;
-              formFeedback.classList.remove('hidden');
-            }
-          } else {
-            // Error State from server response
-            if (formFeedback) {
-              formFeedback.className =
-                'rounded-xl border border-red-200 bg-red-50 p-4 text-xs font-medium text-red-800 dark:border-red-800 dark:bg-red-950/60 dark:text-red-300';
-              formFeedback.innerHTML = `
-                <div class="flex items-start gap-2.5">
-                  <svg class="h-4 w-4 shrink-0 text-red-600 dark:text-red-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                  </svg>
-                  <div>
-                    <strong class="block font-semibold">Submission Failed</strong>
-                    <span>${result.error || 'The server was unable to verify or send your message. Please try again or email us directly.'}</span>
-                  </div>
-                </div>
-              `;
-              formFeedback.classList.remove('hidden');
-            }
-          }
-        } catch (err) {
-          // Network error state
-          if (formFeedback) {
-            formFeedback.className =
-              'rounded-xl border border-red-200 bg-red-50 p-4 text-xs font-medium text-red-800 dark:border-red-800 dark:bg-red-950/60 dark:text-red-300';
-            formFeedback.innerHTML = `
-              <div class="flex items-start gap-2.5">
-                <svg class="h-4 w-4 shrink-0 text-red-600 dark:text-red-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                </svg>
-                <div>
-                  <strong class="block font-semibold">Network Connection Error</strong>
-                  <span>Unable to reach the server. Please check your connection or reach out via email.</span>
-                </div>
-              </div>
-            `;
-            formFeedback.classList.remove('hidden');
-          }
-        } finally {
-          // Re-enable submit button
-          submitBtn.disabled = false;
-          submitBtnText?.classList.remove('hidden');
-          submitBtnSpinner?.classList.add('hidden');
-
-          // Reset Turnstile challenge for subsequent submission attempts
-          if (typeof window.turnstile !== 'undefined' && turnstileWidgetId !== null) {
-            window.turnstile.reset(turnstileWidgetId);
-          }
-        }
-      };
-
-      // Real-time input error dismissal
-      nameInput.oninput = () => {
-        if (nameInput.value.trim().length >= 2) {
-          nameError?.classList.add('hidden');
-          nameInput.classList.remove('border-red-500');
-        }
-      };
-
-      emailInput.oninput = () => {
-        if (emailRegex.test(emailInput.value.trim())) {
-          emailError?.classList.add('hidden');
-          emailInput.classList.remove('border-red-500');
-        }
-      };
-
-      messageInput.oninput = () => {
-        if (messageInput.value.trim().length >= 10) {
-          messageError?.classList.add('hidden');
-          messageInput.classList.remove('border-red-500');
-        }
-      };
-    }
-  }
-
-  // Hook for Turnstile explicit API onload callback
-  window.onTurnstileLoaded = () => {
-    renderTurnstileWidget();
-  };
-
-  if (typeof window !== 'undefined') {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initContactForm);
-    } else {
-      initContactForm();
-    }
-    document.addEventListener('astro:page-load', initContactForm);
-  }
+  setupContactForm();
+  document.addEventListener('astro:after-swap', setupContactForm);
 </script>

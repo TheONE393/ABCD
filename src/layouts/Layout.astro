@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import SearchModal from '../components/SearchModal.astro';
 import { url } from '../lib/paths.js';
 
 interface Props {
@@ -13,14 +14,13 @@ interface Props {
 }
 
 const {
-  title = 'Microbial Biology Lab | Pseudomonas, E. coli & Asgard Archaea Research',
-  description = 'Research laboratory dedicated to investigating the molecular genetics, physiology, and evolutionary cell biology of Pseudomonas, Escherichia coli, and Asgard archaea.',
-  image = '/og-image.jpg',
+  title = 'The ABCD Lab | NISER, India',
+  description = 'The ABCD Lab at National Institute of Science Education and Research (NISER), India. Implementing synthetic biology to understand cellular function and harness the potential of cells for metabolic engineering.',
+  image = '/images/hero-img.png',
   article = false,
 } = Astro.props;
 
-// Canonical and Open Graph image URLs (derived using site URL or fallback)
-const siteUrl = Astro.site ? Astro.site.toString() : 'https://microbial-biology-lab.pages.dev';
+const siteUrl = Astro.site ? Astro.site.toString() : 'https://TheONE393.github.io';
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
 const currentPath = Astro.url.pathname;
@@ -31,40 +31,48 @@ const currentPath = Astro.url.pathname;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
-    <link rel="icon" href={url('/favicon.ico')} />
+    <link rel="icon" type="image/png" href={url('/images/favicon.png')} />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Canonical URL -->
+    <!-- Google Fonts: Urbanist & Questrial (Matching synbio.hu-berlin.de exactly) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=Questrial&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome 6 Pro/Free Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Primary Page Metadata -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
 
-    <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageURL} />
-    <meta property="og:site_name" content="The ABCD Lab - NISER Bhubaneswar" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="The ABCD Lab - NISER, India" />
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
 
-    <!-- Astro View Transitions API for smooth cross-fades between page navigations -->
     <ClientRouter fallback="animate" />
 
-    <!-- Inline script to prevent theme flash (FOUC) and persist theme across View Transitions -->
     <script is:inline>
       const applyInitialTheme = () => {
         let theme = 'light';
@@ -84,28 +92,20 @@ const currentPath = Astro.url.pathname;
       document.addEventListener('astro:after-swap', applyInitialTheme);
     </script>
   </head>
-  <body
-    class="selection:bg-accent-200 selection:text-accent-900 dark:selection:bg-accent-900/50 dark:selection:text-accent-200 flex min-h-screen flex-col bg-white font-sans text-zinc-900 antialiased transition-colors duration-200 dark:bg-black dark:text-zinc-100"
-  >
-    <!-- Keyboard Accessibility: Skip to Main Content Link -->
-    <a
-      href="#main-content"
-      class="focus:bg-primary-900 focus:ring-accent-400 dark:focus:bg-primary-700 sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2.5 focus:text-xs focus:font-bold focus:text-white focus:shadow-xl focus:ring-2 focus:outline-none"
-    >
-      Skip to main content
-    </a>
-    <!-- Site Navigation (sticky top nav with dark-mode toggle & mobile menu) -->
+
+  <body class="flex min-h-screen flex-col bg-white font-sans text-gray-900 antialiased transition-colors duration-200 dark:bg-[#070c18] dark:text-gray-100">
+    <!-- Header -->
     <Nav currentPath={currentPath} />
 
-    <!-- Main Page Content Slot -->
-    <main class="flex-1" id="main-content">
+    <!-- Global Instant Search Modal -->
+    <SearchModal />
+
+    <!-- Main Content -->
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
 
-    <!-- Site Footer (lab affiliation, quick links, academic profiles & copyright) -->
+    <!-- Footer -->
     <Footer />
-
-    <!-- GSAP & ScrollTrigger scroll-reveal initializer -->
-    <script src="../lib/gsap.js"></script>
   </body>
 </html>

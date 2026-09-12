@@ -1,0 +1,84 @@
+---
+// ScrollTop.astro - Circular Progress Scroll-To-Top Button
+---
+
+<button
+  id="scroll-to-top"
+  class="fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-xl opacity-0 translate-y-4 pointer-events-none transition-all duration-300 hover:scale-110 dark:bg-synbio-darkSurface dark:shadow-2xl"
+  aria-label="Scroll back to top"
+>
+  <!-- Circular SVG Progress Ring -->
+  <svg class="h-12 w-12 -rotate-90 transform" viewBox="0 0 48 48">
+    <circle
+      class="text-gray-200 dark:text-white/10"
+      stroke-width="3"
+      stroke="currentColor"
+      fill="transparent"
+      r="20"
+      cx="24"
+      cy="24"
+    />
+    <circle
+      id="scroll-progress-circle"
+      class="text-synbio-orange transition-all duration-75"
+      stroke-width="3"
+      stroke-dasharray="125.66"
+      stroke-dashoffset="125.66"
+      stroke-linecap="round"
+      stroke="currentColor"
+      fill="transparent"
+      r="20"
+      cx="24"
+      cy="24"
+    />
+  </svg>
+
+  <!-- Arrow Icon centered inside circle -->
+  <svg
+    class="absolute h-5 w-5 text-synbio-navy transition-transform duration-300 group-hover:-translate-y-0.5 dark:text-white"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2.5"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+  </svg>
+</button>
+
+<script>
+  function setupScrollProgress() {
+    const btn = document.getElementById('scroll-to-top');
+    const circle = document.getElementById('scroll-progress-circle');
+
+    if (!btn || !circle) return;
+
+    const circumference = 2 * Math.PI * 20; // ~125.66
+
+    function updateProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+      if (scrollTop > 200) {
+        btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        btn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+      } else {
+        btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+        btn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+      }
+
+      const progress = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+      const offset = circumference - progress * circumference;
+      circle.style.strokeDashoffset = String(Math.max(0, offset));
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  setupScrollProgress();
+  document.addEventListener('astro:after-swap', setupScrollProgress);
+</script>

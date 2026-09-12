@@ -1,332 +1,601 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Carousel3D from '../components/Carousel3D.astro';
 import { url } from '../lib/paths.js';
+import { fetchNews } from '../lib/fetchSheetData.js';
 
-// Minimalist list of ongoing research programs with 2-3 word titles and metadata
-const researchTopics = [
-  {
-    title: 'Pseudomonas Pathogenesis',
-    name: 'Pseudomonas',
-    sub: 'Pathogenesis',
-    href: url('/research/pseudomonas'),
-    category: 'Opportunistic Pathogen',
-    organismIcon: 'pseudomonas',
-  },
-  {
-    title: 'E. coli Dynamics',
-    name: 'E. coli',
-    sub: 'Dynamics',
-    href: url('/research/ecoli'),
-    category: 'Model Bacterium',
-    organismIcon: 'ecoli',
-  },
-  {
-    title: 'Asgard Archaea',
-    name: 'Asgard',
-    sub: 'Archaea',
-    href: url('/research/asgard-archaea'),
-    category: 'Eukaryogenesis',
-    organismIcon: 'asgard',
-  },
-];
+const newsItems = await fetchNews();
+const latestNews = newsItems[0] || {
+  date: 'September 2026',
+  title: 'Recent research developments in bacterial cell division and cytoskeletal filament dynamics at The ABCD Laboratory.',
+  link: '/news',
+};
 ---
 
-<Layout title="The ABCD Lab">
-  <div class="bg-white text-gray-950 transition-colors duration-200 dark:bg-black dark:text-white">
-    <!-- 1. HERO & 3D CAROUSEL SCROLL SECTION -->
-    <!-- Tall scroll track (220vh) that pins the viewport and scrubs title resize & carousel emergence -->
-    <section id="hero-scroll-section" class="relative h-[220vh] w-full">
-      <div
-        id="pinned-stage"
-        class="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden px-4"
-      >
-        <!-- The ABCD Lab Title (Starts massive and centered, shrinks and docks at top as user scrolls) -->
-        <div id="title-wrapper" class="z-20 text-center will-change-transform">
-          <h1
-            id="hero-lab-name"
-            class="font-heading text-5xl font-bold tracking-tight select-none sm:text-7xl md:text-8xl lg:text-9xl dark:text-white"
-          >
-            The ABCD Lab
-          </h1>
+<Layout title="The ABCD Lab | NISER, India">
+  <!-- Top Hero Header: The ABCD Lab -->
+  <div class="hero-top-area pt-10 pb-4 sm:pt-14 sm:pb-6 lg:pt-16 lg:pb-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="border-b border-gray-100 pb-6 text-center sm:pb-8 dark:border-white/10">
+        <h1
+          class="font-urbanist text-5xl font-extrabold tracking-tight text-[#001f40] sm:text-6xl lg:text-7xl dark:text-white"
+        >
+          The ABCD Lab
+        </h1>
+        <p class="mt-2 text-base font-medium text-gray-600 sm:text-lg dark:text-gray-300">
+          National Institute of Science Education and Research (NISER), India
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. CTA AREA (Hero Image on Left + Two Cards on Right) -->
+  <div class="cta-area style-1 pb-24 sm:pb-32">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
+        <!-- Left: Hexagonal Biomanufacturing Workflow Illustration -->
+        <div class="lg:col-span-7">
+          <div class="image-wrapper flex justify-center">
+            <img
+              src={url('/images/hero-img.png')}
+              class="h-auto w-full max-w-2xl object-contain"
+              alt="Synthetic biology laboratory workflow"
+            />
+          </div>
         </div>
 
-        <!-- Initial subtle scroll guide prompt -->
-        <div
-          id="scroll-prompt"
-          class="pointer-events-none absolute bottom-10 z-10 flex flex-col items-center gap-2 text-xs font-medium tracking-widest text-gray-400 uppercase transition-opacity duration-300 dark:text-gray-500"
-        >
-          <span>Scroll to explore</span>
-          <svg class="h-4 w-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-          </svg>
-        </div>
+        <!-- Right: 2 Stacked Cards -->
+        <div class="space-y-6 lg:col-span-5">
+          <!-- Card 1: Navy Card -->
+          <div class="space-y-6 rounded-[30px] bg-[#001f40] p-8 text-white shadow-md sm:p-10">
+            <h4 class="font-urbanist text-2xl leading-snug font-bold sm:text-3xl">
+              Stay up to date with <br />#Microbial SynBio
+            </h4>
+            <div>
+              <a href={url('/news')} class="theme-btn theme-btn-white"> Our News </a>
+            </div>
+          </div>
 
-        <!-- 3D Carousel Container (Fades & scales in as title docks at the top) -->
-        <div
-          id="carousel-outer"
-          class="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex items-center justify-center opacity-0 will-change-transform sm:bottom-10"
-        >
-          <div class="w-full max-w-5xl px-4">
-            <Carousel3D />
+          <!-- Card 2: Light Blue Card with Shape Overlay -->
+          <div class="info-card style-3 shadow-md">
+            <div class="overlay">
+              <img src={url('/images/card-shape.png')} alt="shape" />
+            </div>
+            <div class="info-card-inner">
+              <p class="desc">
+                Join us as we push the boundaries of microbial synthetic biology, driving towards a
+                more sustainable and bio-based future
+              </p>
+              <div>
+                <a href={url('/contact')} class="theme-btn"> Contact Us </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- 2. QUOTE RIBBON SECTION -->
-    <section
-      id="quote-ribbon-section"
-      class="relative w-full border-y border-gray-200 bg-gray-50 px-6 py-14 transition-colors duration-200 sm:py-20 dark:border-zinc-800 dark:bg-zinc-950"
-      aria-label="Scientific Philosophy"
-    >
-      <div class="mx-auto max-w-4xl text-center">
-        <blockquote
-          class="font-heading mt-4 text-2xl leading-snug font-medium text-gray-900 sm:text-3xl lg:text-4xl dark:text-gray-100"
-        >
-          &ldquo;Life itself is an anomaly.&rdquo;
-        </blockquote>
+  <!-- 3. RESEARCH AREA (Exact copy from SynBio HU-Berlin) -->
+  <div class="research-area style-1 bg-[#f4f7fb] py-20 sm:py-28 dark:bg-white/5">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
+        <!-- Left Column: Title & Research Card -->
+        <div class="space-y-8 lg:col-span-7">
+          <div>
+            <h2 class="font-urbanist text-3xl font-bold text-[#001f40] sm:text-4xl dark:text-white">
+              Our Research
+            </h2>
+          </div>
 
-        <p class="mt-4 font-serif text-sm tracking-wide text-gray-500 italic dark:text-gray-400">
-          &mdash; Ramanujam Srinivasan
-        </p>
-      </div>
-    </section>
-
-    <!-- 3. RESEARCHES GOING ON (AESTHETIC CIRCULAR BUTTONS) -->
-    <section
-      id="research-buttons-section"
-      class="relative px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
-      aria-labelledby="research-heading"
-    >
-      <div class="mx-auto max-w-5xl text-center">
-        <span
-          class="text-primary-700 dark:text-primary-400 text-xs font-bold tracking-widest uppercase"
-        >
-          Core Research Thrusts
-        </span>
-
-        <h2
-          id="research-heading"
-          class="font-heading mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white"
-        >
-          Researches Going On
-        </h2>
-        <p class="mx-auto mt-3 max-w-xl text-sm text-gray-500 dark:text-gray-400">
-          Explore our experimental systems across the microbial and archaeal domains of life.
-        </p>
-
-        <!-- Aesthetic Circular Buttons Grid -->
-        <div class="mt-16 flex flex-wrap items-center justify-center gap-10 sm:gap-14 lg:gap-16">
-          {
-            researchTopics.map((topic) => (
-              <a
-                href={topic.href}
-                class="group focus-visible:ring-primary-500 relative flex h-52 w-52 shrink-0 items-center justify-center rounded-full text-left focus:outline-none focus-visible:ring-4 sm:h-60 sm:w-60 md:h-64 md:w-64"
-                aria-label={`Explore ${topic.title}`}
-              >
-                <div class="group-hover:border-primary-600 dark:group-hover:border-primary-400 pointer-events-none absolute -inset-3.5 rounded-full border border-dashed border-gray-300 transition-all duration-700 ease-out group-hover:scale-105 group-hover:rotate-45 dark:border-zinc-800" />
-
-                <div class="pointer-events-none absolute -inset-1 rounded-full border border-gray-200/80 opacity-0 transition-all duration-300 group-hover:opacity-100 dark:border-zinc-700" />
-
-                <div class="relative z-10 flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-full border border-gray-300/80 bg-zinc-50/90 p-6 text-center shadow-md transition-all duration-500 ease-out group-hover:scale-[1.03] group-hover:border-gray-900 group-hover:shadow-2xl dark:border-zinc-800 dark:bg-zinc-950/95 dark:group-hover:border-white">
-                  <div class="pointer-events-none absolute inset-0 flex items-center justify-center opacity-10 transition-opacity duration-300 group-hover:opacity-20">
-                    {topic.organismIcon === 'pseudomonas' && (
-                      <svg
-                        class="text-primary-800 dark:text-primary-300 h-40 w-40"
-                        viewBox="0 0 100 100"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                      >
-                        <rect x="25" y="40" width="50" height="20" rx="10" />
-                        <path
-                          d="M25 50 C15 35 10 65 0 50"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                        />
-                        <circle cx="70" cy="50" r="1.5" fill="currentColor" />
-                        <circle cx="50" cy="46" r="1.2" fill="currentColor" />
-                        <circle cx="35" cy="54" r="1.2" fill="currentColor" />
-                      </svg>
-                    )}
-                    {topic.organismIcon === 'ecoli' && (
-                      <svg
-                        class="text-primary-800 dark:text-primary-300 h-40 w-40"
-                        viewBox="0 0 100 100"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                      >
-                        <rect x="20" y="38" width="60" height="24" rx="12" />
-                        <line
-                          x1="50"
-                          y1="36"
-                          x2="50"
-                          y2="64"
-                          stroke-width="2"
-                          stroke-dasharray="2 2"
-                        />
-                        <ellipse cx="35" cy="50" rx="6" ry="3" />
-                        <ellipse cx="65" cy="50" rx="6" ry="3" />
-                      </svg>
-                    )}
-                    {topic.organismIcon === 'asgard' && (
-                      <svg
-                        class="text-primary-800 dark:text-primary-300 h-40 w-40"
-                        viewBox="0 0 100 100"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                      >
-                        <circle cx="50" cy="50" r="18" />
-                        <path d="M50 32 C45 20 55 12 50 5" stroke-linecap="round" />
-                        <path d="M68 50 C80 45 88 55 95 50" stroke-linecap="round" />
-                        <path d="M50 68 C55 80 45 88 50 95" stroke-linecap="round" />
-                        <path d="M32 50 C20 55 12 45 5 50" stroke-linecap="round" />
-                        <circle cx="50" cy="50" r="6" stroke-dasharray="2 2" />
-                      </svg>
-                    )}
-                  </div>
-
-                  <span class="text-primary-700 dark:text-primary-400 font-mono text-[10px] font-bold tracking-widest uppercase">
-                    {topic.category}
-                  </span>
-
-                  <span class="font-heading group-hover:text-primary-900 mt-2 text-xl font-bold tracking-tight text-gray-950 transition-colors duration-200 sm:text-2xl dark:text-white dark:group-hover:text-white">
-                    {topic.name}
-                  </span>
-                  <span class="font-serif text-sm font-medium text-gray-600 italic dark:text-gray-300">
-                    {topic.sub}
-                  </span>
-
-                  <span class="group-hover:bg-primary-900 mt-4 inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3.5 py-1 text-xs font-semibold text-gray-800 shadow-xs transition-all duration-300 group-hover:border-gray-900 group-hover:text-white dark:border-zinc-800 dark:bg-zinc-900 dark:text-gray-200 dark:group-hover:border-white dark:group-hover:bg-white dark:group-hover:text-black">
-                    <span>Explore</span>
-                    <svg
-                      class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </span>
-                </div>
+          <div
+            class="space-y-6 rounded-[30px] border border-gray-100 bg-white p-8 shadow-sm sm:p-12 dark:border-white/10 dark:bg-[#0c1626]"
+          >
+            <h3 class="font-urbanist text-2xl font-bold text-[#001f40] sm:text-3xl dark:text-white">
+              <a href={url('/research')} class="hover:text-synbio-orange transition-colors">
+                SynBio tools and methods
               </a>
-            ))
-          }
+            </h3>
+
+            <p class="text-base leading-relaxed text-gray-700 dark:text-gray-300">
+              We are dedicated to developing a synthetic biology toolbox for bacteria, fungi, and
+              yeast, aimed at comprehensively understanding sophisticated cellular function and
+              cleverly reprogramming it to achieve desired functionalities.
+            </p>
+
+            <div class="btn-wrapper flex items-center gap-3 pt-2">
+              <a href={url('/research')} class="theme-btn">Read More</a>
+              <a
+                href={url('/research')}
+                class="circle-arrow-btn"
+                aria-label="Read more about research"
+              >
+                <svg
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: 3D Box Illustration -->
+        <div class="flex justify-center lg:col-span-5">
+          <img
+            src={url('/images/research-img1.png')}
+            class="h-auto w-full max-w-md object-contain"
+            alt="Research thrusts 3D box"
+          />
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+
+  <!-- 4. PUBLICATION AREA (With the EXACT Top-Right Cutout Notch & Hover Animation!) -->
+  <div class="latest-posts-area style-2 bg-white py-20 sm:py-28 dark:bg-[#070c18]">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Section Title & View All Button -->
+      <div class="mb-12 flex items-center justify-between">
+        <h2 class="font-urbanist text-3xl font-bold text-[#001f40] sm:text-4xl dark:text-white">
+          Publication
+        </h2>
+
+        <div class="flex items-center gap-3">
+          <a href={url('/publications')} class="theme-btn">View All</a>
+          <a
+            href={url('/publications')}
+            class="circle-arrow-btn"
+            aria-label="View all publications"
+          >
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3 Publication Cards Grid -->
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Card 1: FASTOP -->
+        <div class="post-card style-2 publication-card">
+          <div class="content">
+            <div class="post-meta">
+              <span class="single-post-meta">M Borah, N Gautron, V Courdavault, R Srinivasan*</span>
+              <span class="dots"></span>
+              <span class="single-post-meta">05/08/2026</span>
+            </div>
+
+            <div class="tag-wrapper">
+              <span class="single-tag">bioRxiv (preprint)</span>
+            </div>
+
+            <h3 class="title">
+              <a
+                href="https://doi.org/10.64898/2026.05.07.723299"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                FASTOP – Fast editing toolkit for top expression sites in yeast
+              </a>
+            </h3>
+
+            <div class="btn-wrapper">
+              <a
+                href="https://doi.org/10.64898/2026.05.07.723299"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-btn"
+              >
+                <span>Read more</span>
+                <span>
+                  <svg
+                    class="inline-block h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <!-- The Circle Arrow Button sitting in the top-right notch -->
+          <div class="btn-wrapper">
+            <a
+              href="https://doi.org/10.64898/2026.05.07.723299"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="circle-arrow-btn"
+              aria-label="Read FASTOP paper"
+            >
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+
+          <!-- The SVG Shape Cutout (Disappears and slides on hover) -->
+          <div class="shape">
+            <svg
+              width="111"
+              height="111"
+              viewBox="0 0 111 111"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Card 2: Synthetic Transcription Factors -->
+        <div class="post-card style-2 publication-card">
+          <div class="content">
+            <div class="post-meta">
+              <span class="single-post-meta"
+                >M Borah, S Gu, EM Saied, C Arenz, MA Koffas, R Srinivasan*</span
+              >
+              <span class="dots"></span>
+              <span class="single-post-meta">02/02/2026</span>
+            </div>
+
+            <div class="tag-wrapper">
+              <span class="single-tag">bioRxiv (preprint)</span>
+            </div>
+
+            <h3 class="title">
+              <a
+                href="https://www.biorxiv.org/content/10.64898/2026.02.02.703094v1"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Fine-tuned synthetic transcription factors for production of 3'
+                phosphoadenosine-5'-phosphosulfate in yeast
+              </a>
+            </h3>
+
+            <div class="btn-wrapper">
+              <a
+                href="https://www.biorxiv.org/content/10.64898/2026.02.02.703094v1"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-btn"
+              >
+                <span>Read more</span>
+                <span>
+                  <svg
+                    class="inline-block h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div class="btn-wrapper">
+            <a
+              href="https://www.biorxiv.org/content/10.64898/2026.02.02.703094v1"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="circle-arrow-btn"
+              aria-label="Read transcription factors paper"
+            >
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+
+          <div class="shape">
+            <svg
+              width="111"
+              height="111"
+              viewBox="0 0 111 111"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Card 3: Fungal Innovations -->
+        <div class="post-card style-2 publication-card">
+          <div class="content">
+            <div class="post-meta">
+              <span class="single-post-meta">H Hinneburg*, S Gu, R Srinivasan*</span>
+              <span class="dots"></span>
+              <span class="single-post-meta">06/10/2025</span>
+            </div>
+
+            <div class="tag-wrapper">
+              <span class="single-tag">Journal of Fungi 11,721</span>
+            </div>
+
+            <h3 class="title">
+              <a
+                href="https://doi.org/10.3390/jof11100721"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Fungal Innovations—Advancing Sustainable Materials, Genetics, and Applications for
+                Industry
+              </a>
+            </h3>
+
+            <div class="btn-wrapper">
+              <a
+                href="https://doi.org/10.3390/jof11100721"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-btn"
+              >
+                <span>Read more</span>
+                <span>
+                  <svg
+                    class="inline-block h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div class="btn-wrapper">
+            <a
+              href="https://doi.org/10.3390/jof11100721"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="circle-arrow-btn"
+              aria-label="Read fungal innovations paper"
+            >
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+
+          <div class="shape">
+            <svg
+              width="111"
+              height="111"
+              viewBox="0 0 111 111"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. OUR TEAM SECTION (Full Photo with Dr. Ramanujam Srinivasan Portrait & Hover Reveal) -->
+  <div class="testimonial-slider-area style-1 bg-white py-20 dark:bg-[#070c18]">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <h2 class="font-urbanist text-3xl font-bold text-[#001f40] sm:text-4xl dark:text-white">
+          Our Team
+        </h2>
+      </div>
+
+      <div class="testimonial-bg-wrapper hp-tbg shadow-lg">
+        <img
+          src={url('/images/group-photo.jpg')}
+          alt="The ABCD Lab group photo"
+          class="hp-bg-photo"
+        />
+        <div class="hp-bg-overlay"></div>
+
+        <!-- PI Portrait in Top Right Corner -->
+        <div class="hp-pi-portrait">
+          <img src={url('/images/member_pics/team-1.png')} alt="Dr. Ramanujam Srinivasan (Srini)" />
+          <div class="hp-pi-label">
+            <strong>Dr. Ramanujam Srinivasan (Srini)</strong>
+            Principal Investigator<br />Associate Professor, SBS, NISER
+          </div>
+        </div>
+
+        <!-- Bottom-Left Button that appears on hover -->
+        <div class="hp-team-caption">
+          <a href={url('/team')} class="hp-team-link">
+            <span>Meet the Team</span>
+            <svg
+              class="ml-1 inline-block h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. NEWS SECTION (With Top-Right Notch Cutout & Hover Animation) -->
+  <div class="latest-posts-area style-1 bg-white py-20 dark:bg-[#070c18]">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 flex items-center justify-between">
+        <div>
+          <h2
+            class="font-urbanist text-3xl leading-tight font-bold text-[#001f40] sm:text-4xl dark:text-white"
+          >
+            Stay up to date with #Microbial SynBio<br />
+            Our latest news
+          </h2>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href={url('/news')} class="theme-btn">View All</a>
+          <a href={url('/news')} class="circle-arrow-btn" aria-label="View all news">
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-8">
+        <div class="post-card style-2 publication-card w-full">
+          <div class="content">
+            <div class="post-meta">
+              <span class="single-post-meta">{latestNews.date}</span>
+            </div>
+
+            <h3
+              class="title text-xl leading-relaxed font-bold text-[#001f40] sm:text-2xl dark:text-white"
+            >
+              {latestNews.title}
+            </h3>
+
+            <div class="btn-wrapper">
+              <a href={url(latestNews.link || '/news')} class="text-btn">
+                <span>Read more</span>
+                <span>
+                  <svg
+                    class="inline-block h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div class="btn-wrapper">
+            <a href={url(latestNews.link || '/news')} class="circle-arrow-btn" aria-label="Read latest news">
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+
+          <div class="shape">
+            <svg
+              width="111"
+              height="111"
+              viewBox="0 0 111 111"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </Layout>
-
-<script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  function initHomeScrollAnimation() {
-    const scrollSection = document.getElementById('hero-scroll-section');
-    const titleWrapper = document.getElementById('title-wrapper');
-    const carouselOuter = document.getElementById('carousel-outer');
-    const scrollPrompt = document.getElementById('scroll-prompt');
-
-    if (!scrollSection || !titleWrapper || !carouselOuter) return;
-
-    // Check prefers-reduced-motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      // In reduced motion, simply keep title docked and carousel visible immediately
-      titleWrapper.style.transform = 'translateY(-34vh) scale(0.4)';
-      carouselOuter.style.opacity = '1';
-      carouselOuter.style.pointerEvents = 'auto';
-      if (scrollPrompt) scrollPrompt.style.opacity = '0';
-      return;
-    }
-
-    // Kill existing triggers on page reload / transition
-    ScrollTrigger.getAll().forEach((t) => t.kill());
-
-    // Calculate responsive vertical travel for title
-    const isMobile = window.innerWidth < 640;
-    const targetY = isMobile ? '-32vh' : '-35vh';
-    const targetScale = isMobile ? 0.45 : 0.35;
-
-    // Timeline pinned to scrollSection with scrub
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: scrollSection,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.6,
-      },
-    });
-
-    // 1. Fade out the initial scroll prompt in the first 15% of scroll
-    if (scrollPrompt) {
-      tl.to(
-        scrollPrompt,
-        {
-          opacity: 0,
-          duration: 0.15,
-          ease: 'power1.out',
-        },
-        0
-      );
-    }
-
-    // 2. Shrink and move "The ABCD Lab" to the top
-    tl.to(
-      titleWrapper,
-      {
-        y: targetY,
-        scale: targetScale,
-        duration: 0.75,
-        ease: 'power2.inOut',
-      },
-      0
-    );
-
-    // 3. Simultaneously reveal the 3D Carousel
-    tl.fromTo(
-      carouselOuter,
-      {
-        opacity: 0,
-        scale: 0.8,
-        y: 40,
-        pointerEvents: 'none',
-      },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        pointerEvents: 'auto',
-        duration: 0.65,
-        ease: 'power2.out',
-      },
-      0.25
-    );
-  }
-
-  if (typeof window !== 'undefined') {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initHomeScrollAnimation);
-    } else {
-      initHomeScrollAnimation();
-    }
-    document.addEventListener('astro:page-load', initHomeScrollAnimation);
-    window.addEventListener('resize', () => {
-      ScrollTrigger.refresh();
-    });
-  }
-</script>

@@ -1,0 +1,210 @@
+---
+import { url } from '../lib/paths.js';
+import { fetchSettings } from '../lib/fetchSheetData.js';
+
+const settings = await fetchSettings();
+---
+
+<!-- Slide-out Sidebar Drawer Overlay -->
+<div
+  id="sidebar-drawer-backdrop"
+  class="fixed inset-0 z-50 pointer-events-none bg-black/60 opacity-0 backdrop-blur-sm transition-opacity duration-300"
+  aria-hidden="true"
+></div>
+
+<!-- Slide-out Drawer Container -->
+<aside
+  id="sidebar-drawer"
+  class="fixed top-0 right-0 z-50 flex h-full w-full max-w-md translate-x-full flex-col bg-white shadow-2xl transition-transform duration-300 ease-out sm:w-96 dark:bg-[#070c18] dark:border-l dark:border-white/10"
+  aria-label="Laboratory Quick Contact Drawer"
+>
+  <!-- Drawer Header -->
+  <div class="flex items-center justify-between border-b border-gray-100 p-6 dark:border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-synbio-navy text-synbio-orange font-bold font-urbanist text-xs shadow-md">
+        ABCD
+      </div>
+      <div>
+        <h3 class="font-urbanist text-lg font-bold text-gray-950 dark:text-white">
+          {settings.short_name || 'The ABCD Lab'}
+        </h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          {settings.institution || 'NISER Bhubaneswar'}
+        </p>
+      </div>
+    </div>
+
+    <button
+      id="sidebar-drawer-close"
+      class="rounded-xl p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-white/10 dark:hover:text-white transition-colors"
+      aria-label="Close sidebar"
+    >
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Drawer Body -->
+  <div class="flex-1 overflow-y-auto p-6 space-y-8">
+    <!-- Lab Mission Quote -->
+    <div class="rounded-2xl bg-synbio-tint/70 p-5 dark:bg-white/5 border border-synbio-navy/5 dark:border-white/5">
+      <span class="sec-sub-badge">Mission</span>
+      <p class="mt-2 font-urbanist text-sm font-semibold leading-relaxed text-gray-800 dark:text-gray-200">
+        "Mastering the art of biological engineering enables us to revolutionize sustainability, medicine, and circular manufacturing."
+      </p>
+    </div>
+
+    <!-- Contact Info Widget -->
+    <div>
+      <h4 class="font-urbanist text-xs font-bold uppercase tracking-widest text-synbio-orange">
+        Direct Contact
+      </h4>
+      <div class="mt-4 space-y-3.5 text-sm">
+        <div class="flex items-start gap-3 text-gray-600 dark:text-gray-300">
+          <svg class="h-5 w-5 shrink-0 text-synbio-navy dark:text-synbio-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <div class="space-y-1">
+            <a href={`mailto:${settings.email}`} class="block font-medium hover:text-synbio-orange">
+              {settings.email}
+            </a>
+            {settings.email_secondary && (
+              <a href={`mailto:${settings.email_secondary}`} class="block text-xs text-gray-400 hover:text-synbio-orange">
+                {settings.email_secondary}
+              </a>
+            )}
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+          <svg class="h-5 w-5 shrink-0 text-synbio-navy dark:text-synbio-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+          </svg>
+          <a href={`tel:${settings.phone?.replace(/\s+/g, '')}`} class="font-medium hover:text-synbio-orange">
+            {settings.phone}
+          </a>
+        </div>
+
+        <div class="flex items-start gap-3 text-gray-600 dark:text-gray-300">
+          <svg class="h-5 w-5 shrink-0 text-synbio-navy dark:text-synbio-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <div class="text-xs leading-relaxed">
+            <p class="font-semibold text-gray-900 dark:text-white">{settings.address_line1}</p>
+            <p>{settings.address_line2}</p>
+            <p>{settings.address_line3}</p>
+            <p class="mt-1 font-medium text-synbio-orange">{settings.lab_building}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Navigation Links -->
+    <div>
+      <h4 class="font-urbanist text-xs font-bold uppercase tracking-widest text-synbio-orange">
+        Explore Laboratory
+      </h4>
+      <div class="mt-3 grid grid-cols-2 gap-2 text-sm font-semibold">
+        <a href={url('/')} class="rounded-lg bg-gray-50 px-3 py-2 text-gray-700 hover:bg-synbio-navy hover:text-white dark:bg-white/5 dark:text-gray-300 dark:hover:bg-synbio-orange dark:hover:text-white transition-all">
+          Home
+        </a>
+        <a href={url('/research')} class="rounded-lg bg-gray-50 px-3 py-2 text-gray-700 hover:bg-synbio-navy hover:text-white dark:bg-white/5 dark:text-gray-300 dark:hover:bg-synbio-orange dark:hover:text-white transition-all">
+          Research
+        </a>
+        <a href={url('/publications')} class="rounded-lg bg-gray-50 px-3 py-2 text-gray-700 hover:bg-synbio-navy hover:text-white dark:bg-white/5 dark:text-gray-300 dark:hover:bg-synbio-orange dark:hover:text-white transition-all">
+          Publications
+        </a>
+        <a href={url('/team')} class="rounded-lg bg-gray-50 px-3 py-2 text-gray-700 hover:bg-synbio-navy hover:text-white dark:bg-white/5 dark:text-gray-300 dark:hover:bg-synbio-orange dark:hover:text-white transition-all">
+          Our Team
+        </a>
+        <a href={url('/news')} class="rounded-lg bg-gray-50 px-3 py-2 text-gray-700 hover:bg-synbio-navy hover:text-white dark:bg-white/5 dark:text-gray-300 dark:hover:bg-synbio-orange dark:hover:text-white transition-all">
+          News
+        </a>
+        <a href={url('/contact')} class="rounded-lg bg-gray-50 px-3 py-2 text-gray-700 hover:bg-synbio-navy hover:text-white dark:bg-white/5 dark:text-gray-300 dark:hover:bg-synbio-orange dark:hover:text-white transition-all">
+          Contact Us
+        </a>
+      </div>
+    </div>
+
+    <!-- Active Research Grants -->
+    <div class="rounded-2xl border border-dashed border-gray-300 p-4 dark:border-white/15">
+      <span class="text-[10px] font-bold uppercase tracking-wider text-synbio-orange">
+        Key Grants & Funding
+      </span>
+      <ul class="mt-2 space-y-2 text-xs text-gray-600 dark:text-gray-300">
+        <li class="flex items-center gap-2">
+          <span class="h-1.5 w-1.5 rounded-full bg-synbio-orange"></span>
+          <span>DFG Emmy Noether (2.4M €) — COMPLATn</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="h-1.5 w-1.5 rounded-full bg-synbio-orange"></span>
+          <span>VolkswagenStiftung (1.3M €) — MyPro</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="h-1.5 w-1.5 rounded-full bg-synbio-orange"></span>
+          <span>BMBF GO-Bio Initial — BIPASS</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Drawer Footer -->
+  <div class="border-t border-gray-100 p-6 dark:border-white/10">
+    <a
+      href={url('/contact')}
+      class="theme-btn w-full text-center text-sm"
+    >
+      Get in Touch
+    </a>
+  </div>
+</aside>
+
+<script>
+  function setupSidebarDrawer() {
+    const backdrop = document.getElementById('sidebar-drawer-backdrop');
+    const drawer = document.getElementById('sidebar-drawer');
+    const closeBtn = document.getElementById('sidebar-drawer-close');
+
+    if (!backdrop || !drawer) return;
+
+    function openDrawer() {
+      backdrop.classList.remove('pointer-events-none', 'opacity-0');
+      backdrop.classList.add('opacity-100');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      backdrop.classList.add('opacity-0');
+      backdrop.classList.remove('opacity-100');
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('translate-x-full');
+      setTimeout(() => {
+        backdrop.classList.add('pointer-events-none');
+        document.body.style.overflow = '';
+      }, 300);
+    }
+
+    document.querySelectorAll('[data-sidebar-trigger]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openDrawer();
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !drawer.classList.contains('translate-x-full')) {
+        closeDrawer();
+      }
+    });
+  }
+
+  setupSidebarDrawer();
+  document.addEventListener('astro:after-swap', setupSidebarDrawer);
+</script>

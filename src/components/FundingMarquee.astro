@@ -1,0 +1,114 @@
+---
+// FundingMarquee.astro - Support and Funding Partners Infinite Marquee
+const partners = [
+  {
+    name: 'Humboldt-Universität zu Berlin',
+    label: 'HU Berlin',
+    subtitle: 'Department of Biology',
+    tag: 'Host Institute',
+  },
+  {
+    name: 'Deutsche Forschungsgemeinschaft (DFG)',
+    label: 'DFG Emmy Noether',
+    subtitle: 'Emmy Noether Fellowship (2.4M €)',
+    tag: 'Major Grant',
+  },
+  {
+    name: 'VolkswagenStiftung',
+    label: 'VolkswagenStiftung',
+    subtitle: 'MyPro Initiative (1.3M €)',
+    tag: 'Consortium',
+  },
+  {
+    name: 'Fraunhofer IAP',
+    label: 'Fraunhofer IAP',
+    subtitle: 'Applied Polymer Research',
+    tag: 'Collaborator',
+  },
+  {
+    name: 'Max Planck Unit for Science of Pathogens',
+    label: 'Max Planck (MPUSP)',
+    subtitle: 'Associated Group',
+    tag: 'Network',
+  },
+  {
+    name: 'Federal Ministry of Education & Research',
+    label: 'BMBF Germany',
+    subtitle: 'GO-Bio Initial Program',
+    tag: 'Grantor',
+  },
+];
+---
+
+<section class="relative border-y border-gray-100 bg-gray-50/70 py-12 dark:border-white/5 dark:bg-synbio-darkSurface/50 overflow-hidden">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center mb-8">
+    <span class="sec-sub-badge justify-center">Acknowledgements</span>
+    <h3 class="mt-2 font-urbanist text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
+      We are grateful for support from
+    </h3>
+  </div>
+
+  <!-- Marquee Container -->
+  <div class="relative w-full overflow-hidden mask-fade">
+    <div class="marquee-track flex gap-6 sm:gap-8 items-center py-2">
+      <!-- First set -->
+      {
+        partners.map((partner) => (
+          <div class="group flex min-w-[260px] sm:min-w-[280px] items-center gap-4 rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm transition-all duration-300 hover:border-synbio-orange hover:shadow-md dark:border-white/10 dark:bg-synbio-darkSurface dark:hover:border-synbio-orange">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-synbio-navy/5 text-synbio-navy dark:bg-white/10 dark:text-synbio-orange">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+            </div>
+            <div class="text-left">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-gray-900 group-hover:text-synbio-orange transition-colors dark:text-white">
+                  {partner.label}
+                </span>
+                <span class="rounded bg-synbio-orange/10 px-1.5 py-0.5 text-[9px] font-bold text-synbio-orange uppercase">
+                  {partner.tag}
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                {partner.subtitle}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+
+      <!-- Duplicate set for seamless infinite loop -->
+      {
+        partners.map((partner) => (
+          <div class="group flex min-w-[260px] sm:min-w-[280px] items-center gap-4 rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm transition-all duration-300 hover:border-synbio-orange hover:shadow-md dark:border-white/10 dark:bg-synbio-darkSurface dark:hover:border-synbio-orange">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-synbio-navy/5 text-synbio-navy dark:bg-white/10 dark:text-synbio-orange">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+            </div>
+            <div class="text-left">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-gray-900 group-hover:text-synbio-orange transition-colors dark:text-white">
+                  {partner.label}
+                </span>
+                <span class="rounded bg-synbio-orange/10 px-1.5 py-0.5 text-[9px] font-bold text-synbio-orange uppercase">
+                  {partner.tag}
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                {partner.subtitle}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .mask-fade {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+</style>

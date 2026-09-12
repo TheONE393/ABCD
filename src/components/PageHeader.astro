@@ -1,0 +1,52 @@
+---
+import { url } from '../lib/paths.js';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  badge?: string;
+}
+
+const { title, subtitle, badge } = Astro.props;
+---
+
+<div class="relative overflow-hidden border-b border-gray-200 bg-gradient-to-b from-synbio-tint/50 to-white py-14 sm:py-20 dark:border-white/10 dark:from-synbio-darkSurface/60 dark:to-[#070c18]">
+  <!-- Subtle decorative background grid pattern -->
+  <div class="pointer-events-none absolute inset-0 opacity-[0.03] dark:opacity-[0.05]">
+    <svg class="h-full w-full" width="100%" height="100%">
+      <defs>
+        <pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="1" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+    </svg>
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col items-start gap-4">
+      <!-- Breadcrumb navigation -->
+      <nav class="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400" aria-label="Breadcrumb">
+        <a href={url('/')} class="hover:text-synbio-orange transition-colors">Home</a>
+        <span>/</span>
+        <span class="text-synbio-orange">{title}</span>
+      </nav>
+
+      {badge && (
+        <span class="sec-sub-badge">
+          {badge}
+        </span>
+      )}
+
+      <h1 class="font-urbanist text-4xl font-extrabold tracking-tight text-synbio-navy sm:text-5xl lg:text-6xl dark:text-white">
+        {title}
+      </h1>
+
+      {subtitle && (
+        <p class="max-w-3xl text-base text-gray-600 sm:text-lg leading-relaxed dark:text-gray-300">
+          {subtitle}
+        </p>
+      )}
+    </div>
+  </div>
+</div>

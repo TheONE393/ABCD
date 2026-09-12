@@ -1,0 +1,524 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { url } from '../lib/paths.js';
+import { fetchTeam, fetchSettings, formatDriveUrl } from '../lib/fetchSheetData.js';
+
+const allMembers = await fetchTeam();
+const settings = await fetchSettings();
+const pi = allMembers.find((m) => m.category === 'pi') || allMembers[0];
+const currentMembers = allMembers.filter((m) => m.is_current && m.category !== 'pi');
+const alumni = allMembers.filter((m) => !m.is_current || m.category === 'alumni');
+
+// Process banner images from settings (e.g. 'team_photos' or 'team_gallery')
+const rawPhotos = settings.team_photos || settings.team_gallery || settings.team_banner_images || '';
+const parsedPhotos = rawPhotos
+  ? rawPhotos
+      .split(/[\n,;]+/)
+      .map((u) => formatDriveUrl(u))
+      .filter(Boolean)
+  : [];
+
+// Default high-resolution lab and science banner images if none yet in Google Sheet
+const defaultPhotos = [
+  {
+    url: 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=1600',
+    title: 'The ABCD Laboratory Cohort',
+    subtitle: 'School of Biological Sciences • NISER Bhubaneswar',
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600',
+    title: 'Actin & Bacterial Cytoskeleton Dynamics',
+    subtitle: 'Spatiotemporal macromolecular mechanisms in living cells',
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1600',
+    title: 'Super-Resolution Microscopy & Imaging',
+    subtitle: 'Dissecting cell shape determination and division assemblies',
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&q=80&w=1600',
+    title: 'Collaborative Research & Innovation',
+    subtitle: 'Undergraduate, PhD, and Postdoctoral Scholars at NISER',
+  },
+];
+
+const bannerSlides = parsedPhotos.length > 0
+  ? parsedPhotos.map((imgUrl, idx) => ({
+      url: imgUrl,
+      title: 'The ABCD Laboratory',
+      subtitle: `NISER Bhubaneswar, India (Photo ${idx + 1})`,
+    }))
+  : defaultPhotos;
+
+function getInitials(name = '') {
+  const cleaned = name
+    .replace(/^(Dr\.|Prof\.|Mr\.|Ms\.|Mrs\.)\s+/i, '')
+    .replace(/\(.*?\)/g, '')
+    .trim();
+  const parts = cleaned.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return 'AB';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+---
+
+<Layout
+  title="Team | The ABCD Lab"
+  description="Meet the researchers, doctoral candidates, technicians, and alumni in Dr. Ramanujam Srinivasan's ABCD Laboratory at NISER Bhubaneswar, India."
+>
+  <div class="py-10 sm:py-16 bg-synbio-tint/20 dark:bg-transparent">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+      
+      <!-- 1. PAGE TITLE -->
+      <div class="text-center pt-2">
+        <h1 class="font-urbanist text-4xl sm:text-5xl font-extrabold text-gray-950 dark:text-white tracking-tight">
+          Team
+        </h1>
+      </div>
+
+      <!-- 2. ENLARGED HERO GROUP PHOTO / BANNER WITH SMOOTH AUTOSCROLLING LOOP -->
+      <div
+        id="team-banner-carousel"
+        class="group relative overflow-hidden rounded-3xl sm:rounded-[2.5rem] border border-gray-200/80 dark:border-white/10 shadow-2xl bg-gray-950 text-white h-[440px] sm:h-[520px] md:h-[580px] lg:h-[620px] w-full select-none"
+        data-slide-count={bannerSlides.length}
+      >
+        <!-- Slides Track -->
+        <div class="relative w-full h-full">
+          {
+            bannerSlides.map((slide, index) => (
+              <div
+                class={`carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                  index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                }`}
+                data-slide-index={index}
+              >
+                <!-- Background Image -->
+                <img
+                  src={slide.url}
+                  alt={slide.title}
+                  class="w-full h-full object-cover object-center transform scale-100 transition-transform duration-10000 ease-out"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  referrerpolicy="no-referrer"
+                />
+
+                <!-- Modern Scrim / Vignette Gradients for cinematic contrast -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/30 pointer-events-none"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_50%)] pointer-events-none"></div>
+
+                <!-- Slide Text Content -->
+                <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10 lg:p-12 z-20 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                  <div class="space-y-2 max-w-2xl">
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-[0.16em] bg-black/80 text-white dark:bg-white dark:text-gray-950 backdrop-blur-md border border-white/20 shadow-md">
+                      The ABCD Lab
+                    </span>
+                    <h2 class="font-urbanist text-2xl sm:text-4xl font-extrabold text-white leading-tight drop-shadow-md">
+                      {slide.title}
+                    </h2>
+                    <p class="text-xs sm:text-sm text-gray-200 drop-shadow-sm font-medium">
+                      {slide.subtitle}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <!-- Carousel Navigation Arrows (visible on hover) -->
+        <button
+          type="button"
+          id="carousel-prev-btn"
+          class="absolute left-4 top-1/2 -translate-y-1/2 z-30 h-11 w-11 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 focus:opacity-100"
+          aria-label="Previous photo"
+        >
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          id="carousel-next-btn"
+          class="absolute right-4 top-1/2 -translate-y-1/2 z-30 h-11 w-11 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 focus:opacity-100"
+          aria-label="Next photo"
+        >
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <!-- Carousel Pagination Dots -->
+        <div class="absolute bottom-4 sm:bottom-6 right-6 sm:right-10 z-30 flex items-center gap-2">
+          {
+            bannerSlides.map((_, dotIdx) => (
+              <button
+                type="button"
+                class={`carousel-dot h-2 transition-all duration-300 rounded-full ${
+                  dotIdx === 0 ? 'w-8 bg-white shadow-sm' : 'w-2 bg-white/40 hover:bg-white/70'
+                }`}
+                data-dot-index={dotIdx}
+                aria-label={`Go to slide ${dotIdx + 1}`}
+              />
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- 3. PRINCIPAL INVESTIGATOR (PI) SHOWCASE -->
+      <div class="synbio-card overflow-hidden p-6 sm:p-10">
+        <div class="flex flex-col md:flex-row gap-8 items-start">
+          
+          <!-- PI Portrait Box -->
+          <div class="w-full md:w-72 shrink-0 flex flex-col items-center sm:items-start">
+            <div class="aspect-square w-full sm:w-72 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border border-gray-200/70 dark:border-white/10 flex items-center justify-center shadow-md relative">
+              {pi.photo_url ? (
+                <img
+                  src={pi.photo_url}
+                  alt={pi.name}
+                  class="w-full h-full object-cover object-center"
+                  loading="eager"
+                  referrerpolicy="no-referrer"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <span class="font-urbanist text-6xl font-black text-slate-400 dark:text-slate-500 tracking-wider select-none hidden items-center justify-center w-full h-full">
+                  {getInitials(pi.name)}
+                </span>
+              ) : (
+                <span class="font-urbanist text-6xl font-black text-slate-400 dark:text-slate-500 tracking-wider select-none">
+                  {getInitials(pi.name)}
+                </span>
+              )}
+            </div>
+
+            <!-- PI Direct Links with Distinct Styled Black Accents -->
+            <div class="mt-4 flex flex-wrap items-center gap-3 text-xs font-semibold">
+              {pi.email && (
+                <a
+                  href={`mailto:${pi.email}`}
+                  class="inline-flex items-center gap-1.5 text-gray-950 dark:text-gray-100 hover:underline font-mono font-bold"
+                  aria-label="Email PI"
+                >
+                  <svg class="h-4 w-4 shrink-0 text-gray-950 dark:text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <span>{pi.email}</span>
+                </a>
+              )}
+              {pi.scholar_url && (
+                <a
+                  href={pi.scholar_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1 text-gray-900 hover:text-black dark:text-gray-200 dark:hover:text-white transition-colors"
+                >
+                  <span class="rounded bg-gray-950 text-white dark:bg-white dark:text-gray-950 px-1.5 py-0.5 text-[10px] font-bold">GS</span>
+                  <span>Scholar</span>
+                </a>
+              )}
+              {pi.orcid_url && (
+                <a
+                  href={pi.orcid_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1 text-gray-900 hover:text-black dark:text-gray-200 dark:hover:text-white transition-colors"
+                >
+                  <span class="rounded bg-gray-950 text-white dark:bg-white dark:text-gray-950 px-1 text-[10px] font-bold">iD</span>
+                  <span>ORCID</span>
+                </a>
+              )}
+              <div class="pt-4 border-t border-gray-100 dark:border-white/10 flex flex-wrap gap-6 text-xs w-full">
+                <div>
+                  <span class="font-bold text-gray-500 dark:text-gray-400 uppercase block text-[10px] tracking-wider">Office Location</span>
+                  <span class="font-semibold text-gray-900 dark:text-white">Room 314, SBS Building, NISER Campus</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PI Bio & Details -->
+          <div class="flex-1 space-y-4">
+            <div>
+              <span class="inline-block text-[11px] font-black uppercase tracking-[0.2em] text-gray-950 dark:text-white bg-black/5 dark:bg-white/10 px-2.5 py-1 rounded border border-black/10 dark:border-white/10">
+                Principal Investigator
+              </span>
+              <h2 class="font-urbanist text-3xl sm:text-4xl font-extrabold text-gray-950 dark:text-white mt-2">
+                {pi.name}
+              </h2>
+              <p class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mt-1">
+                {pi.role} &bull; School of Biological Sciences, NISER Bhubaneswar
+              </p>
+            </div>
+
+            <div class="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-relaxed space-y-3">
+              <p>
+                {pi.bio}
+              </p>
+              <p>
+                Dr. Ramanujam Srinivasan (Srini) leads The ABCD Lab at NISER Bhubaneswar, supported by research grants from the Department of Atomic Energy (DAE), Department of Biotechnology (DBT), Science and Engineering Research Board (SERB), and Wellcome Trust / DBT India Alliance. The lab actively mentors undergraduate, doctoral, and postdoctoral scholars in understanding bacterial cell division and cytoskeletal architecture.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CURRENT TEAM MEMBERS (3-COLUMN GRID WITH TRANSLUCENT LIQUID GLASS HOVER) -->
+      <div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {
+            currentMembers.map((member) => (
+              <div class="group relative overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-xs transition-all duration-300 hover:shadow-xl dark:border-white/10 dark:bg-[#0c1527]">
+                
+                <!-- Card Image Area (Aspect 4/5) -->
+                <div class="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center border-b border-gray-100 dark:border-white/5">
+                  {member.photo_url ? (
+                    <img
+                      src={member.photo_url}
+                      alt={member.name}
+                      class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                      referrerpolicy="no-referrer"
+                      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    />
+                    <span class="font-urbanist text-6xl font-black tracking-widest text-slate-400 dark:text-slate-500 select-none transition-transform duration-500 group-hover:scale-105 hidden items-center justify-center w-full h-full">
+                      {getInitials(member.name)}
+                    </span>
+                  ) : (
+                    <span class="font-urbanist text-6xl font-black tracking-widest text-slate-400 dark:text-slate-500 select-none transition-transform duration-500 group-hover:scale-105">
+                      {getInitials(member.name)}
+                    </span>
+                  )}
+                </div>
+
+                <!-- Bottom Bar (Visible at rest) -->
+                <div class="p-5 bg-white dark:bg-[#0c1527]">
+                  <h3 class="font-urbanist text-lg font-bold text-gray-950 dark:text-white leading-tight">
+                    {member.name}
+                  </h3>
+                  <p class="mt-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+                    {member.role}
+                  </p>
+                </div>
+
+                <!-- TRANSLUCENT LIQUID GLASS HOVER OVERLAY (Pinned Email at the Bottom) -->
+                <!-- Note: Transparency is controlled by .team-liquid-glass and CSS variables at the bottom of this file -->
+                <div class="pointer-events-none absolute inset-0 flex flex-col justify-between p-6 sm:p-7 opacity-0 scale-[0.98] group-hover:scale-100 group-hover:pointer-events-auto group-hover:opacity-100 transition-all duration-300 ease-out z-20 rounded-2xl backdrop-blur-2xl backdrop-saturate-200 team-liquid-glass bg-white/55 dark:bg-[#061220]/60 border border-white/80 dark:border-white/20 shadow-[0_12px_40px_rgba(0,0,0,0.12),inset_0_1px_1px_rgba(255,255,255,0.7)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.15)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/20 before:via-white/5 before:to-transparent before:pointer-events-none before:rounded-2xl">
+                  
+                  <!-- Top Content: Name, Distinct Styled Black Role Badge, Bio -->
+                  <div class="relative z-10 space-y-3">
+                    <div>
+                      <h3 class="font-urbanist text-2xl font-black text-gray-950 dark:text-white leading-tight tracking-tight">
+                        {member.name}
+                      </h3>
+                      <div class="mt-2">
+                        <span class="inline-block text-[11px] font-black uppercase tracking-wider text-gray-950 dark:text-white bg-black/10 dark:bg-white/15 px-2.5 py-1 rounded-md border border-black/10 dark:border-white/15 shadow-xs">
+                          {member.role}
+                        </span>
+                      </div>
+                    </div>
+
+                    {member.bio && member.bio !== 'NA' && (
+                      <p class="text-xs leading-relaxed text-gray-800 dark:text-gray-200 line-clamp-6 pt-1 font-medium">
+                        {member.bio}
+                      </p>
+                    )}
+                  </div>
+
+                  <!-- Bottom Section: Email ID Pinned to Very Bottom -->
+                  <div class="relative z-10 mt-auto pt-4 border-t border-black/10 dark:border-white/15 w-full flex items-center justify-between">
+                    {member.email ? (
+                      <a
+                        href={`mailto:${member.email}`}
+                        class="inline-flex items-center gap-2 text-xs font-mono font-bold text-gray-950 dark:text-white hover:underline truncate group/email"
+                        title={`Send email to ${member.name}`}
+                      >
+                        <svg class="h-3.5 w-3.5 shrink-0 text-gray-900 dark:text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span class="truncate">{member.email}</span>
+                      </a>
+                    ) : (
+                      <span class="text-[11px] font-mono text-gray-500 dark:text-gray-400 font-semibold">The ABCD Lab</span>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- 5. FORMER MEMBERS / ALUMNI SECTION -->
+      {
+        alumni.length > 0 && (
+          <div class="pt-6">
+            <h3 class="font-urbanist text-2xl font-extrabold text-gray-950 dark:text-white mb-8">
+              Former Members
+            </h3>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-6">
+              {alumni.map((alum) => (
+                <div class="group flex flex-col">
+                  <!-- Square Initials/Photo Avatar -->
+                  <div class="aspect-square w-full rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border border-gray-200/70 dark:border-white/10 flex items-center justify-center shadow-xs transition-transform duration-300 group-hover:scale-102">
+                    {alum.photo_url ? (
+                      <img
+                        src={alum.photo_url}
+                        alt={alum.name}
+                        class="w-full h-full object-cover object-center"
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                      />
+                      <span class="font-urbanist text-3xl font-black text-slate-400 dark:text-slate-500 select-none hidden items-center justify-center w-full h-full">
+                        {getInitials(alum.name)}
+                      </span>
+                    ) : (
+                      <span class="font-urbanist text-3xl font-black text-slate-400 dark:text-slate-500 select-none">
+                        {getInitials(alum.name)}
+                      </span>
+                    )}
+                  </div>
+
+                  <!-- Alumni Metadata below with Black Styled Accents -->
+                  <div class="mt-3">
+                    <h4 class="font-urbanist text-sm font-bold text-gray-950 dark:text-white leading-tight">
+                      {alum.name}
+                    </h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">
+                      {alum.current_position || alum.role}
+                    </p>
+                    {alum.year_joined && (
+                      <span class="text-[11px] font-mono font-bold text-gray-900 dark:text-gray-100 block mt-1 tracking-tight">
+                        {alum.year_joined}{alum.year_left ? ` – ${alum.year_left}` : ''}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Smooth Carousel Autoscroller Controller
+  function initCarousel() {
+    const carousel = document.getElementById('team-banner-carousel');
+    if (!carousel) return;
+
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const dots = carousel.querySelectorAll('.carousel-dot');
+    const prevBtn = document.getElementById('carousel-prev-btn');
+    const nextBtn = document.getElementById('carousel-next-btn');
+
+    const totalSlides = slides.length;
+    if (totalSlides <= 1) return;
+
+    let currentIndex = 0;
+    let timer = null;
+    const intervalTime = 4500; // 4.5 seconds auto-advance
+
+    function showSlide(index) {
+      // Loop wrapping
+      if (index >= totalSlides) index = 0;
+      if (index < 0) index = totalSlides - 1;
+
+      currentIndex = index;
+
+      slides.forEach((slide, idx) => {
+        if (idx === currentIndex) {
+          slide.classList.remove('opacity-0', 'z-0', 'pointer-events-none');
+          slide.classList.add('opacity-100', 'z-10');
+        } else {
+          slide.classList.remove('opacity-100', 'z-10');
+          slide.classList.add('opacity-0', 'z-0', 'pointer-events-none');
+        }
+      });
+
+      dots.forEach((dot, idx) => {
+        if (idx === currentIndex) {
+          dot.classList.remove('w-2', 'bg-white/40');
+          dot.classList.add('w-8', 'bg-white', 'shadow-sm');
+        } else {
+          dot.classList.remove('w-8', 'bg-white', 'shadow-sm');
+          dot.classList.add('w-2', 'bg-white/40');
+        }
+      });
+    }
+
+    function startAutoScroll() {
+      stopAutoScroll();
+      timer = setInterval(() => {
+        showSlide(currentIndex + 1);
+      }, intervalTime);
+    }
+
+    function stopAutoScroll() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    // Next / Prev actions
+    nextBtn?.addEventListener('click', () => {
+      showSlide(currentIndex + 1);
+      startAutoScroll();
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      showSlide(currentIndex - 1);
+      startAutoScroll();
+    });
+
+    // Dot indicators
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const targetIdx = parseInt(dot.getAttribute('data-dot-index') || '0', 10);
+        showSlide(targetIdx);
+        startAutoScroll();
+      });
+    });
+
+    // Pause on hover
+    carousel.addEventListener('mouseenter', stopAutoScroll);
+    carousel.addEventListener('mouseleave', startAutoScroll);
+
+    // Initial start
+    startAutoScroll();
+  }
+
+  // Run on initial load and on Astro view transitions
+  initCarousel();
+  document.addEventListener('astro:page-load', initCarousel);
+</script>
+
+<style>
+  /* ==========================================================================
+   * LIQUID GLASS HOVER CARD TRANSPARENCY CONTROLS
+   * ==========================================================================
+   * Adjust these values to easily customize transparency from code:
+   * - Lower numbers (e.g. 0.35 - 0.50) = More transparent (shows background photo more)
+   * - Higher numbers (e.g. 0.75 - 0.90) = More solid / opaque
+   * - blur: Adjust frosted glass intensity (e.g. 16px - 32px)
+   * ========================================================================== */
+  :root {
+    --glass-opacity-light: 0.55;  /* Light mode opacity (default: 0.55) */
+    --glass-opacity-dark: 0.60;   /* Dark mode opacity (default: 0.60) */
+    --glass-blur: 10px;           /* Frosted glass blur amount */
+  }
+
+  .team-liquid-glass {
+    background-color: rgba(255, 255, 255, var(--glass-opacity-light)) !important;
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%) !important;
+  }
+
+  :global(.dark) .team-liquid-glass {
+    background-color: rgba(6, 18, 32, var(--glass-opacity-dark)) !important;
+  }
+</style>
