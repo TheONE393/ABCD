@@ -62,6 +62,10 @@ export const SHEET_URLS = new Proxy({}, {
       news: 'News',
       settings: 'Settings',
       alumni: 'Alumni',
+      photos: 'Team Photos',
+      team_photos: 'Team Photos',
+      homepage: 'Homepage',
+      home: 'Homepage',
     };
     const tab = tabNames[prop] || String(prop);
     return getSheetCsvUrl(tab);
@@ -216,23 +220,21 @@ function transformRow(row, type) {
 
     case 'publications': {
       const year = parseInt(row.year, 10) || new Date().getFullYear();
-      const tags = row.tags
-        ? row.tags
-            .split(/[,;|]+/)
-            .map((t) => t.trim())
-            .filter(Boolean)
-        : [];
+      const rawDoi = (row.doi || '').trim();
+      const cleanDoi = rawDoi.replace(/^https?:\/\/doi\.org\//i, '').replace(/^doi:\s*/i, '');
+      const cleanTitle = (row.title || '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '').trim();
+      const cleanAuthors = (row.authors || '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '').trim();
 
       return {
-        title: row.title || '',
-        authors: row.authors || '',
+        title: cleanTitle,
+        authors: cleanAuthors,
         journal: row.journal || '',
         year,
-        doi: row.doi || '',
-        url: row.url || (row.doi ? `https://doi.org/${row.doi.replace(/^https?:\/\/doi\.org\//, '')}` : ''),
+        date: row.date || String(year),
+        doi: cleanDoi,
+        url: row.url || (cleanDoi ? `https://doi.org/${cleanDoi}` : ''),
         pdf_url: row.pdf_url || '',
         abstract: row.abstract || '',
-        tags,
         is_featured: row.is_featured === 'true' || row.is_featured === 'TRUE' || row.is_featured === '1' || row.featured === 'true' || row.featured === 'TRUE',
       };
     }
@@ -249,7 +251,7 @@ function transformRow(row, type) {
         full_description: row.full_description || row.description || '',
         funding_grant: row.funding_grant || row.grant || '',
         lead_members: row.lead_members || '',
-        image_url: row.image_url || '/images/research-placeholder.svg',
+        image_url: row.image_url ? formatDriveUrl(row.image_url) : '/images/research-placeholder.svg',
         status: row.status || 'Active',
         tags,
         order,
@@ -264,9 +266,25 @@ function transformRow(row, type) {
         excerpt: row.excerpt || '',
         content: row.content || '',
         link: row.link || row.url || '',
-        image_url: row.image_url || '',
+        image_url: row.image_url ? formatDriveUrl(row.image_url) : '',
         is_featured: row.is_featured === 'true' || row.is_featured === 'TRUE' || row.featured === 'true',
       };
+    }
+
+    case 'photos':
+    case 'team_photos': {
+      const order = parseInt(row.order, 10) || 99;
+      const photoUrl = formatDriveUrl(row.photo_url || row.url || row.image_url || row.link || '');
+      return {
+        url: photoUrl,
+        title: row.title || row.caption || 'The ABCD Laboratory',
+        subtitle: row.subtitle || row.description || '',
+        order,
+      };
+    }
+
+    case 'homepage': {
+      return row;
     }
 
     case 'settings': {
@@ -283,6 +301,12 @@ function transformRow(row, type) {
  */
 function sortItems(items, type) {
   switch (type) {
+    case 'homepage':
+      return items;
+    case 'photos':
+    case 'team_photos':
+      return [...items].sort((a, b) => (a.order || 99) - (b.order || 99));
+
     case 'news':
       return [...items].sort((a, b) => {
         const timeA = a.date ? new Date(a.date).getTime() : 0;
@@ -292,9 +316,9 @@ function sortItems(items, type) {
 
     case 'publications':
       return [...items].sort((a, b) => {
-        const yearDiff = (b.year || 0) - (a.year || 0);
+        const yearDiff = (parseInt(b.year, 10) || 0) - (parseInt(a.year, 10) || 0);
         if (yearDiff !== 0) return yearDiff;
-        return (a.title || '').localeCompare(b.title || '');
+        return 0; // preserve original row order from CSV
       });
 
     case 'team':
@@ -335,7 +359,7 @@ export const FALLBACK_DATA = {
       photo_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800',
       bio: 'Dr. Ramanujam Srinivasan (Srini) heads The ABCD Lab at the School of Biological Sciences, NISER Bhubaneswar. His laboratory focuses on understanding the molecular mechanisms of bacterial cell division, actin-like cytoskeletal polymers (such as MreB, FtsA), cell shape determination, and spatiotemporal macromolecular dynamics using advanced imaging and biochemical approaches.',
       email: 'rsrini@niser.ac.in',
-      scholar_url: 'https://scholar.google.com/citations?user=rsrini_niser',
+      scholar_url: 'https://scholar.google.com/citations?user=dRknmPkAAAAJ&hl=en',
       orcid_url: 'https://orcid.org/0000-0002-1234-5678',
       twitter_url: '#',
       linkedin_url: 'https://linkedin.com/school/niser-bhubaneswar',
@@ -536,76 +560,37 @@ export const FALLBACK_DATA = {
 
   publications: [
     {
-      title: 'FASTOP — Fast editing toolkit for top expression sites in yeast',
-      authors: 'Lai S, Gu S, Nellen P, Rietdijk H, Srinivasan R',
-      journal: 'Nature Communications',
+      title: 'Disruption of salt bridge interactions in the inter‐domain cleft of the tubulin‐like protein FtsZ of Escherichia coli makes cells sensitive to the cell division inhibitor',
+      authors: 'SM Poddar, J Chakraborty, P Gayathri, R Srinivasan',
+      journal: 'Cytoskeleton',
       year: 2025,
-      doi: '10.1038/s41467-024-48901-x',
-      url: 'https://doi.org/10.1038/s41467-024-48901-x',
-      pdf_url: '#',
-      abstract: 'Targeted integration of multigene biochemical pathways in yeast requires predictable genomic landing pads. Here we report FASTOP, a high-efficiency CRISPR-assisted toolkit that enables rapid multiplexed chromosomal integration into characterized genomic hotspots.',
-      tags: ['Yeast', 'CRISPR', 'Synthetic Biology', 'Tools'],
+      doi: '10.1002/cm.21856',
+      url: 'https://scholar.google.com/citations?user=dRknmPkAAAAJ',
+      pdf_url: '',
+      abstract: 'Investigation into the molecular interactions of bacterial tubulin homolog FtsZ and division inhibitor sensitivity.',
       is_featured: true,
     },
     {
-      title: "Fine-tuned synthetic transcription factors for production of 3' phosphoadenosine-5'-phosphosulfate in yeast",
-      authors: 'Gu S, Lai S, Borah M, Srinivasan R',
-      journal: 'ACS Synthetic Biology',
-      year: 2024,
-      doi: '10.1021/acssynbio.4c00219',
-      url: 'https://doi.org/10.1021/acssynbio.4c00219',
-      pdf_url: '#',
-      abstract: 'Engineered zinc-finger and TALE transcription factors were constructed to dynamically modulate sulfate assimilation and PAPS biosynthesis without perturbing native yeast growth.',
-      tags: ['Metabolic Engineering', 'Transcription Factors', 'Gene Regulation'],
+      title: 'Membrane binding and cholesterol sensing motif in Mycoplasma genitalium FtsZ: a novel mode of membrane recruitment for bacterial FtsZ',
+      authors: 'S Dutta, S Poddar, J Chakraborty, R Srinivasan, P Gayathri',
+      journal: 'Biochemistry',
+      year: 2025,
+      doi: '10.1021/acs.biochem.4c00512',
+      url: 'https://scholar.google.com/citations?user=dRknmPkAAAAJ',
+      pdf_url: '',
+      abstract: 'Discovery of a novel membrane-targeting and cholesterol-sensing mechanism in wall-less bacterial division systems.',
       is_featured: true,
     },
     {
-      title: 'Fungal Innovations — Advancing Sustainable Materials, Genetics, and Applications for Industry',
-      authors: 'Nellen P, Hinneburg H, Srinivasan R',
-      journal: 'Trends in Biotechnology',
-      year: 2024,
-      doi: '10.1016/j.tibtech.2024.01.008',
-      url: 'https://doi.org/10.1016/j.tibtech.2024.01.008',
-      pdf_url: '#',
-      abstract: 'Fungal mycelium represents an emerging circular bio-material. This review highlights genetic approaches to optimize structural density, chitin content, and mechanical tensile strength.',
-      tags: ['Biomaterials', 'Fungal Bio', 'Circular Economy'],
+      title: 'Mechanistic Insights into Z-Ring Formation and Stability',
+      authors: 'R Kumar, R Srinivasan, D Chaudhuri',
+      journal: 'PRX Life',
+      year: 2025,
+      doi: '10.1103/PRXLife.3.013005',
+      url: 'https://scholar.google.com/citations?user=dRknmPkAAAAJ',
+      pdf_url: '',
+      abstract: 'Theoretical and experimental biophysics revealing kinetic stability and force generation of the bacterial cytokinetic ring.',
       is_featured: true,
-    },
-    {
-      title: 'Toward a comprehensive platform for sustainable manufacturing of natural products in yeast',
-      authors: 'Lai S, Rietdijk H, Srinivasan R',
-      journal: 'Current Opinion in Biotechnology',
-      year: 2024,
-      doi: '10.1016/j.copbio.2023.103042',
-      url: 'https://doi.org/10.1016/j.copbio.2023.103042',
-      pdf_url: '#',
-      abstract: 'Harnessing microbial factories for plant secondary metabolites requires balanced cofactor regeneration, substrate transport, and compartmentation.',
-      tags: ['Natural Products', 'Metabolic Engineering'],
-      is_featured: false,
-    },
-    {
-      title: 'A regulatory toolkit of arabinose inducible artificial transcription factors for Gram-negative bacteria',
-      authors: 'Borah M, Gu S, Srinivasan R',
-      journal: 'Nucleic Acids Research',
-      year: 2023,
-      doi: '10.1093/nar/gkad382',
-      url: 'https://doi.org/10.1093/nar/gkad382',
-      pdf_url: '#',
-      abstract: 'Engineered synthetic genetic regulators with orthogonal operator sequences provide over 200-fold dynamic range without crosstalk with host genomes.',
-      tags: ['Bacteria', 'Transcription Factors', 'Tools'],
-      is_featured: false,
-    },
-    {
-      title: 'Artificial Transcription Factors for Tuneable Gene Expression in Pichia pastoris',
-      authors: 'Srinivasan R, Lai S, Becker L',
-      journal: 'Microbial Cell Factories',
-      year: 2023,
-      doi: '10.1186/s12934-023-02104-5',
-      url: 'https://doi.org/10.1186/s12934-023-02104-5',
-      pdf_url: '#',
-      abstract: 'Development of programmable DNA-binding domains linked to modular activation domains for precise tuning of protein secretion titers in methylotrophic yeast.',
-      tags: ['Pichia pastoris', 'Protein Expression', 'Synthetic Biology'],
-      is_featured: false,
     },
   ],
 
@@ -750,7 +735,7 @@ export const FALLBACK_DATA = {
 // contacted AT MOST ONCE per sheet tab every 5 minutes, preventing rate-limiting
 // (HTTP 429) or bot detection bans.
 const isDev = Boolean(envObj.DEV);
-const CACHE_TTL_MS = isDev ? 10 * 1000 : 5 * 60 * 1000; // 10 seconds in dev mode for quick manual updates, 5 minutes in prod builds
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes cache TTL
 const MEMORY_CACHE = new Map();
 const IN_FLIGHT_PROMISES = new Map();
 
@@ -767,10 +752,8 @@ try {
   if (fs.existsSync(cacheFilePath)) {
     const raw = fs.readFileSync(cacheFilePath, 'utf-8');
     const parsed = JSON.parse(raw);
-    const now = Date.now();
     for (const [k, v] of Object.entries(parsed)) {
-      // In dev mode, do not load stale entries older than CACHE_TTL_MS
-      if (!isDev || (v.timestamp && (now - v.timestamp < CACHE_TTL_MS))) {
+      if (v && v.data) {
         MEMORY_CACHE.set(k, v);
       }
     }
@@ -779,8 +762,38 @@ try {
   // Non-fatal if fs is unavailable
 }
 
+/**
+ * Reads local static JSON backup file if Google Sheets API/CSV is unreachable.
+ */
+export function getLocalJsonData(type) {
+  if (!fs || !path) return null;
+  try {
+    const mapping = {
+      publications: 'publications.json',
+      team: 'team.json',
+      alumni: 'alumni.json',
+      news: 'news.json',
+      research: 'research.json',
+      settings: 'settings.json',
+      homepage: 'homepage.json',
+      photos: 'team_photos.json',
+      team_photos: 'team_photos.json',
+    };
+    const filename = mapping[type] || `${type}.json`;
+    const dataPath = path.resolve('src/data', filename);
+    if (fs.existsSync(dataPath)) {
+      const raw = fs.readFileSync(dataPath, 'utf-8');
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0) return parsed;
+    }
+  } catch (e) {}
+  return null;
+}
+
 function persistDiskCache() {
-  if (!fs || !cacheFilePath) return;
+  // Never write to disk in dev mode to prevent Vite HMR watcher from triggering automatic page reloads
+  if (isDev || !fs || !cacheFilePath) return;
   try {
     const obj = {};
     for (const [k, v] of MEMORY_CACHE.entries()) {
@@ -824,7 +837,7 @@ export async function fetchSheetData(url, type) {
         console.warn(
           `[fetchSheetData] Status ${response.status} fetching "${type}". Using cached/fallback data.`
         );
-        return cached?.data || FALLBACK_DATA[type] || [];
+        return cached?.data || getLocalJsonData(type) || FALLBACK_DATA[type] || [];
       }
 
       const csvText = await response.text();
@@ -834,14 +847,14 @@ export async function fetchSheetData(url, type) {
         console.warn(
           `[fetchSheetData] Google returned an HTML page instead of CSV for "${type}". Using cached/fallback data.`
         );
-        return cached?.data || FALLBACK_DATA[type] || [];
+        return cached?.data || getLocalJsonData(type) || FALLBACK_DATA[type] || [];
       }
 
       const rawRows = parseCSV(csvText);
 
       if (rawRows.length === 0) {
         console.warn(`[fetchSheetData] CSV for "${type}" returned 0 data rows. Using fallback data.`);
-        return cached?.data || FALLBACK_DATA[type] || [];
+        return cached?.data || getLocalJsonData(type) || FALLBACK_DATA[type] || [];
       }
 
       // Check expected columns to ensure Google didn't silently fall back to the first sheet
@@ -852,16 +865,18 @@ export async function fetchSheetData(url, type) {
         research: ['title'],
         news: ['title', 'date'],
         settings: ['lab_name', 'institution'],
+        photos: ['photo_url', 'url', 'image_url', 'link', 'title'],
+        homepage: ['key', 'title', 'section', 'value', 'hero_title', 'type'],
       };
 
       if (rawRows.length > 0 && expectedCols[type]) {
         const rowKeys = Object.keys(rawRows[0]);
         const matches = expectedCols[type].some((col) => rowKeys.includes(col));
         if (!matches) {
-          if (type !== 'alumni') {
+          if (type !== 'alumni' && type !== 'photos' && type !== 'homepage') {
             console.warn(`[fetchSheetData] CSV for "${type}" returned headers [${rowKeys.join(', ')}], missing expected [${expectedCols[type].join(', ')}]. Sheet tab likely does not exist.`);
           }
-          return type === 'alumni' ? [] : (cached?.data || FALLBACK_DATA[type] || []);
+          return (type === 'alumni' || type === 'photos' || type === 'homepage') ? [] : (cached?.data || getLocalJsonData(type) || FALLBACK_DATA[type] || []);
         }
       }
 
@@ -873,6 +888,7 @@ export async function fetchSheetData(url, type) {
         if (type === 'team' || type === 'alumni') return Boolean(item.name && item.name.trim().length > 0);
         if (type === 'publications' || type === 'research') return Boolean(item.title && item.title.trim().length > 0);
         if (type === 'news') return Boolean(item.title && item.title.trim().length > 0);
+        if (type === 'photos') return Boolean(item.url && item.url.trim().length > 0);
         return true;
       });
 
@@ -888,7 +904,7 @@ export async function fetchSheetData(url, type) {
         `[fetchSheetData] Network error fetching "${type}". Using cached/fallback data:`,
         error?.message || error
       );
-      return cached?.data || FALLBACK_DATA[type] || [];
+      return cached?.data || getLocalJsonData(type) || FALLBACK_DATA[type] || [];
     } finally {
       IN_FLIGHT_PROMISES.delete(url);
     }
@@ -929,9 +945,83 @@ export async function fetchTeam(customUrl = SHEET_URLS.team) {
   return data;
 }
 
+let LOCAL_CSV_CACHE = null;
+
+/**
+ * Dynamically derives publications directly from a local Google Scholar extracted CSV file
+ * (e.g. PUBLICATIONS_GOOGLE_SHEET.csv or publications_google_sheet.csv).
+ * Automatically re-reads when the file is modified on disk.
+ */
+export function getLocalCsvPublications() {
+  if (!nodeFs || !nodePath) return null;
+
+  const candidateNames = [
+    'PUBLICATIONS_GOOGLE_SHEET.csv',
+    'publications_google_sheet.csv',
+    'public/PUBLICATIONS_GOOGLE_SHEET.csv',
+    'public/publications_google_sheet.csv',
+  ];
+
+  for (const name of candidateNames) {
+    try {
+      const filePath = nodePath.resolve(name);
+      if (nodeFs.existsSync(filePath)) {
+        const stats = nodeFs.statSync(filePath);
+        if (
+          LOCAL_CSV_CACHE &&
+          LOCAL_CSV_CACHE.filePath === filePath &&
+          LOCAL_CSV_CACHE.mtimeMs === stats.mtimeMs
+        ) {
+          return LOCAL_CSV_CACHE.data;
+        }
+
+        const content = nodeFs.readFileSync(filePath, 'utf-8');
+        const rawRows = parseCSV(content);
+        if (rawRows.length > 0) {
+          const typed = rawRows.map((r) => transformRow(r, 'publications'));
+          const valid = typed.filter(
+            (item) => item && item.title && item.title.trim().length > 0
+          );
+          if (valid.length > 0) {
+            const sorted = sortItems(valid, 'publications');
+            LOCAL_CSV_CACHE = {
+              filePath,
+              mtimeMs: stats.mtimeMs,
+              data: sorted,
+            };
+            return sorted;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn(`[fetchSheetData] Error reading local publications CSV from "${name}":`, e?.message || e);
+    }
+  }
+
+  return null;
+}
+
 export async function fetchPublications(customUrl = SHEET_URLS.publications) {
-  const data = await fetchSheetData(customUrl, 'publications');
-  return data.length > 0 ? data : FALLBACK_DATA.publications;
+  // 1. If an explicit customUrl (different from default) is provided, fetch from it
+  if (customUrl && customUrl !== SHEET_URLS.publications) {
+    const data = await fetchSheetData(customUrl, 'publications');
+    if (data && data.length > 0) return data;
+  }
+
+  // 2. Derive dynamically from the local publications CSV (PUBLICATIONS_GOOGLE_SHEET.csv)
+  const localPubs = getLocalCsvPublications();
+  if (localPubs && localPubs.length > 0) {
+    return localPubs;
+  }
+
+  // 3. Fallback to Google Sheets tab query
+  const sheetData = await fetchSheetData(customUrl, 'publications');
+  if (sheetData && sheetData.length > 0) {
+    return sheetData;
+  }
+
+  // 4. Safe fallback
+  return FALLBACK_DATA.publications;
 }
 
 export async function fetchResearch(customUrl = SHEET_URLS.research) {
@@ -963,6 +1053,182 @@ export async function fetchSettings(customUrl = SHEET_URLS.settings) {
     }
   });
   return settingsObj;
+}
+
+/**
+ * Fetches team banner / gallery photos from a dedicated sheet tab
+ * (e.g. 'Team Photos', 'Photos', or 'Gallery').
+ * Supports direct links and Google Drive links.
+ * Falls back to settings sheet (team_photos / team_gallery) if tab is not found.
+ */
+export async function fetchTeamPhotos() {
+  const possibleTabs = ['Team Photos', 'Photos', 'Gallery'];
+  for (const tabName of possibleTabs) {
+    try {
+      const csvUrl = getSheetCsvUrl(tabName);
+      if (csvUrl) {
+        const photos = await fetchSheetData(csvUrl, 'photos');
+        if (Array.isArray(photos) && photos.length > 0) {
+          const valid = photos.filter((p) => p && p.url && p.url.trim().length > 0);
+          if (valid.length > 0) {
+            return valid;
+          }
+        }
+      }
+    } catch (e) {
+      // Continue to next tab candidate
+    }
+  }
+
+  // Fallback: check settings sheet for team_photos / team_gallery / team_banner_images
+  try {
+    const settings = await fetchSettings();
+    const rawPhotos = settings.team_photos || settings.team_gallery || settings.team_banner_images || '';
+    if (rawPhotos) {
+      const parsed = rawPhotos
+        .split(/[\n,;]+/)
+        .map((u) => formatDriveUrl(u))
+        .filter(Boolean);
+      if (parsed.length > 0) {
+        return parsed.map((imgUrl, idx) => ({
+          url: imgUrl,
+          title: 'The ABCD Laboratory',
+          subtitle: `NISER Bhubaneswar, India (Photo ${idx + 1})`,
+          order: idx + 1,
+        }));
+      }
+    }
+  } catch (e) {}
+
+  return [];
+}
+
+/**
+ * Fetches homepage configuration from a dedicated 'Homepage' or 'Home' sheet tab.
+ * Supports:
+ * 1. Key-Value pairs (key, value)
+ * 2. Dedicated research block rows (section=research, category=research, or type=research)
+ * 3. Numbered research keys (research_1_title, research_1_description, research_1_image, etc.)
+ * 4. Automatic Google Drive URL formatting for all images
+ */
+export async function fetchHomepage() {
+  const possibleTabs = ['Homepage', 'Home'];
+  let rawRows = [];
+
+  for (const tabName of possibleTabs) {
+    try {
+      const csvUrl = getSheetCsvUrl(tabName);
+      if (csvUrl) {
+        const rows = await fetchSheetData(csvUrl, 'homepage');
+        if (Array.isArray(rows) && rows.length > 0) {
+          rawRows = rows;
+          break;
+        }
+      }
+    } catch (e) {}
+  }
+
+  // Polished default ABCD Lab homepage data
+  const homeData = {
+    hero_title: 'The ABCD Lab',
+    hero_subtitle: 'National Institute of Science Education and Research (NISER), India',
+    hero_image: '/images/hero-img.png',
+
+    cta1_title: 'Stay up to date with \n#ABCD Lab',
+    cta1_btn_text: 'Our News',
+    cta1_btn_link: '/news',
+
+    cta2_text: 'Join us as we push the boundaries of microbial swarm intelligence and synthetic biology, driving towards a more sustainable and bio-based future',
+    cta2_btn_text: 'Contact Us',
+    cta2_btn_link: '/contact',
+
+    research_title: 'Our Research',
+    research_blocks: [],
+
+    publications_title: 'Publication',
+    publications_count: 3,
+
+    team_title: 'Our Team',
+    team_photo: '/images/group-photo.jpg',
+    team_pi_photo: '/images/member_pics/team-1.png',
+    team_pi_name: 'Dr. Ramanujam Srinivasan (Srini)',
+    team_pi_role: 'Principal Investigator',
+    team_pi_subrole: 'Associate Professor, SBS, NISER',
+
+    news_title: 'Stay up to date with #ABCD Lab\nOur latest news',
+  };
+
+  if (!rawRows || rawRows.length === 0) {
+    return homeData;
+  }
+
+  // Parse rows
+  rawRows.forEach((r) => {
+    if (!r || typeof r !== 'object') return;
+
+    if (r.key && r.value !== undefined) {
+      const key = r.key.trim().toLowerCase();
+      let val = r.value.trim();
+      if (key.includes('image') || key.includes('photo') || key.includes('url')) {
+        val = formatDriveUrl(val);
+      }
+      homeData[key] = val;
+    } else if (
+      r.section?.toLowerCase() === 'research' ||
+      r.type?.toLowerCase() === 'research' ||
+      r.category?.toLowerCase() === 'research'
+    ) {
+      // Row represents a specific research block
+      homeData.research_blocks.push({
+        title: r.title || '',
+        description: r.description || r.summary || r.short_summary || '',
+        image: formatDriveUrl(r.image_url || r.image || r.photo_url || ''),
+        link: r.link || r.url || '/research',
+        order: parseInt(r.order, 10) || homeData.research_blocks.length + 1,
+      });
+    }
+  });
+
+  // Check for numbered research keys: research_1_title, research_2_title, etc.
+  for (let i = 1; i <= 20; i++) {
+    const title = homeData[`research_${i}_title`] || homeData[`research${i}_title`];
+    if (title) {
+      const desc =
+        homeData[`research_${i}_desc`] ||
+        homeData[`research_${i}_description`] ||
+        homeData[`research_${i}_summary`] ||
+        homeData[`research${i}_desc`] ||
+        homeData[`research${i}_description`] ||
+        '';
+      const img = formatDriveUrl(
+        homeData[`research_${i}_image`] ||
+        homeData[`research_${i}_photo`] ||
+        homeData[`research_${i}_image_url`] ||
+        homeData[`research${i}_image`] ||
+        ''
+      );
+      const link =
+        homeData[`research_${i}_link`] ||
+        homeData[`research_${i}_url`] ||
+        homeData[`research${i}_link`] ||
+        '/research';
+
+      homeData.research_blocks.push({
+        title,
+        description: desc,
+        image: img,
+        link,
+        order: i,
+      });
+    }
+  }
+
+  // Sort research blocks if any were parsed
+  if (homeData.research_blocks.length > 0) {
+    homeData.research_blocks.sort((a, b) => (a.order || 99) - (b.order || 99));
+  }
+
+  return homeData;
 }
 
 export default fetchSheetData;

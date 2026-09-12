@@ -1,0 +1,66 @@
+[
+  {
+    "id": "bacterial-cytoskeleton",
+    "title": "Bacterial Cytoskeleton & Cell Division (Divisome)",
+    "short_summary": "Deciphering how actin-like filaments (MreB, FtsA) coordinate with cell wall synthesis machinery to drive cytokinesis.",
+    "full_description": "We study the molecular architecture, spatiotemporal assembly, and regulation of the divisome complex during bacterial cytokinesis using advanced fluorescence and super-resolution microscopy.",
+    "funding_grant": "DAE / SERB Research Grant",
+    "lead_members": "Dr. Ramanujam Srinivasan, Dr. Sandie Lai, Shanna Gu",
+    "image_url": "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=80&w=800",
+    "status": "Active",
+    "tags": [
+      "Cytoskeleton",
+      "Divisome",
+      "Cell Division"
+    ],
+    "order": 1
+  },
+  {
+    "id": "plasmid-segregation",
+    "title": "DNA Segregation & Cytoskeletal Motors",
+    "short_summary": "Investigating ParM and actin-like spindle dynamics responsible for plasmid and chromosome partitioning.",
+    "full_description": "Bacterial plasmids utilize actin-like filaments to push replicated DNA molecules to opposite cell poles. We dissect the biophysics of filament elongation, dynamic instability, and force generation.",
+    "funding_grant": "Wellcome Trust / DBT India Alliance",
+    "lead_members": "Madhushruti Borah, Hugo Rietdijk",
+    "image_url": "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=800",
+    "status": "Active",
+    "tags": [
+      "DNA Partitioning",
+      "ParM",
+      "Spindle Dynamics"
+    ],
+    "order": 2
+  },
+  {
+    "id": "cell-shape-morphogenesis",
+    "title": "Bacterial Morphogenesis & Cell Shape Control",
+    "short_summary": "Understanding how bacteria maintain rod, crescent, and helical geometries through peptidoglycan patterning.",
+    "full_description": "Cell shape determination is a tightly regulated morphogenetic process. We study how cytoskeletal polymers guide cell wall synthases across different growth phases.",
+    "funding_grant": "DBT Research Project",
+    "lead_members": "Shanna Gu, Alex Wall",
+    "image_url": "https://images.unsplash.com/photo-1582725406089-98e3b5e4070a?auto=format&fit=crop&q=80&w=800",
+    "status": "Active",
+    "tags": [
+      "Cell Shape",
+      "Morphogenesis",
+      "Peptidoglycan"
+    ],
+    "order": 3
+  },
+  {
+    "id": "super-resolution-imaging",
+    "title": "Advanced Live-Cell & Super-Resolution Imaging",
+    "short_summary": "Developing quantitative single-molecule tracking and TIRF/STED imaging platforms for bacterial biophysics.",
+    "full_description": "Prokaryotic structures operate below the diffraction limit of light. We employ TIRF, PALM/STORM, and structured illumination microscopy to capture macromolecular dynamics in real time.",
+    "funding_grant": "NISER Central Imaging Facility Grant",
+    "lead_members": "Patrick Nellen, Dr. Ramanujam Srinivasan",
+    "image_url": "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80&w=800",
+    "status": "Active",
+    "tags": [
+      "Super-Resolution",
+      "Live-Cell",
+      "TIRF"
+    ],
+    "order": 4
+  }
+]

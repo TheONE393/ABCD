@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { url } from '../lib/paths.js';
-import { fetchTeam, fetchSettings, formatDriveUrl } from '../lib/fetchSheetData.js';
+import { fetchTeam, fetchSettings, fetchTeamPhotos, formatDriveUrl } from '../lib/fetchSheetData.js';
 
 const allMembers = await fetchTeam();
 const settings = await fetchSettings();
@@ -9,14 +9,8 @@ const pi = allMembers.find((m) => m.category === 'pi') || allMembers[0];
 const currentMembers = allMembers.filter((m) => m.is_current && m.category !== 'pi');
 const alumni = allMembers.filter((m) => !m.is_current || m.category === 'alumni');
 
-// Process banner images from settings (e.g. 'team_photos' or 'team_gallery')
-const rawPhotos = settings.team_photos || settings.team_gallery || settings.team_banner_images || '';
-const parsedPhotos = rawPhotos
-  ? rawPhotos
-      .split(/[\n,;]+/)
-      .map((u) => formatDriveUrl(u))
-      .filter(Boolean)
-  : [];
+// Process banner images from dedicated 'Team Photos' sheet tab or settings
+const sheetPhotos = await fetchTeamPhotos();
 
 // Default high-resolution lab and science banner images if none yet in Google Sheet
 const defaultPhotos = [
@@ -42,13 +36,7 @@ const defaultPhotos = [
   },
 ];
 
-const bannerSlides = parsedPhotos.length > 0
-  ? parsedPhotos.map((imgUrl, idx) => ({
-      url: imgUrl,
-      title: 'The ABCD Laboratory',
-      subtitle: `NISER Bhubaneswar, India (Photo ${idx + 1})`,
-    }))
-  : defaultPhotos;
+const bannerSlides = sheetPhotos.length > 0 ? sheetPhotos : defaultPhotos;
 
 function getInitials(name = '') {
   const cleaned = name

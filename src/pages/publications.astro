@@ -1,240 +1,380 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import { fetchPublications } from '../lib/fetchSheetData.js';
+import { url } from '../lib/paths.js';
+import { fetchPublications, fetchSettings } from '../lib/fetchSheetData.js';
 
 const publications = await fetchPublications();
+const settings = await fetchSettings();
 
-// Extract unique years for filtering
-const years = Array.from(new Set(publications.map((p) => p.year))).sort((a, b) => b - a);
-
-// Extract unique tags for filtering
-const allTags = Array.from(new Set(publications.flatMap((p) => p.tags))).slice(0, 8);
+const scholarUrl =
+  settings.scholar_url ||
+  settings.google_scholar ||
+  'https://scholar.google.com/citations?user=dRknmPkAAAAJ&hl=en';
+const orcidUrl =
+  settings.orcid_url ||
+  settings.orcid ||
+  'https://orcid.org/0000-0002-1234-5678';
 ---
 
 <Layout
   title="Publications | The ABCD Lab"
-  description="Explore peer-reviewed scientific publications, research articles, and preprints from Dr. Ramanujam Srinivasan's ABCD Lab at NISER Bhubaneswar, India."
 >
-  <PageHeader
-    title="Publications"
-    subtitle="Peer-reviewed research articles, molecular toolkits, and reviews advancing synthetic biology and sustainable biotechnology."
-    badge="Scientific Output"
-  />
+  <!-- 1. TOP HEADER BANNER (Deep Navy Rounded Capsule matching SynBio Template) -->
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 text-center">
+    <h1
+      class="font-urbanist text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-950 dark:text-white"
+    >
+      Publications
+    </h1>
+  </div>
 
-  <section class="py-12 sm:py-20 bg-synbio-tint/20 dark:bg-transparent">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10">
-      <!-- Search & Filters Toolbar -->
-      <div class="synbio-card p-6 sm:p-8 space-y-6">
-        <!-- Search bar -->
+  <!-- 2. SCHOLAR & ORCID LOGOS ROW -->
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-4">
+    <div class="flex items-center justify-center gap-8 sm:gap-12">
+      <!-- Google Scholar link -->
+      <a
+        href={scholarUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 hover:opacity-80 transition-opacity group"
+        title="View Google Scholar Profile"
+      >
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 24a12 12 0 1 1 0-24 12 12 0 0 1 0 24zm-.26-6.42a4.42 4.42 0 0 0 4.42-4.42v-5.2h-2.2v5.2a2.22 2.22 0 0 1-4.42 0v-5.2h-2.2v5.2a4.42 4.42 0 0 0 4.4 4.42z"
+            fill="#4285F4"
+          ></path>
+        </svg>
+        <span class="font-urbanist text-lg sm:text-xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">
+          <span class="text-[#4285F4]">G</span><span class="text-[#EA4335]">o</span><span class="text-[#FBBC05]">o</span><span class="text-[#4285F4]">g</span><span class="text-[#34A853]">l</span><span class="text-[#EA4335]">e</span>
+          <span class="text-gray-800 dark:text-gray-200 font-semibold ml-0.5">Scholar</span>
+        </span>
+      </a>
+
+      <!-- ORCiD link -->
+      <a
+        href={orcidUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 hover:opacity-80 transition-opacity group"
+        title="View ORCID Profile"
+      >
+        <div
+          class="h-6 w-6 rounded-full bg-[#A6CE39] flex items-center justify-center text-white text-[11px] font-black"
+        >
+          iD
+        </div>
+        <span class="font-urbanist text-lg sm:text-xl font-black text-[#A6CE39] tracking-wider">
+          ORCID
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 3. 2-COLUMN PUBLICATIONS GRID (Signature Notch & Cutout Cards) -->
+  <div class="py-8 sm:py-12 bg-white dark:bg-[#070c18]">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-6">
+      <!-- Search Filter Bar -->
+      <div class="max-w-xl mx-auto">
         <div class="relative">
-          <svg class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <svg
+            class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
           </svg>
           <input
             type="search"
             id="pub-search-input"
-            placeholder="Filter by title, author name (e.g. 'Srinivasan'), journal, or topic..."
-            class="w-full rounded-2xl border border-gray-200 bg-white py-3.5 pl-12 pr-4 text-sm font-medium text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-synbio-orange focus:ring-2 focus:ring-synbio-orange/20 dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white dark:placeholder-gray-500"
+            placeholder={`Search papers...`}
+            class="w-full rounded-2xl border border-gray-200/80 bg-gray-50/70 py-3.5 pl-12 pr-4 text-sm font-medium text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-[#001f40] focus:bg-white focus:ring-2 focus:ring-[#001f40]/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-gray-500"
           />
-        </div>
-
-        <!-- Filter Chips Row -->
-        <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-gray-100 dark:border-white/5">
-          <!-- Year filter -->
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 mr-1 dark:text-gray-400">Year:</span>
-            <button class="pub-year-btn active rounded-full bg-synbio-navy px-3 py-1 text-xs font-bold text-white dark:bg-synbio-orange" data-year="all">
-              All ({publications.length})
-            </button>
-            {
-              years.map((yr) => (
-                <button class="pub-year-btn rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-700 hover:bg-gray-200 dark:bg-white/10 dark:text-gray-300 dark:hover:bg-white/20" data-year={String(yr)}>
-                  {yr}
-                </button>
-              ))
-            }
-          </div>
-
-          <!-- Scholar / External Links -->
-          <div class="flex items-center gap-3 text-xs font-semibold">
-            <a
-              href="https://scholar.google.com/citations?user=rsrini_niser"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-synbio-navy hover:text-synbio-orange dark:text-gray-300 dark:hover:text-synbio-orange transition-colors"
-            >
-              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 24a12 12 0 1 1 0-24 12 12 0 0 1 0 24zm-.26-6.42a4.42 4.42 0 0 0 4.42-4.42v-5.2h-2.2v5.2a2.22 2.22 0 0 1-4.42 0v-5.2h-2.2v5.2a4.42 4.42 0 0 0 4.4 4.42z" />
-              </svg>
-              <span>Google Scholar</span>
-            </a>
-            <span>&bull;</span>
-            <a
-              href="https://orcid.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-synbio-navy hover:text-synbio-orange dark:text-gray-300 dark:hover:text-synbio-orange transition-colors"
-            >
-              <span class="rounded bg-[#a6ce39] px-1 text-[10px] font-bold text-white">iD</span>
-              <span>ORCID</span>
-            </a>
-          </div>
         </div>
       </div>
 
-      <!-- Publications List Container -->
-      <div class="space-y-6" id="publications-list">
+      <!-- Controls Row: Count Badge & View Toggle (Recent 10 vs All) -->
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 dark:border-white/5 pb-4 pt-2">
+        <div class="flex items-center gap-2">
+          <span
+            id="pub-count-badge"
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#001f40]/5 text-[#001f40] dark:bg-white/10 dark:text-blue-300"
+          >
+            Showing Recent 10
+          </span>
+        </div>
+
+        {publications.length > 10 && (
+          <div class="inline-flex rounded-xl p-1 bg-gray-100 dark:bg-white/10 text-xs font-semibold">
+            <button
+              id="btn-view-recent"
+              type="button"
+              class="px-3.5 py-1.5 rounded-lg transition-all shadow-sm bg-white dark:bg-[#001f40] text-gray-900 dark:text-white font-bold"
+            >
+              Recent 10
+            </button>
+            <button
+              id="btn-view-all"
+              type="button"
+              class="px-3.5 py-1.5 rounded-lg transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+            >
+              All Papers ({publications.length})
+            </button>
+          </div>
+        )}
+      </div>
+
+      <!-- 2-Column Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10" id="publications-grid">
         {
-          publications.map((pub, idx) => {
-            // Generate bibtex string for instant copy
-            const bibtex = `@article{srinivasan_${pub.year}_${idx},
-  title={${pub.title}},
-  author={${pub.authors}},
-  journal={${pub.journal}},
-  year={${pub.year}},
-  doi={${pub.doi}}
-}`;
+          publications.map((pub, index) => {
+            const rawDoi = (pub.doi || '').trim();
+            const cleanDoi = rawDoi.replace(/^https?:\/\/doi\.org\//i, '').replace(/^doi:\s*/i, '');
+            const doiUrl = cleanDoi ? `https://doi.org/${cleanDoi}` : '';
+            const paperUrl = pub.url || doiUrl || '#';
+            const journalBadge = pub.journal || '';
+            const pubDate = pub.date || String(pub.year || '');
+            const isBeyond10 = index >= 10;
 
             return (
-              <article
-                class="pub-card synbio-card p-6 sm:p-8 transition-all duration-200"
+              <div
+                class={`post-card style-2 publication-card ${isBeyond10 ? 'beyond-recent-10' : ''}`}
+                style={isBeyond10 ? 'display: none;' : ''}
+                data-index={index}
                 data-title={pub.title.toLowerCase()}
                 data-authors={pub.authors.toLowerCase()}
-                data-journal={pub.journal.toLowerCase()}
-                data-year={String(pub.year)}
-                data-tags={pub.tags.join(' ').toLowerCase()}
+                data-journal={journalBadge.toLowerCase()}
+                data-year={String(pub.year || '')}
+                data-doi={cleanDoi.toLowerCase()}
               >
-                <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
-                  <div class="space-y-3 flex-1">
-                    <!-- Top Metadata Badges -->
-                    <div class="flex flex-wrap items-center gap-2.5">
-                      <span class="rounded-full bg-synbio-navy px-3 py-1 text-xs font-bold text-white dark:bg-synbio-orange">
-                        {pub.journal}
+                <div class="content">
+                  <div>
+                    <!-- Top Meta: Authors and Date -->
+                    <div class="post-meta">
+                      <span class="single-post-meta text-sm font-medium text-gray-800 dark:text-gray-200">
+                        {pub.authors}
                       </span>
-                      <span class="text-xs font-mono font-bold text-synbio-orange">
-                        {pub.year}
-                      </span>
-                      {pub.doi && (
-                        <span class="text-xs text-gray-500 dark:text-gray-400 font-mono">
-                          DOI: {pub.doi}
-                        </span>
+                      {pubDate && (
+                        <>
+                          <span class="dots"></span>
+                          <span class="single-post-meta text-sm font-medium text-gray-600 dark:text-gray-400">
+                            {pubDate}
+                          </span>
+                        </>
                       )}
                     </div>
 
-                    <!-- Title -->
-                    <h2 class="font-urbanist text-xl sm:text-2xl font-bold leading-snug text-gray-950 dark:text-white">
-                      <a href={pub.url} target="_blank" rel="noopener noreferrer" class="hover:text-synbio-orange transition-colors">
-                        {pub.title}
-                      </a>
-                    </h2>
-
-                    <!-- Authors List -->
-                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300 leading-relaxed">
-                      {pub.authors}
-                    </p>
-
-                    <!-- Keyword Tags -->
-                    <div class="flex flex-wrap gap-1.5 pt-1">
-                      {pub.tags.map((tag) => (
-                        <span class="rounded bg-synbio-tint/80 px-2 py-0.5 text-[11px] font-semibold text-synbio-navy dark:bg-white/10 dark:text-gray-300">
-                          {tag}
+                    <!-- Meta Badges: Journal & DOI -->
+                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                      {journalBadge && (
+                        <span class="journal-badge inline-flex items-center h-7 px-3.5 rounded-full bg-[#001f40] dark:bg-blue-600 text-white font-urbanist text-xs font-bold uppercase tracking-wider shadow-sm shrink-0">
+                          {journalBadge}
                         </span>
-                      ))}
+                      )}
+
+                      {cleanDoi ? (
+                        <a
+                          href={doiUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="doi-pill inline-flex items-center h-7 gap-1.5 px-3 rounded-full bg-[#001f40] dark:bg-blue-600 text-white text-xs font-bold font-mono tracking-tight shadow-sm hover:bg-blue-700 dark:hover:bg-blue-500 hover:shadow-md transition-all group/doi"
+                          title={`Open DOI: ${cleanDoi}`}
+                        >
+                          <span class="bg-white/20 text-white text-[10px] font-black uppercase px-1.5 py-0.5 rounded tracking-wider leading-none">
+                            DOI
+                          </span>
+                          <span class="underline decoration-white/40 group-hover/doi:decoration-white font-mono text-[11px] leading-none">
+                            {cleanDoi}
+                          </span>
+                          <svg class="h-3.5 w-3.5 text-white/90 group-hover/doi:text-white shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      ) : (
+                        <a
+                          href={paperUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="doi-pill inline-flex items-center h-7 gap-1.5 px-3 rounded-full bg-white/90 dark:bg-white/10 text-gray-700 dark:text-gray-300 border border-gray-300/80 dark:border-white/15 text-xs font-medium hover:bg-gray-50 dark:hover:bg-white/20 transition-all"
+                          title="Open article link"
+                        >
+                          <span class="bg-gray-200 dark:bg-white/20 text-gray-800 dark:text-gray-200 text-[10px] font-bold uppercase px-1.5 py-0.5 rounded tracking-wider leading-none">
+                            DOI
+                          </span>
+                          <span class="text-xs leading-none">via Scholar / Publisher ↗</span>
+                        </a>
+                      )}
                     </div>
 
-                    <!-- Expandable Abstract Accordion -->
-                    {pub.abstract && (
-                      <div class="pt-3">
-                        <button
-                          class="abstract-toggle-btn text-xs font-bold uppercase tracking-wider text-synbio-orange hover:underline flex items-center gap-1.5"
-                          data-target={`abstract-${idx}`}
-                        >
-                          <span>Show Abstract</span>
-                          <span class="text-[10px]">▼</span>
-                        </button>
-
-                        <div id={`abstract-${idx}`} class="abstract-content hidden mt-3 rounded-2xl bg-gray-50 p-4 text-xs leading-relaxed text-gray-600 dark:bg-white/5 dark:text-gray-300">
-                          <p class="font-semibold text-gray-900 dark:text-white mb-1">Abstract:</p>
-                          <p>{pub.abstract}</p>
-                        </div>
-                      </div>
-                    )}
+                    <!-- Paper Title -->
+                    <h3 class="title">
+                      <a href={paperUrl} target="_blank" rel="noopener noreferrer">
+                        {pub.title}
+                      </a>
+                    </h3>
                   </div>
 
-                  <!-- Action Buttons Stack -->
-                  <div class="flex flex-wrap lg:flex-col items-center gap-2.5 shrink-0 self-start">
-                    {pub.url && (
-                      <a
-                        href={pub.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="theme-btn text-xs px-5 py-2.5 w-full text-center"
-                      >
-                        View Article
-                      </a>
-                    )}
-
-                    <button
-                      class="copy-bibtex-btn rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 shadow-sm hover:border-synbio-orange hover:text-synbio-orange dark:border-white/10 dark:bg-synbio-darkSurface dark:text-gray-300 w-full text-center transition-colors"
-                      data-bibtex={bibtex}
+                  <!-- Bottom "Read more ↗" link -->
+                  <div class="btn-wrapper">
+                    <a
+                      href={paperUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-btn"
                     >
-                      Copy BibTeX
-                    </button>
+                      <span>Read more</span>
+                      <span>
+                        <svg
+                          class="inline-block h-4 w-4"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </span>
+                    </a>
                   </div>
                 </div>
-              </article>
+
+                <!-- Circular Arrow Button sitting in top-right notch cutout -->
+                <div class="btn-wrapper">
+                  <a
+                    href={paperUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="circle-arrow-btn"
+                    aria-label={`Read ${pub.title}`}
+                  >
+                    <svg
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </a>
+                </div>
+
+                <!-- Signature SVG Shape Cutout (Disappears and slides on hover) -->
+                <div class="shape">
+                  <svg
+                    width="111"
+                    height="111"
+                    viewBox="0 0 111 111"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
             );
           })
         }
       </div>
 
-      <div id="no-pub-results" class="hidden py-16 text-center text-gray-500 dark:text-gray-400">
-        <p class="font-urbanist text-lg font-bold">No publications found matching your search.</p>
-        <p class="text-xs mt-1">Try clearing your filters or searching for another author or keyword.</p>
+      <!-- Bottom View All Button (when in Recent 10 mode) -->
+      {publications.length > 10 && (
+        <div class="text-center pt-4" id="view-all-container">
+          <button
+            id="btn-toggle-all-pubs"
+            type="button"
+            class="theme-btn inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-2xl shadow-sm hover:shadow transition-all"
+          >
+            <span>View All Publications ({publications.length})</span>
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      <div
+        id="no-pub-results"
+        class="hidden py-16 text-center text-gray-500 dark:text-gray-400"
+      >
+        <p class="font-urbanist text-lg font-bold">
+          No publications found matching your search.
+        </p>
+        <p class="text-xs mt-1">Try clearing your search term to see all papers.</p>
       </div>
     </div>
-  </section>
+  </div>
 </Layout>
 
 <script>
   function setupPubInteractions() {
     const searchInput = document.getElementById('pub-search-input') as HTMLInputElement;
-    const yearBtns = document.querySelectorAll('.pub-year-btn');
-    const cards = document.querySelectorAll('.pub-card');
+    const cards = document.querySelectorAll('.publication-card');
     const noResults = document.getElementById('no-pub-results');
-    const abstractBtns = document.querySelectorAll('.abstract-toggle-btn');
-    const bibtexBtns = document.querySelectorAll('.copy-bibtex-btn');
+    const btnRecent = document.getElementById('btn-view-recent');
+    const btnAll = document.getElementById('btn-view-all');
+    const btnToggle = document.getElementById('btn-toggle-all-pubs');
+    const viewAllContainer = document.getElementById('view-all-container');
+    const countBadge = document.getElementById('pub-count-badge');
 
-    let activeYear = 'all';
+    let mode: 'recent' | 'all' = 'recent';
 
-    function filterPubs() {
-      const q = searchInput?.value.toLowerCase().trim() || '';
+    function updateView() {
+      const q = searchInput ? searchInput.value.toLowerCase().trim() : '';
       let visibleCount = 0;
 
-      cards.forEach((card) => {
+      cards.forEach((card, index) => {
+        const isBeyond10 = index >= 10;
         const title = card.getAttribute('data-title') || '';
         const authors = card.getAttribute('data-authors') || '';
         const journal = card.getAttribute('data-journal') || '';
         const year = card.getAttribute('data-year') || '';
-        const tags = card.getAttribute('data-tags') || '';
+        const doi = card.getAttribute('data-doi') || '';
 
-        const matchesYear = activeYear === 'all' || year === activeYear;
-        const matchesQuery =
+        const matchesSearch =
           !q ||
           title.includes(q) ||
           authors.includes(q) ||
           journal.includes(q) ||
-          tags.includes(q);
+          year.includes(q) ||
+          doi.includes(q);
 
-        if (matchesYear && matchesQuery) {
-          (card as HTMLElement).style.display = 'block';
-          visibleCount++;
+        if (q) {
+          // While actively searching, search across all publications
+          if (matchesSearch) {
+            (card as HTMLElement).style.display = 'flex';
+            visibleCount++;
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
         } else {
-          (card as HTMLElement).style.display = 'none';
+          // Default browsing mode: respect recent 10 vs all
+          if (mode === 'recent' && isBeyond10) {
+            (card as HTMLElement).style.display = 'none';
+          } else {
+            (card as HTMLElement).style.display = 'flex';
+            visibleCount++;
+          }
         }
       });
 
+      // Update empty state
       if (noResults) {
         if (visibleCount === 0) {
           noResults.classList.remove('hidden');
@@ -242,61 +382,73 @@ const allTags = Array.from(new Set(publications.flatMap((p) => p.tags))).slice(0
           noResults.classList.add('hidden');
         }
       }
+
+      // Update badges and toggle buttons
+      if (q) {
+        if (viewAllContainer) viewAllContainer.style.display = 'none';
+        if (countBadge) countBadge.textContent = `Showing ${visibleCount} matching paper${visibleCount === 1 ? '' : 's'}`;
+      } else {
+        if (viewAllContainer) {
+          viewAllContainer.style.display = cards.length > 10 ? 'block' : 'none';
+          if (btnToggle) {
+            btnToggle.innerHTML =
+              mode === 'recent'
+                ? `<span>View All Publications (${cards.length})</span> <svg class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>`
+                : `<span>Show Recent 10 Only</span> <svg class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>`;
+          }
+        }
+        if (countBadge) {
+          countBadge.textContent = mode === 'recent' ? 'Showing Recent 10' : `Showing All ${cards.length} Publications`;
+        }
+
+        if (btnRecent && btnAll) {
+          if (mode === 'recent') {
+            btnRecent.className =
+              'px-3.5 py-1.5 rounded-lg transition-all shadow-sm bg-white dark:bg-[#001f40] text-gray-900 dark:text-white font-bold';
+            btnAll.className =
+              'px-3.5 py-1.5 rounded-lg transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white';
+          } else {
+            btnAll.className =
+              'px-3.5 py-1.5 rounded-lg transition-all shadow-sm bg-white dark:bg-[#001f40] text-gray-900 dark:text-white font-bold';
+            btnRecent.className =
+              'px-3.5 py-1.5 rounded-lg transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white';
+          }
+        }
+      }
     }
 
-    searchInput?.addEventListener('input', filterPubs);
+    if (searchInput) {
+      searchInput.addEventListener('input', updateView);
+    }
 
-    yearBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        yearBtns.forEach((b) => {
-          b.classList.remove('active', 'bg-synbio-navy', 'text-white', 'dark:bg-synbio-orange');
-          b.classList.add('bg-gray-100', 'text-gray-700', 'dark:bg-white/10', 'dark:text-gray-300');
-        });
-        btn.classList.add('active', 'bg-synbio-navy', 'text-white', 'dark:bg-synbio-orange');
-        btn.classList.remove('bg-gray-100', 'text-gray-700', 'dark:bg-white/10', 'dark:text-gray-300');
-
-        activeYear = btn.getAttribute('data-year') || 'all';
-        filterPubs();
+    if (btnRecent) {
+      btnRecent.addEventListener('click', () => {
+        mode = 'recent';
+        if (searchInput) searchInput.value = '';
+        updateView();
       });
-    });
+    }
 
-    // Abstract Toggle
-    abstractBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const targetId = btn.getAttribute('data-target');
-        if (!targetId) return;
-        const drawer = document.getElementById(targetId);
-        if (!drawer) return;
+    if (btnAll) {
+      btnAll.addEventListener('click', () => {
+        mode = 'all';
+        if (searchInput) searchInput.value = '';
+        updateView();
+      });
+    }
 
-        const isHidden = drawer.classList.contains('hidden');
-        if (isHidden) {
-          drawer.classList.remove('hidden');
-          btn.innerHTML = `<span>Hide Abstract</span> <span class="text-[10px]">▲</span>`;
-        } else {
-          drawer.classList.add('hidden');
-          btn.innerHTML = `<span>Show Abstract</span> <span class="text-[10px]">▼</span>`;
+    if (btnToggle) {
+      btnToggle.addEventListener('click', () => {
+        mode = mode === 'recent' ? 'all' : 'recent';
+        if (searchInput) searchInput.value = '';
+        updateView();
+        if (mode === 'recent') {
+          window.scrollTo({ top: 300, behavior: 'smooth' });
         }
       });
-    });
+    }
 
-    // BibTeX Copy
-    bibtexBtns.forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        const bibtex = btn.getAttribute('data-bibtex');
-        if (!bibtex) return;
-
-        try {
-          await navigator.clipboard.writeText(bibtex);
-          // @ts-ignore
-          if (window.showToast) {
-            // @ts-ignore
-            window.showToast('BibTeX citation copied to clipboard!');
-          }
-        } catch {
-          prompt('Copy BibTeX citation:', bibtex);
-        }
-      });
-    });
+    updateView();
   }
 
   setupPubInteractions();

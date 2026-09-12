@@ -11,5 +11,10 @@ export default defineConfig({
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      watch: {
+        ignored: ['**/.cache/**', '**/node_modules/**', '**/.git/**'],
+      },
+    },
   },
 });

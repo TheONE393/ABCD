@@ -1,0 +1,42 @@
+[
+  {
+    "date": "2026-03-01",
+    "title": "The ABCD Lab welcomes new batch of research scholars at SBS, NISER",
+    "category": "Team",
+    "excerpt": "New PhD and Master students have joined the laboratory to explore bacterial cytoskeletal dynamics and division.",
+    "content": "We welcome our new cohort of enthusiastic researchers embarking on their scientific journeys in prokaryotic cell biology.",
+    "link": "/team",
+    "image_url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800",
+    "is_featured": true
+  },
+  {
+    "date": "2025-11-15",
+    "title": "Research grant awarded for high-resolution bacterial imaging",
+    "category": "Grant",
+    "excerpt": "The ABCD Lab has been awarded research funding to advance quantitative microscopy of macromolecular division assemblies.",
+    "content": "",
+    "link": "/research",
+    "image_url": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&q=80&w=800",
+    "is_featured": true
+  },
+  {
+    "date": "2025-08-20",
+    "title": "Breakthrough findings on bacterial cytoskeletal polymer architecture",
+    "category": "Publication",
+    "excerpt": "Our team uncovered novel insights into the spatial coordination of actin-like filaments during cell division.",
+    "content": "",
+    "link": "/publications",
+    "image_url": "",
+    "is_featured": false
+  },
+  {
+    "date": "2025-05-10",
+    "title": "Paper published on single-molecule tracking of divisome complexes",
+    "category": "Publication",
+    "excerpt": "Our study describing divisome maturation kinetics is now available open access.",
+    "content": "",
+    "link": "/publications",
+    "image_url": "",
+    "is_featured": false
+  }
+]

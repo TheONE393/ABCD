@@ -1,0 +1,21 @@
+[
+  {
+    "lab_name": "The ABCD Lab",
+    "short_name": "The ABCD Lab",
+    "institution": "National Institute of Science Education and Research (NISER), Bhubaneswar",
+    "tagline": "Actin, Bacterial Cytoskeleton & Dynamics | School of Biological Sciences",
+    "hero_statement": "We investigate the molecular architecture, spatiotemporal dynamics, and regulation of bacterial cytoskeletal polymers and cell division machinery.",
+    "hero_subquote": "Deciphering the spatial and temporal regulation of cytoskeletal machineries that drive bacterial morphogenesis.",
+    "email": "rsrini@niser.ac.in",
+    "email_secondary": "rsrini@niser.ac.in",
+    "phone": "+91 674 249 4000",
+    "address_line1": "National Institute of Science Education and Research (NISER)",
+    "address_line2": "School of Biological Sciences",
+    "address_line3": "PO Bhimpur-Padanpur, Via Jatni, Khurda 752050, Odisha, India",
+    "lab_building": "SBS Building, NISER Campus",
+    "transit_info": "Accessible via Khurda Road Junction (4 km) and Biju Patnaik International Airport, Bhubaneswar (25 km).",
+    "twitter": "https://twitter.com/NISERer",
+    "linkedin": "https://linkedin.com/school/niser-bhubaneswar",
+    "github": "https://github.com/TheONE393/ABCD"
+  }
+]

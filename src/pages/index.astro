@@ -1,14 +1,58 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { url } from '../lib/paths.js';
-import { fetchNews } from '../lib/fetchSheetData.js';
+import {
+  fetchHomepage,
+  fetchNews,
+  fetchPublications,
+  fetchResearch,
+  fetchTeam,
+} from '../lib/fetchSheetData.js';
 
+const homepage = await fetchHomepage();
 const newsItems = await fetchNews();
+const allPublications = await fetchPublications();
+const allResearch = await fetchResearch();
+const allMembers = await fetchTeam();
+const pi = allMembers.find((m) => m.category === 'pi') || allMembers[0];
+
 const latestNews = newsItems[0] || {
   date: 'September 2026',
-  title: 'Recent research developments in bacterial cell division and cytoskeletal filament dynamics at The ABCD Laboratory.',
+  title:
+    'Recent research developments in bacterial cell division and cytoskeletal filament dynamics at The ABCD Laboratory.',
   link: '/news',
 };
+
+// Top 3 Publications
+const featuredPublications = allPublications.length > 0 ? allPublications.slice(0, 3) : [];
+
+// Determine research blocks on homepage:
+// Priority 1: Specifically configured research blocks in 'Homepage' tab (if any)
+// Priority 2: Projects from the 'Research' sheet tab
+// Priority 3: Default fallback research block
+let researchBlocks = [];
+if (homepage.research_blocks && homepage.research_blocks.length > 0) {
+  researchBlocks = homepage.research_blocks;
+} else if (allResearch && allResearch.length > 0) {
+  researchBlocks = allResearch.map((item, idx) => ({
+    title: item.title,
+    description: item.short_summary || item.full_description,
+    image: item.image_url || (idx === 0 ? '/images/research-img1.png' : ''),
+    link: `/research#${item.id || ''}`,
+    order: item.order || idx + 1,
+  }));
+} else {
+  researchBlocks = [
+    {
+      title: 'SynBio tools and methods',
+      description:
+        'We are dedicated to developing a synthetic biology toolbox for bacteria, fungi, and yeast, aimed at comprehensively understanding sophisticated cellular function and cleverly reprogramming it to achieve desired functionalities.',
+      image: '/images/research-img1.png',
+      link: '/research',
+      order: 1,
+    },
+  ];
+}
 ---
 
 <Layout title="The ABCD Lab | NISER, India">
@@ -19,10 +63,10 @@ const latestNews = newsItems[0] || {
         <h1
           class="font-urbanist text-5xl font-extrabold tracking-tight text-[#001f40] sm:text-6xl lg:text-7xl dark:text-white"
         >
-          The ABCD Lab
+          {homepage.hero_title || 'The ABCD Lab'}
         </h1>
         <p class="mt-2 text-base font-medium text-gray-600 sm:text-lg dark:text-gray-300">
-          National Institute of Science Education and Research (NISER), India
+          {homepage.hero_subtitle || 'National Institute of Science Education and Research (NISER), India'}
         </p>
       </div>
     </div>
@@ -32,13 +76,14 @@ const latestNews = newsItems[0] || {
   <div class="cta-area style-1 pb-24 sm:pb-32">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
-        <!-- Left: Hexagonal Biomanufacturing Workflow Illustration -->
+        <!-- Left: Illustration -->
         <div class="lg:col-span-7">
           <div class="image-wrapper flex justify-center">
             <img
-              src={url('/images/hero-img.png')}
+              src={homepage.hero_image ? url(homepage.hero_image) : url('/images/hero-img.png')}
               class="h-auto w-full max-w-2xl object-contain"
-              alt="Synthetic biology laboratory workflow"
+              alt="Laboratory workflow"
+              referrerpolicy="no-referrer"
             />
           </div>
         </div>
@@ -47,11 +92,13 @@ const latestNews = newsItems[0] || {
         <div class="space-y-6 lg:col-span-5">
           <!-- Card 1: Navy Card -->
           <div class="space-y-6 rounded-[30px] bg-[#001f40] p-8 text-white shadow-md sm:p-10">
-            <h4 class="font-urbanist text-2xl leading-snug font-bold sm:text-3xl">
-              Stay up to date with <br />#Microbial SynBio
+            <h4 class="font-urbanist text-2xl leading-snug font-bold sm:text-3xl whitespace-pre-line">
+              {homepage.cta1_title || 'Stay up to date with \n#ABCD Lab'}
             </h4>
             <div>
-              <a href={url('/news')} class="theme-btn theme-btn-white"> Our News </a>
+              <a href={url(homepage.cta1_btn_link || '/news')} class="theme-btn theme-btn-white">
+                {homepage.cta1_btn_text || 'Our News'}
+              </a>
             </div>
           </div>
 
@@ -62,11 +109,13 @@ const latestNews = newsItems[0] || {
             </div>
             <div class="info-card-inner">
               <p class="desc">
-                Join us as we push the boundaries of microbial synthetic biology, driving towards a
-                more sustainable and bio-based future
+                {homepage.cta2_text ||
+                  'Join us as we push the boundaries of microbial swarm intelligence and synthetic biology, driving towards a more sustainable and bio-based future'}
               </p>
               <div>
-                <a href={url('/contact')} class="theme-btn"> Contact Us </a>
+                <a href={url(homepage.cta2_btn_link || '/contact')} class="theme-btn">
+                  {homepage.cta2_btn_text || 'Contact Us'}
+                </a>
               </div>
             </div>
           </div>
@@ -75,76 +124,146 @@ const latestNews = newsItems[0] || {
     </div>
   </div>
 
-  <!-- 3. RESEARCH AREA (Exact copy from SynBio HU-Berlin) -->
+  <!-- 3. RESEARCH AREA (Alternating layout: Odd -> Image on Right, Even -> Image on Left) -->
   <div class="research-area style-1 bg-[#f4f7fb] py-20 sm:py-28 dark:bg-white/5">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
-        <!-- Left Column: Title & Research Card -->
-        <div class="space-y-8 lg:col-span-7">
-          <div>
-            <h2 class="font-urbanist text-3xl font-bold text-[#001f40] sm:text-4xl dark:text-white">
-              Our Research
-            </h2>
-          </div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
+      <!-- Section Header -->
+      <div class="flex items-center justify-between">
+        <h2 class="font-urbanist text-3xl font-bold text-[#001f40] sm:text-4xl dark:text-white">
+          {homepage.research_title || 'Our Research'}
+        </h2>
 
-          <div
-            class="space-y-6 rounded-[30px] border border-gray-100 bg-white p-8 shadow-sm sm:p-12 dark:border-white/10 dark:bg-[#0c1626]"
+        <div class="flex items-center gap-3">
+          <a href={url('/research')} class="theme-btn">View All Research</a>
+          <a
+            href={url('/research')}
+            class="circle-arrow-btn"
+            aria-label="View all research projects"
           >
-            <h3 class="font-urbanist text-2xl font-bold text-[#001f40] sm:text-3xl dark:text-white">
-              <a href={url('/research')} class="hover:text-synbio-orange transition-colors">
-                SynBio tools and methods
-              </a>
-            </h3>
-
-            <p class="text-base leading-relaxed text-gray-700 dark:text-gray-300">
-              We are dedicated to developing a synthetic biology toolbox for bacteria, fungi, and
-              yeast, aimed at comprehensively understanding sophisticated cellular function and
-              cleverly reprogramming it to achieve desired functionalities.
-            </p>
-
-            <div class="btn-wrapper flex items-center gap-3 pt-2">
-              <a href={url('/research')} class="theme-btn">Read More</a>
-              <a
-                href={url('/research')}
-                class="circle-arrow-btn"
-                aria-label="Read more about research"
-              >
-                <svg
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Column: 3D Box Illustration -->
-        <div class="flex justify-center lg:col-span-5">
-          <img
-            src={url('/images/research-img1.png')}
-            class="h-auto w-full max-w-md object-contain"
-            alt="Research thrusts 3D box"
-          />
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
         </div>
       </div>
+
+      <!-- Alternating Research Blocks -->
+      {
+        researchBlocks.map((block, index) => {
+          const blockNum = index + 1;
+          const isOdd = blockNum % 2 !== 0; // 1, 3, 5... -> Image on RIGHT
+          const isEven = !isOdd;             // 2, 4, 6... -> Image on LEFT
+          const blockImage = block.image || (index === 0 ? '/images/research-img1.png' : '');
+
+          return (
+            <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
+              {/* If EVEN: Image on LEFT (desktop lg:col-span-5) */}
+              {isEven && (
+                <div class="flex justify-center lg:col-span-5 order-2 lg:order-1">
+                  {blockImage ? (
+                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-lg border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] aspect-[4/3] flex items-center justify-center p-3">
+                      <img
+                        src={url(blockImage)}
+                        class="h-full w-full object-contain rounded-2xl transition-transform duration-500 hover:scale-105"
+                        alt={block.title}
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                      />
+                    </div>
+                  ) : (
+                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-md border border-gray-200/80 dark:border-white/10 bg-gradient-to-br from-[#001f40] to-slate-900 aspect-[4/3] flex items-center justify-center p-6 text-white text-center">
+                      <span class="font-urbanist text-2xl font-bold tracking-tight opacity-80">{block.title}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Text Card (lg:col-span-7) */}
+              <div
+                class={`space-y-6 rounded-[30px] border border-gray-100 bg-white p-8 shadow-sm sm:p-12 dark:border-white/10 dark:bg-[#0c1626] lg:col-span-7 ${
+                  isEven ? 'order-1 lg:order-2' : 'order-1'
+                }`}
+              >
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-synbio-tint/20 text-[#001f40] dark:bg-white/10 dark:text-white">
+                  Research Thrust 0{blockNum}
+                </div>
+
+                <h3 class="font-urbanist text-2xl font-bold text-[#001f40] sm:text-3xl dark:text-white">
+                  <a href={url(block.link || '/research')} class="hover:text-synbio-orange transition-colors">
+                    {block.title}
+                  </a>
+                </h3>
+
+                <p class="text-base leading-relaxed text-gray-700 dark:text-gray-300">
+                  {block.description}
+                </p>
+
+                <div class="btn-wrapper flex items-center gap-3 pt-2">
+                  <a href={url(block.link || '/research')} class="theme-btn">Read More</a>
+                  <a
+                    href={url(block.link || '/research')}
+                    class="circle-arrow-btn"
+                    aria-label={`Read more about ${block.title}`}
+                  >
+                    <svg
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              {/* If ODD: Image on RIGHT (desktop lg:col-span-5) */}
+              {isOdd && (
+                <div class="flex justify-center lg:col-span-5 order-2">
+                  {blockImage ? (
+                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-lg border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] aspect-[4/3] flex items-center justify-center p-3">
+                      <img
+                        src={url(blockImage)}
+                        class="h-full w-full object-contain rounded-2xl transition-transform duration-500 hover:scale-105"
+                        alt={block.title}
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                      />
+                    </div>
+                  ) : (
+                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-md border border-gray-200/80 dark:border-white/10 bg-gradient-to-br from-[#001f40] to-slate-900 aspect-[4/3] flex items-center justify-center p-6 text-white text-center">
+                      <span class="font-urbanist text-2xl font-bold tracking-tight opacity-80">{block.title}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })
+      }
     </div>
   </div>
 
-  <!-- 4. PUBLICATION AREA (With the EXACT Top-Right Cutout Notch & Hover Animation!) -->
+  <!-- 4. PUBLICATION AREA (Dynamic Publications with Cutout Notch & Hover Animation) -->
   <div class="latest-posts-area style-2 bg-white py-20 sm:py-28 dark:bg-[#070c18]">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <!-- Section Title & View All Button -->
       <div class="mb-12 flex items-center justify-between">
         <h2 class="font-urbanist text-3xl font-bold text-[#001f40] sm:text-4xl dark:text-white">
-          Publication
+          {homepage.publications_title || 'Publication'}
         </h2>
 
         <div class="flex items-center gap-3">
@@ -170,42 +289,98 @@ const latestNews = newsItems[0] || {
         </div>
       </div>
 
-      <!-- 3 Publication Cards Grid -->
+      <!-- Publication Cards Grid -->
       <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <!-- Card 1: FASTOP -->
-        <div class="post-card style-2 publication-card">
-          <div class="content">
-            <div class="post-meta">
-              <span class="single-post-meta">M Borah, N Gautron, V Courdavault, R Srinivasan*</span>
-              <span class="dots"></span>
-              <span class="single-post-meta">05/08/2026</span>
-            </div>
+        {
+          featuredPublications.map((pub) => {
+            const rawDoi = (pub.doi || '').trim();
+            const cleanDoi = rawDoi.replace(/^https?:\/\/doi\.org\//i, '').replace(/^doi:\s*/i, '');
+            const doiUrl = cleanDoi ? `https://doi.org/${cleanDoi}` : '';
+            const paperUrl = pub.url || doiUrl || '#';
 
-            <div class="tag-wrapper">
-              <span class="single-tag">bioRxiv (preprint)</span>
-            </div>
+            return (
+              <div class="post-card style-2 publication-card">
+                <div class="content">
+                  <div class="post-meta">
+                    <span class="single-post-meta">{pub.authors}</span>
+                    <span class="dots"></span>
+                    <span class="single-post-meta">{pub.year}</span>
+                  </div>
 
-            <h3 class="title">
-              <a
-                href="https://doi.org/10.64898/2026.05.07.723299"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                FASTOP – Fast editing toolkit for top expression sites in yeast
-              </a>
-            </h3>
+                  <!-- Meta Badges: Journal & DOI -->
+                  <div class="flex flex-wrap items-center gap-2 mb-4">
+                    {pub.journal && (
+                      <span class="journal-badge inline-flex items-center h-7 px-3.5 rounded-full bg-[#001f40] dark:bg-blue-600 text-white font-urbanist text-xs font-bold uppercase tracking-wider shadow-sm shrink-0">
+                        {pub.journal}
+                      </span>
+                    )}
 
-            <div class="btn-wrapper">
-              <a
-                href="https://doi.org/10.64898/2026.05.07.723299"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-btn"
-              >
-                <span>Read more</span>
-                <span>
+                    {cleanDoi && (
+                      <a
+                        href={doiUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="doi-pill inline-flex items-center h-7 gap-1.5 px-3 rounded-full bg-[#001f40] dark:bg-blue-600 text-white text-xs font-bold font-mono tracking-tight shadow-sm hover:bg-blue-700 dark:hover:bg-blue-500 transition-all"
+                        title={`Open DOI: ${cleanDoi}`}
+                      >
+                        <span class="bg-white/20 text-white text-[10px] font-black uppercase px-1.5 py-0.5 rounded tracking-wider leading-none">
+                          DOI
+                        </span>
+                        <span class="font-mono text-xs truncate max-w-[200px] leading-none">{cleanDoi}</span>
+                        <svg class="h-3.5 w-3.5 text-white/90 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+
+                  <h3 class="title">
+                    <a
+                      href={paperUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {pub.title}
+                    </a>
+                  </h3>
+
+                  <div class="btn-wrapper">
+                    <a
+                      href={paperUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-btn"
+                    >
+                    <span>Read more</span>
+                    <span>
+                      <svg
+                        class="inline-block h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- The Circle Arrow Button sitting in the top-right notch -->
+              <div class="btn-wrapper">
+                <a
+                  href={pub.url || (pub.doi ? `https://doi.org/${pub.doi}` : '#')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="circle-arrow-btn"
+                  aria-label={`Read ${pub.title}`}
+                >
                   <svg
-                    class="inline-block h-4 w-4"
+                    class="h-5 w-5"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -216,261 +391,62 @@ const latestNews = newsItems[0] || {
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
                   </svg>
-                </span>
-              </a>
+                </a>
+              </div>
+
+              <!-- The SVG Shape Cutout (Disappears and slides on hover) -->
+              <div class="shape">
+                <svg
+                  width="111"
+                  height="111"
+                  viewBox="0 0 111 111"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
+                  ></path>
+                </svg>
+              </div>
             </div>
-          </div>
-
-          <!-- The Circle Arrow Button sitting in the top-right notch -->
-          <div class="btn-wrapper">
-            <a
-              href="https://doi.org/10.64898/2026.05.07.723299"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="circle-arrow-btn"
-              aria-label="Read FASTOP paper"
-            >
-              <svg
-                class="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
-
-          <!-- The SVG Shape Cutout (Disappears and slides on hover) -->
-          <div class="shape">
-            <svg
-              width="111"
-              height="111"
-              viewBox="0 0 111 111"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
-              ></path>
-            </svg>
-          </div>
-        </div>
-
-        <!-- Card 2: Synthetic Transcription Factors -->
-        <div class="post-card style-2 publication-card">
-          <div class="content">
-            <div class="post-meta">
-              <span class="single-post-meta"
-                >M Borah, S Gu, EM Saied, C Arenz, MA Koffas, R Srinivasan*</span
-              >
-              <span class="dots"></span>
-              <span class="single-post-meta">02/02/2026</span>
-            </div>
-
-            <div class="tag-wrapper">
-              <span class="single-tag">bioRxiv (preprint)</span>
-            </div>
-
-            <h3 class="title">
-              <a
-                href="https://www.biorxiv.org/content/10.64898/2026.02.02.703094v1"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Fine-tuned synthetic transcription factors for production of 3'
-                phosphoadenosine-5'-phosphosulfate in yeast
-              </a>
-            </h3>
-
-            <div class="btn-wrapper">
-              <a
-                href="https://www.biorxiv.org/content/10.64898/2026.02.02.703094v1"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-btn"
-              >
-                <span>Read more</span>
-                <span>
-                  <svg
-                    class="inline-block h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-              </a>
-            </div>
-          </div>
-
-          <div class="btn-wrapper">
-            <a
-              href="https://www.biorxiv.org/content/10.64898/2026.02.02.703094v1"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="circle-arrow-btn"
-              aria-label="Read transcription factors paper"
-            >
-              <svg
-                class="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
-
-          <div class="shape">
-            <svg
-              width="111"
-              height="111"
-              viewBox="0 0 111 111"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
-              ></path>
-            </svg>
-          </div>
-        </div>
-
-        <!-- Card 3: Fungal Innovations -->
-        <div class="post-card style-2 publication-card">
-          <div class="content">
-            <div class="post-meta">
-              <span class="single-post-meta">H Hinneburg*, S Gu, R Srinivasan*</span>
-              <span class="dots"></span>
-              <span class="single-post-meta">06/10/2025</span>
-            </div>
-
-            <div class="tag-wrapper">
-              <span class="single-tag">Journal of Fungi 11,721</span>
-            </div>
-
-            <h3 class="title">
-              <a
-                href="https://doi.org/10.3390/jof11100721"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Fungal Innovations—Advancing Sustainable Materials, Genetics, and Applications for
-                Industry
-              </a>
-            </h3>
-
-            <div class="btn-wrapper">
-              <a
-                href="https://doi.org/10.3390/jof11100721"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-btn"
-              >
-                <span>Read more</span>
-                <span>
-                  <svg
-                    class="inline-block h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-              </a>
-            </div>
-          </div>
-
-          <div class="btn-wrapper">
-            <a
-              href="https://doi.org/10.3390/jof11100721"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="circle-arrow-btn"
-              aria-label="Read fungal innovations paper"
-            >
-              <svg
-                class="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
-
-          <div class="shape">
-            <svg
-              width="111"
-              height="111"
-              viewBox="0 0 111 111"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
-              ></path>
-            </svg>
-          </div>
-        </div>
+          );
+        })
+        }
       </div>
     </div>
   </div>
 
-  <!-- 5. OUR TEAM SECTION (Full Photo with Dr. Ramanujam Srinivasan Portrait & Hover Reveal) -->
+  <!-- 5. OUR TEAM SECTION (Full Photo with PI Portrait & Hover Reveal) -->
   <div class="testimonial-slider-area style-1 bg-white py-20 dark:bg-[#070c18]">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mb-8">
         <h2 class="font-urbanist text-3xl font-bold text-[#001f40] sm:text-4xl dark:text-white">
-          Our Team
+          {homepage.team_title || 'Our Team'}
         </h2>
       </div>
 
       <div class="testimonial-bg-wrapper hp-tbg shadow-lg">
         <img
-          src={url('/images/group-photo.jpg')}
+          src={homepage.team_photo ? url(homepage.team_photo) : url('/images/group-photo.jpg')}
           alt="The ABCD Lab group photo"
           class="hp-bg-photo"
+          referrerpolicy="no-referrer"
         />
         <div class="hp-bg-overlay"></div>
 
         <!-- PI Portrait in Top Right Corner -->
         <div class="hp-pi-portrait">
-          <img src={url('/images/member_pics/team-1.png')} alt="Dr. Ramanujam Srinivasan (Srini)" />
+          <img
+            src={homepage.team_pi_photo ? url(homepage.team_pi_photo) : (pi.photo_url ? url(pi.photo_url) : url('/images/member_pics/team-1.png'))}
+            alt={homepage.team_pi_name || pi.name || 'Dr. Ramanujam Srinivasan (Srini)'}
+            referrerpolicy="no-referrer"
+          />
           <div class="hp-pi-label">
-            <strong>Dr. Ramanujam Srinivasan (Srini)</strong>
-            Principal Investigator<br />Associate Professor, SBS, NISER
+            <strong>{homepage.team_pi_name || pi.name || 'Dr. Ramanujam Srinivasan (Srini)'}</strong>
+            {homepage.team_pi_role || pi.role || 'Principal Investigator'}<br />
+            {homepage.team_pi_subrole || 'Associate Professor, SBS, NISER'}
           </div>
         </div>
 
@@ -502,10 +478,9 @@ const latestNews = newsItems[0] || {
       <div class="mb-12 flex items-center justify-between">
         <div>
           <h2
-            class="font-urbanist text-3xl leading-tight font-bold text-[#001f40] sm:text-4xl dark:text-white"
+            class="font-urbanist text-3xl leading-tight font-bold text-[#001f40] sm:text-4xl dark:text-white whitespace-pre-line"
           >
-            Stay up to date with #Microbial SynBio<br />
-            Our latest news
+            {homepage.news_title || 'Stay up to date with #ABCD Lab\nOur latest news'}
           </h2>
         </div>
 
@@ -563,7 +538,11 @@ const latestNews = newsItems[0] || {
           </div>
 
           <div class="btn-wrapper">
-            <a href={url(latestNews.link || '/news')} class="circle-arrow-btn" aria-label="Read latest news">
+            <a
+              href={url(latestNews.link || '/news')}
+              class="circle-arrow-btn"
+              aria-label="Read latest news"
+            >
               <svg
                 class="h-5 w-5"
                 viewBox="0 0 24 24"
