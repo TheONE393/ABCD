@@ -12,7 +12,7 @@ git status --short public/images src/data
 
 echo.
 echo [2/3] Staging and committing changes...
-git add public/images src/data
+git add public/ src/data/
 git commit -m "Update lab photos and data via Explorer (%date% %time%)"
 
 echo.
