@@ -932,10 +932,15 @@ export function getLocalMemberFiles() {
         for (const file of files) {
           if (/\.(jpe?g|png|webp|avif|gif)$/i.test(file) && !seenFiles.has(file.toLowerCase())) {
             seenFiles.add(file.toLowerCase());
+            let version = '';
+            try {
+              const stat = fs.statSync(path.join(dir, file));
+              version = `?v=${Math.floor(stat.mtimeMs)}`;
+            } catch (e) {}
             found.push({
               file,
               stem: path.parse(file).name.toLowerCase().replace(/[\s_-]+/g, ''),
-              url: `${prefix}${file}`,
+              url: `${prefix}${file}${version}`,
             });
           }
         }
@@ -1048,8 +1053,13 @@ export function getLocalGalleryPhotos() {
             seenFiles.add(file.toLowerCase());
             const rawName = path.parse(file).name.replace(/[-_]+/g, ' ');
             const title = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+            let version = '';
+            try {
+              const stat = fs.statSync(path.join(dir, file));
+              version = `?v=${Math.floor(stat.mtimeMs)}`;
+            } catch (e) {}
             slides.push({
-              url: `${prefix}${file}`,
+              url: `${prefix}${file}${version}`,
               title: title || 'The ABCD Laboratory',
               subtitle: 'School of Biological Sciences • NISER Bhubaneswar',
               order: index + 1,
@@ -1079,7 +1089,14 @@ export function getLocalHomepageTeamPhoto() {
             const parsed = path.parse(f);
             return parsed.name.toLowerCase() === name && /\.(jpe?g|png|webp|avif)$/i.test(parsed.ext);
           });
-          if (match) return `${prefix}${match}`;
+          if (match) {
+            let version = '';
+            try {
+              const stat = fs.statSync(path.join(dir, match));
+              version = `?v=${Math.floor(stat.mtimeMs)}`;
+            } catch (e) {}
+            return `${prefix}${match}${version}`;
+          }
         }
       }
     } catch (e) {}
