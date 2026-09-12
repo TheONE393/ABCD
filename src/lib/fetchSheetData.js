@@ -12,12 +12,11 @@
 // Global environment object helper
 const envObj = (typeof import.meta !== 'undefined' && import.meta?.env) ? import.meta.env : (typeof process !== 'undefined' && process?.env ? process.env : {});
 
-// Node fs/path helpers for dynamic runtime .env loading
-let nodeFs, nodePath;
-try {
-  nodeFs = await import('node:fs');
-  nodePath = await import('node:path');
-} catch (e) {}
+// Node fs/path helpers for server-side operations
+import fs from 'node:fs';
+import path from 'node:path';
+const nodeFs = fs;
+const nodePath = path;
 
 function getRuntimeSheetId() {
   if (envObj.GOOGLE_SHEET_ID && !envObj.GOOGLE_SHEET_ID.includes('YOUR_')) {
@@ -740,10 +739,8 @@ const MEMORY_CACHE = new Map();
 const IN_FLIGHT_PROMISES = new Map();
 
 // Safe disk cache (persists between builds in Node environment)
-let fs, path, cacheFilePath;
+let cacheFilePath;
 try {
-  fs = await import('node:fs');
-  path = await import('node:path');
   const cacheDir = path.resolve('.cache');
   if (!fs.existsSync(cacheDir)) {
     fs.mkdirSync(cacheDir, { recursive: true });
@@ -915,8 +912,181 @@ export async function fetchSheetData(url, type) {
 }
 
 /**
- * Convenience helper methods with fallback safety
+ * Scans local folders for member photos and matches them to team members.
  */
+export function getLocalMemberFiles() {
+  if (!fs || !path) return [];
+  const candidateDirs = [
+    { dir: path.resolve('public/images/member-pics'), prefix: '/images/member-pics/' },
+    { dir: path.resolve('public/images/member_pics'), prefix: '/images/member_pics/' },
+    { dir: path.resolve('public/member-pics'), prefix: '/member-pics/' },
+    { dir: path.resolve('public/member_pics'), prefix: '/member_pics/' },
+  ];
+
+  const found = [];
+  const seenFiles = new Set();
+  for (const { dir, prefix } of candidateDirs) {
+    try {
+      if (fs.existsSync(dir)) {
+        const files = fs.readdirSync(dir);
+        for (const file of files) {
+          if (/\.(jpe?g|png|webp|avif|gif)$/i.test(file) && !seenFiles.has(file.toLowerCase())) {
+            seenFiles.add(file.toLowerCase());
+            found.push({
+              file,
+              stem: path.parse(file).name.toLowerCase().replace(/[\s_-]+/g, ''),
+              url: `${prefix}${file}`,
+            });
+          }
+        }
+      }
+    } catch (e) {}
+  }
+  return found;
+}
+
+export function enrichTeamWithLocalPhotos(members) {
+  if (!Array.isArray(members) || members.length === 0) return members;
+  const localFiles = getLocalMemberFiles();
+  if (localFiles.length === 0) return members;
+
+  return members.map((member) => {
+    const isPi = member.category === 'pi';
+    const nameClean = (member.name || '')
+      .replace(/^(Dr\.|Prof\.|Mr\.|Ms\.|Mrs\.)\s+/i, '')
+      .replace(/\(.*?\)/g, '')
+      .trim()
+      .toLowerCase();
+
+    const nameCompact = nameClean.replace(/[\s_-]+/g, '');
+    const nameParts = nameClean.split(/\s+/).filter(Boolean);
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts[nameParts.length - 1] || '';
+
+    let matched = null;
+
+    if (isPi) {
+      // 1. Check for dedicated PI filenames
+      matched = localFiles.find(
+        (f) =>
+          f.stem === 'pi' ||
+          f.stem === 'piphoto' ||
+          f.stem === 'srini' ||
+          f.stem === 'ramanujam' ||
+          f.stem === 'srinivasan' ||
+          f.stem.includes('drramanujam')
+      );
+    }
+
+    if (!matched) {
+      // 2. Exact compact full name match (e.g. neelratnadas, srijita)
+      matched = localFiles.find((f) => f.stem === nameCompact);
+    }
+
+    if (!matched && firstName.length >= 3 && lastName.length >= 3) {
+      // 3. Combined first + last name match (e.g. vaishnavipawar for "Vaishnavi Kamlesh Pawar")
+      const firstLast = firstName + lastName;
+      matched = localFiles.find(
+        (f) =>
+          f.stem === firstLast ||
+          (f.stem.includes(firstName) && f.stem.includes(lastName))
+      );
+    }
+
+    if (!matched && firstName.length >= 3) {
+      // 4. First name exact match
+      matched = localFiles.find((f) => f.stem === firstName || f.stem.startsWith(firstName));
+    }
+
+    if (!matched && lastName.length >= 3 && lastName !== firstName) {
+      // 5. Last name match
+      matched = localFiles.find((f) => f.stem === lastName || f.stem.endsWith(lastName));
+    }
+
+    if (matched) {
+      return { ...member, photo_url: matched.url };
+    }
+
+    return member;
+  });
+}
+
+export function getLocalPiPhoto() {
+  const localFiles = getLocalMemberFiles();
+  const matched = localFiles.find(
+    (f) =>
+      f.stem === 'pi' ||
+      f.stem === 'piphoto' ||
+      f.stem === 'srini' ||
+      f.stem === 'ramanujam' ||
+      f.stem === 'srinivasan' ||
+      f.stem.includes('drramanujam')
+  );
+  return matched ? matched.url : '';
+}
+
+export function getLocalGalleryPhotos() {
+  if (!fs || !path) return [];
+  const candidateDirs = [
+    { dir: path.resolve('public/images/gallery'), prefix: '/images/gallery/' },
+    { dir: path.resolve('public/gallery'), prefix: '/gallery/' },
+  ];
+
+  const slides = [];
+  const seenFiles = new Set();
+  for (const { dir, prefix } of candidateDirs) {
+    try {
+      if (fs.existsSync(dir)) {
+        const files = fs.readdirSync(dir);
+        const imageFiles = files
+          .filter((f) => /\.(jpe?g|png|webp|avif)$/i.test(f))
+          .filter((f) => !/^(team|group|team-photo|group-photo)\./i.test(f))
+          .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+
+        imageFiles.forEach((file, index) => {
+          if (!seenFiles.has(file.toLowerCase())) {
+            seenFiles.add(file.toLowerCase());
+            const rawName = path.parse(file).name.replace(/[-_]+/g, ' ');
+            const title = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+            slides.push({
+              url: `${prefix}${file}`,
+              title: title || 'The ABCD Laboratory',
+              subtitle: 'School of Biological Sciences • NISER Bhubaneswar',
+              order: index + 1,
+            });
+          }
+        });
+      }
+    } catch (e) {}
+  }
+  return slides;
+}
+
+export function getLocalHomepageTeamPhoto() {
+  if (!fs || !path) return '';
+  const searchCandidates = [
+    { dir: path.resolve('public/images/gallery'), prefix: '/images/gallery/' },
+    { dir: path.resolve('public/images'), prefix: '/images/' },
+  ];
+
+  const teamNames = ['team', 'group', 'team-photo', 'group-photo', 'team_photo', 'group_photo', 'cohort', 'home-team-photo'];
+  for (const { dir, prefix } of searchCandidates) {
+    try {
+      if (fs.existsSync(dir)) {
+        const files = fs.readdirSync(dir);
+        for (const name of teamNames) {
+          const match = files.find((f) => {
+            const parsed = path.parse(f);
+            return parsed.name.toLowerCase() === name && /\.(jpe?g|png|webp|avif)$/i.test(parsed.ext);
+          });
+          if (match) return `${prefix}${match}`;
+        }
+      }
+    } catch (e) {}
+  }
+  return '';
+}
+
 export async function fetchTeam(customUrl = SHEET_URLS.team) {
   let data = await fetchSheetData(customUrl, 'team');
   if (!Array.isArray(data) || data.length === 0) {
@@ -942,7 +1112,8 @@ export async function fetchTeam(customUrl = SHEET_URLS.team) {
     // Non-fatal if alumni sheet tab is absent
   }
 
-  return data;
+  // Enrich with any offline photos dropped into public/images/member-pics/
+  return enrichTeamWithLocalPhotos(data);
 }
 
 let LOCAL_CSV_CACHE = null;
@@ -1062,6 +1233,12 @@ export async function fetchSettings(customUrl = SHEET_URLS.settings) {
  * Falls back to settings sheet (team_photos / team_gallery) if tab is not found.
  */
 export async function fetchTeamPhotos() {
+  // 1. Check local gallery folder first (public/images/gallery or public/gallery)
+  const localGallery = getLocalGalleryPhotos();
+  if (localGallery && localGallery.length > 0) {
+    return localGallery;
+  }
+
   const possibleTabs = ['Team Photos', 'Photos', 'Gallery'];
   for (const tabName of possibleTabs) {
     try {
@@ -1149,8 +1326,8 @@ export async function fetchHomepage() {
     publications_count: 3,
 
     team_title: 'Our Team',
-    team_photo: '/images/group-photo.jpg',
-    team_pi_photo: '/images/member_pics/team-1.png',
+    team_photo: '/images/home-team-photo.jpg',
+    team_pi_photo: '/images/member_pics/pi.jpg',
     team_pi_name: 'Dr. Ramanujam Srinivasan (Srini)',
     team_pi_role: 'Principal Investigator',
     team_pi_subrole: 'Associate Professor, SBS, NISER',

@@ -13,7 +13,12 @@ export default defineConfig({
     plugins: [tailwindcss()],
     server: {
       watch: {
-        ignored: ['**/.cache/**', '**/node_modules/**', '**/.git/**'],
+        ignored: [
+          '**/.cache/**',
+          '**/node_modules/**',
+          '**/.git/**',
+          '**/public/**',
+        ],
       },
     },
   },

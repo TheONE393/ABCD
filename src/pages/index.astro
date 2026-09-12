@@ -7,6 +7,8 @@ import {
   fetchPublications,
   fetchResearch,
   fetchTeam,
+  getLocalHomepageTeamPhoto,
+  getLocalPiPhoto,
 } from '../lib/fetchSheetData.js';
 
 const homepage = await fetchHomepage();
@@ -14,7 +16,9 @@ const newsItems = await fetchNews();
 const allPublications = await fetchPublications();
 const allResearch = await fetchResearch();
 const allMembers = await fetchTeam();
-const pi = allMembers.find((m) => m.category === 'pi') || allMembers[0];
+const pi = allMembers.find((m: any) => m.category === 'pi') || allMembers[0];
+const localTeamPhoto = getLocalHomepageTeamPhoto();
+const localPiPhoto = getLocalPiPhoto();
 
 const latestNews = newsItems[0] || {
   date: 'September 2026',
@@ -30,11 +34,11 @@ const featuredPublications = allPublications.length > 0 ? allPublications.slice(
 // Priority 1: Specifically configured research blocks in 'Homepage' tab (if any)
 // Priority 2: Projects from the 'Research' sheet tab
 // Priority 3: Default fallback research block
-let researchBlocks = [];
+let researchBlocks: any[] = [];
 if (homepage.research_blocks && homepage.research_blocks.length > 0) {
   researchBlocks = homepage.research_blocks;
 } else if (allResearch && allResearch.length > 0) {
-  researchBlocks = allResearch.map((item, idx) => ({
+  researchBlocks = allResearch.map((item: any, idx: number) => ({
     title: item.title,
     description: item.short_summary || item.full_description,
     image: item.image_url || (idx === 0 ? '/images/research-img1.png' : ''),
@@ -158,7 +162,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
 
       <!-- Alternating Research Blocks -->
       {
-        researchBlocks.map((block, index) => {
+        researchBlocks.map((block: any, index: number) => {
           const blockNum = index + 1;
           const isOdd = blockNum % 2 !== 0; // 1, 3, 5... -> Image on RIGHT
           const isEven = !isOdd;             // 2, 4, 6... -> Image on LEFT
@@ -292,7 +296,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
       <!-- Publication Cards Grid -->
       <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {
-          featuredPublications.map((pub) => {
+          featuredPublications.map((pub: any) => {
             const rawDoi = (pub.doi || '').trim();
             const cleanDoi = rawDoi.replace(/^https?:\/\/doi\.org\//i, '').replace(/^doi:\s*/i, '');
             const doiUrl = cleanDoi ? `https://doi.org/${cleanDoi}` : '';
@@ -429,7 +433,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
 
       <div class="testimonial-bg-wrapper hp-tbg shadow-lg">
         <img
-          src={homepage.team_photo ? url(homepage.team_photo) : url('/images/group-photo.jpg')}
+          src={localTeamPhoto ? url(localTeamPhoto) : (homepage.team_photo ? url(homepage.team_photo) : url('/images/home-team-photo.jpg'))}
           alt="The ABCD Lab group photo"
           class="hp-bg-photo"
           referrerpolicy="no-referrer"
@@ -439,7 +443,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
         <!-- PI Portrait in Top Right Corner -->
         <div class="hp-pi-portrait">
           <img
-            src={homepage.team_pi_photo ? url(homepage.team_pi_photo) : (pi.photo_url ? url(pi.photo_url) : url('/images/member_pics/team-1.png'))}
+            src={localPiPhoto ? url(localPiPhoto) : (homepage.team_pi_photo ? url(homepage.team_pi_photo) : (pi.photo_url ? url(pi.photo_url) : url('/images/home-pi-photo.jpg')))}
             alt={homepage.team_pi_name || pi.name || 'Dr. Ramanujam Srinivasan (Srini)'}
             referrerpolicy="no-referrer"
           />

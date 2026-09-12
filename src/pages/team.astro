@@ -1,13 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { url } from '../lib/paths.js';
-import { fetchTeam, fetchSettings, fetchTeamPhotos, formatDriveUrl } from '../lib/fetchSheetData.js';
+import { fetchTeam, fetchTeamPhotos } from '../lib/fetchSheetData.js';
 
 const allMembers = await fetchTeam();
-const settings = await fetchSettings();
-const pi = allMembers.find((m) => m.category === 'pi') || allMembers[0];
-const currentMembers = allMembers.filter((m) => m.is_current && m.category !== 'pi');
-const alumni = allMembers.filter((m) => !m.is_current || m.category === 'alumni');
+const pi = allMembers.find((m: any) => m.category === 'pi') || allMembers[0];
+const currentMembers = allMembers.filter((m: any) => m.is_current && m.category !== 'pi');
+const alumni = allMembers.filter((m: any) => !m.is_current || m.category === 'alumni');
 
 // Process banner images from dedicated 'Team Photos' sheet tab or settings
 const sheetPhotos = await fetchTeamPhotos();
@@ -73,7 +72,7 @@ function getInitials(name = '') {
         <!-- Slides Track -->
         <div class="relative w-full h-full">
           {
-            bannerSlides.map((slide, index) => (
+            bannerSlides.map((slide: any, index: number) => (
               <div
                 class={`carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out ${
                   index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
@@ -82,7 +81,7 @@ function getInitials(name = '') {
               >
                 <!-- Background Image -->
                 <img
-                  src={slide.url}
+                  src={url(slide.url)}
                   alt={slide.title}
                   class="w-full h-full object-cover object-center transform scale-100 transition-transform duration-10000 ease-out"
                   loading={index === 0 ? 'eager' : 'lazy'}
@@ -137,7 +136,7 @@ function getInitials(name = '') {
         <!-- Carousel Pagination Dots -->
         <div class="absolute bottom-4 sm:bottom-6 right-6 sm:right-10 z-30 flex items-center gap-2">
           {
-            bannerSlides.map((_, dotIdx) => (
+            bannerSlides.map((_: any, dotIdx: number) => (
               <button
                 type="button"
                 class={`carousel-dot h-2 transition-all duration-300 rounded-full ${
@@ -160,7 +159,7 @@ function getInitials(name = '') {
             <div class="aspect-square w-full sm:w-72 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border border-gray-200/70 dark:border-white/10 flex items-center justify-center shadow-md relative">
               {pi.photo_url ? (
                 <img
-                  src={pi.photo_url}
+                  src={url(pi.photo_url)}
                   alt={pi.name}
                   class="w-full h-full object-cover object-center"
                   loading="eager"
@@ -252,14 +251,14 @@ function getInitials(name = '') {
       <div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {
-            currentMembers.map((member) => (
+            currentMembers.map((member: any) => (
               <div class="group relative overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-xs transition-all duration-300 hover:shadow-xl dark:border-white/10 dark:bg-[#0c1527]">
                 
                 <!-- Card Image Area (Aspect 4/5) -->
                 <div class="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center border-b border-gray-100 dark:border-white/5">
                   {member.photo_url ? (
                     <img
-                      src={member.photo_url}
+                      src={url(member.photo_url)}
                       alt={member.name}
                       class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
@@ -344,13 +343,13 @@ function getInitials(name = '') {
             </h3>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-6">
-              {alumni.map((alum) => (
+              {alumni.map((alum: any) => (
                 <div class="group flex flex-col">
                   <!-- Square Initials/Photo Avatar -->
                   <div class="aspect-square w-full rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border border-gray-200/70 dark:border-white/10 flex items-center justify-center shadow-xs transition-transform duration-300 group-hover:scale-102">
                     {alum.photo_url ? (
                       <img
-                        src={alum.photo_url}
+                        src={url(alum.photo_url)}
                         alt={alum.name}
                         class="w-full h-full object-cover object-center"
                         loading="lazy"
@@ -407,10 +406,10 @@ function getInitials(name = '') {
     if (totalSlides <= 1) return;
 
     let currentIndex = 0;
-    let timer = null;
+    let timer: ReturnType<typeof setInterval> | null = null;
     const intervalTime = 4500; // 4.5 seconds auto-advance
 
-    function showSlide(index) {
+    function showSlide(index: number) {
       // Loop wrapping
       if (index >= totalSlides) index = 0;
       if (index < 0) index = totalSlides - 1;

@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { url } from '../lib/paths.js';
 import { fetchPublications, fetchSettings } from '../lib/fetchSheetData.js';
 
 const publications = await fetchPublications();
@@ -133,7 +132,7 @@ const orcidUrl =
       <!-- 2-Column Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10" id="publications-grid">
         {
-          publications.map((pub, index) => {
+          publications.map((pub: any, index: number) => {
             const rawDoi = (pub.doi || '').trim();
             const cleanDoi = rawDoi.replace(/^https?:\/\/doi\.org\//i, '').replace(/^doi:\s*/i, '');
             const doiUrl = cleanDoi ? `https://doi.org/${cleanDoi}` : '';
@@ -452,5 +451,6 @@ const orcidUrl =
   }
 
   setupPubInteractions();
+  document.addEventListener('astro:page-load', setupPubInteractions);
   document.addEventListener('astro:after-swap', setupPubInteractions);
 </script>
