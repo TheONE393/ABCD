@@ -25,7 +25,7 @@ function formatNewsDate(dateStr: string) {
   description="Stay up to date with Dr. Ramanujam Srinivasan's ABCD Laboratory at NISER: research breakthroughs, competitive grants, awards, and team updates."
 >
   <!-- 1. TOP HEADER TITLE (Clean White/Themed matching Team, Home and Contact pages) -->
-  <div class="border-b border-gray-100 pt-10 pb-4 text-center sm:pt-14 sm:pb-6 dark:border-white/10">
+  <div class="border-b border-gray-100 pt-10 pb-4 text-center sm:pt-14 sm:pb-6 dark:border-white/10 dark:bg-black">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h1 class="font-urbanist text-4xl font-extrabold tracking-tight text-gray-950 sm:text-5xl lg:text-6xl dark:text-white">
         News
@@ -33,7 +33,7 @@ function formatNewsDate(dateStr: string) {
     </div>
   </div>
 
-  <div class="bg-white py-10 sm:py-16 dark:bg-[#070c18]">
+  <div class="bg-white py-10 sm:py-16 dark:bg-black">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-14">
       
       <!-- 2. SECTION SUBTITLE (Matching Naseri Lab Reference Headline) -->
@@ -151,7 +151,7 @@ function formatNewsDate(dateStr: string) {
 
         <!-- RIGHT COLUMN: Sticky Twitter / X Timeline (Matching Reference Screenshot) -->
         <div class="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
-          <div class="rounded-3xl border border-gray-200/80 dark:border-white/10 p-6 bg-white dark:bg-[#0c1626] shadow-sm space-y-4">
+          <div class="rounded-3xl border border-gray-200/80 dark:border-white/10 p-6 bg-white dark:bg-[#001f40] shadow-sm space-y-4">
             
             <div class="flex items-center justify-between border-b border-gray-100 dark:border-white/10 pb-3">
               <div class="flex items-center gap-2">
@@ -166,18 +166,18 @@ function formatNewsDate(dateStr: string) {
                 href={settings.twitter || 'https://twitter.com/NISERer'}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline"
+                class="text-xs font-bold text-blue-600 dark:text-blue-300 hover:underline"
               >
                 @NISERer
               </a>
             </div>
 
-            <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p class="text-xs text-gray-600 dark:text-white leading-relaxed">
               Live updates, conference presentations, student achievements, and notices from Dr. Ramanujam Srinivasan's laboratory and the School of Biological Sciences.
             </p>
 
             <!-- Interactive Live Twitter / X Feed Container -->
-            <div class="rounded-2xl border border-gray-100 dark:border-white/5 p-2 bg-gray-50/60 dark:bg-white/5 overflow-hidden">
+            <div class="rounded-2xl border border-gray-100 dark:border-white/10 p-2 bg-gray-50/60 dark:bg-black overflow-hidden">
               <a
                 class="twitter-timeline"
                 data-height="460"

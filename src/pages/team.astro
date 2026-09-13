@@ -53,7 +53,7 @@ function getInitials(name = '') {
   title="Team | The ABCD Lab"
   description="Meet the researchers, doctoral candidates, technicians, and alumni in Dr. Ramanujam Srinivasan's ABCD Laboratory at NISER Bhubaneswar, India."
 >
-  <div class="py-10 sm:py-16 bg-synbio-tint/20 dark:bg-transparent">
+  <div class="py-10 sm:py-16 bg-synbio-tint/20 dark:bg-black">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
       
       <!-- 1. PAGE TITLE -->
@@ -253,7 +253,7 @@ function getInitials(name = '') {
           {
             currentMembers.map((member: any) => (
               <div
-                class="group member-card card-flip-3d relative overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-xs transition-all duration-300 hover:shadow-xl dark:border-white/10 dark:bg-[#0c1527] cursor-pointer select-none"
+                class="group member-card card-flip-3d relative overflow-hidden rounded-2xl border border-gray-200/80 bg-[#c8dff5] shadow-xs transition-all duration-300 hover:shadow-xl dark:border-white/10 dark:bg-[#001f40] cursor-pointer select-none"
                 tabindex="0"
                 role="button"
                 aria-expanded="false"
@@ -292,12 +292,12 @@ function getInitials(name = '') {
                 </div>
 
                 <!-- Bottom Bar (Visible at rest) -->
-                <div class="p-5 bg-white dark:bg-[#0c1527] flex items-center justify-between">
+                <div class="p-5 bg-[#c8dff5] dark:bg-[#001f40] flex items-center justify-between">
                   <div>
                     <h3 class="font-urbanist text-lg font-bold text-gray-950 dark:text-white leading-tight">
                       {member.name}
                     </h3>
-                    <p class="mt-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+                    <p class="mt-1 text-xs font-semibold text-gray-700 dark:text-white">
                       {member.role}
                     </p>
                   </div>

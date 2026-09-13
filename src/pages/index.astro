@@ -70,7 +70,7 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
           {homepage.hero_title || 'The ABCD Lab'}
         </h1>
         <p class="mt-2 text-base font-medium text-gray-600 sm:text-lg dark:text-gray-300">
-          {homepage.hero_subtitle || 'National Institute of Science Education and Research (NISER), India'}
+          {homepage.hero_subtitle || 'School of Biological Sciences, NISER Bhubaneswar, India'}
         </p>
       </div>
     </div>
@@ -444,11 +444,11 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
         <div class="hp-pi-portrait">
           <img
             src={localPiPhoto ? url(localPiPhoto) : (homepage.team_pi_photo ? url(homepage.team_pi_photo) : (pi.photo_url ? url(pi.photo_url) : url('/images/home-pi-photo.jpg')))}
-            alt={homepage.team_pi_name || pi.name || 'Dr. Ramanujam Srinivasan (Srini)'}
+            alt={homepage.team_pi_name || pi.name || 'Dr. Ramanujam Srinivasan'}
             referrerpolicy="no-referrer"
           />
           <div class="hp-pi-label">
-            <strong>{homepage.team_pi_name || pi.name || 'Dr. Ramanujam Srinivasan (Srini)'}</strong>
+            <strong>{homepage.team_pi_name || pi.name || 'Dr. Ramanujam Srinivasan'}</strong>
             {homepage.team_pi_role || pi.role || 'Principal Investigator'}<br />
             {homepage.team_pi_subrole || 'Associate Professor, SBS, NISER'}
           </div>

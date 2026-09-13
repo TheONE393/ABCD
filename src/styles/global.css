@@ -10,13 +10,13 @@
 :root {
   --page-bg: #ffffff;
   --synbio-navy: #001f40;
-  --synbio-blue-card: #c8dff5;
+  --synbio-blue-card: #c8dff5; /* Light blue cards in day mode */
 }
 
 :where(.dark) {
-  --page-bg: #070c18;
+  --page-bg: #000000; /* Completely black background in dark mode */
   --synbio-navy: #001f40;
-  --synbio-blue-card: #132238;
+  --synbio-blue-card: #001f40; /* Dark blue cards in dark mode */
 }
 
 @layer base {
@@ -32,6 +32,26 @@
   body {
     background-color: var(--page-bg);
     color: #1a1a1a;
+  }
+
+  :where(.dark) html,
+  :where(.dark) body {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+  }
+
+  :where(.dark) h1,
+  :where(.dark) h2,
+  :where(.dark) h3,
+  :where(.dark) h4,
+  :where(.dark) h5,
+  :where(.dark) h6 {
+    color: #ffffff !important;
+  }
+
+  :where(.dark) p,
+  :where(.dark) label {
+    color: #ffffff !important;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -608,14 +628,280 @@
 }
 
 /* ============================================================================
-   3D VERTICAL-AXIS CARD FLIP ON SCROLL
-   Flipping like a card held by its vertical axis from the center
+   DARK MODE SYSTEM RULES
+   - Background: Completely Black (#000000)
+   - Texts: Completely White (#ffffff)
+   - Cards: Light blue in day mode (#c8dff5), Dark blue in dark mode (#001f40) with White text
+   - Arrows & Dark Blue Buttons: Light Blue (#7dd3fc)
    ============================================================================ */
 
+/* 1. Global Background and Text Color Enforcements */
+:where(.dark) html,
+:where(.dark) body,
+:where(.dark) main,
+:where(.dark) .bg-white,
+:where(.dark) .bg-\[\#f4f7fb\],
+:where(.dark) [class*="bg-synbio-tint"],
+:where(.dark) .hero-top-area,
+:where(.dark) .cta-area,
+:where(.dark) .research-area,
+:where(.dark) .latest-posts-area,
+:where(.dark) .testimonial-slider-area {
+  background-color: #000000 !important;
+}
+
+:where(.dark) h1,
+:where(.dark) h2,
+:where(.dark) h3,
+:where(.dark) h4,
+:where(.dark) h5,
+:where(.dark) h6,
+:where(.dark) p,
+:where(.dark) span:not(.theme-btn *):not(.circle-arrow-btn *):not(.journal-badge *):not(.doi-pill *),
+:where(.dark) li,
+:where(.dark) label,
+:where(.dark) strong,
+:where(.dark) b {
+  color: #ffffff !important;
+}
+
+/* Header & Mobile Menu in Dark Mode */
+:where(.dark) #site-header,
+:where(.dark) .header-menu-area,
+:where(.dark) #mobile-nav-menu {
+  background-color: #000000 !important;
+  border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+:where(.dark) .main-menu ul li a {
+  color: #ffffff !important;
+}
+
+:where(.dark) .main-menu ul li.active a,
+:where(.dark) .main-menu ul li a:hover {
+  color: #7dd3fc !important; /* Light blue accent */
+}
+
+/* 2. Cards: Light Blue in Day Mode, Dark Blue in Dark Mode */
+.synbio-card {
+  background-color: #c8dff5; /* Light blue in day mode */
+  border-radius: 28px;
+  border: 1px solid rgba(0, 31, 64, 0.1);
+  transition: all 0.35s ease;
+}
+
+:where(.dark) .synbio-card,
+:where(.dark) .research-card {
+  background-color: #001f40 !important; /* Dark blue in dark mode */
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 36px rgba(0, 31, 64, 0.7) !important;
+}
+
+:where(.dark) .synbio-card h1,
+:where(.dark) .synbio-card h2,
+:where(.dark) .synbio-card h3,
+:where(.dark) .synbio-card h4,
+:where(.dark) .synbio-card p,
+:where(.dark) .synbio-card span,
+:where(.dark) .synbio-card a {
+  color: #ffffff !important;
+}
+
+.post-card.style-2 .content {
+  background-color: var(--synbio-blue-card); /* #c8dff5 in day mode */
+}
+
+:where(.dark) .post-card.style-2 .content {
+  background-color: #001f40 !important; /* Dark blue in dark mode */
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 30px rgba(0, 31, 64, 0.6) !important;
+}
+
+:where(.dark) .post-card.style-2 .content .title,
+:where(.dark) .post-card.style-2 .content .title a,
+:where(.dark) .post-card.style-2 .content .single-post-meta,
+:where(.dark) .post-card.style-2 .content p {
+  color: #ffffff !important;
+}
+
+:where(.dark) .post-card.style-2 .shape svg path {
+  fill: #000000 !important; /* Blends invisibly with black background */
+}
+
+:where(.dark) .member-card {
+  background-color: #001f40 !important; /* Dark blue in dark mode */
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+:where(.dark) .member-card > div:last-of-type {
+  background-color: #001f40 !important;
+  color: #ffffff !important;
+}
+
+:where(.dark) .member-card h3,
+:where(.dark) .member-card p {
+  color: #ffffff !important;
+}
+
+:where(.dark) .info-card.style-3 {
+  background-color: #001f40 !important; /* Dark blue in dark mode */
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+:where(.dark) .info-card.style-3 .content .desc {
+  color: #ffffff !important;
+}
+
+/* 3. Dark Blue Buttons & Arrows: Light Blue (#7dd3fc) in Dark Mode */
+:where(.dark) .theme-btn {
+  background-color: #7dd3fc !important; /* Light blue button */
+  border-color: #7dd3fc !important;
+  color: #001f40 !important; /* Dark blue text for maximum crisp contrast */
+  font-weight: 800 !important;
+  box-shadow: 0 4px 16px rgba(125, 211, 252, 0.35) !important;
+}
+
+:where(.dark) .theme-btn:hover {
+  background-color: #bae6fd !important;
+  border-color: #bae6fd !important;
+  color: #001f40 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(125, 211, 252, 0.55) !important;
+}
+
+:where(.dark) .theme-btn.theme-btn-white {
+  background-color: #7dd3fc !important;
+  border-color: #7dd3fc !important;
+  color: #001f40 !important;
+}
+
+:where(.dark) .theme-btn.theme-btn-white:hover {
+  background-color: #bae6fd !important;
+  border-color: #bae6fd !important;
+  color: #001f40 !important;
+}
+
+:where(.dark) .circle-arrow-btn {
+  background-color: #7dd3fc !important; /* Light blue circle button */
+  color: #001f40 !important;
+  box-shadow: 0 4px 16px rgba(125, 211, 252, 0.4) !important;
+}
+
+:where(.dark) .circle-arrow-btn:hover {
+  background-color: #bae6fd !important;
+  color: #001f40 !important;
+  transform: scale(1.08) !important;
+}
+
+:where(.dark) .circle-arrow-btn svg,
+:where(.dark) .circle-arrow-btn i {
+  stroke: #001f40 !important;
+  color: #001f40 !important;
+}
+
+:where(.dark) .post-card.style-2 > .btn-wrapper .circle-arrow-btn {
+  background-color: #7dd3fc !important;
+  color: #001f40 !important;
+  box-shadow: 0 4px 18px rgba(125, 211, 252, 0.45) !important;
+}
+
+:where(.dark) .post-card.style-2 > .btn-wrapper .circle-arrow-btn svg,
+:where(.dark) .post-card.style-2 > .btn-wrapper .circle-arrow-btn i {
+  stroke: #001f40 !important;
+  color: #001f40 !important;
+}
+
+:where(.dark) .text-btn {
+  color: #ffffff !important;
+}
+
+:where(.dark) .text-btn svg,
+:where(.dark) .text-btn i,
+:where(.dark) [class*="text-btn"] svg,
+:where(.dark) [class*="text-btn"] i {
+  stroke: #7dd3fc !important; /* Light blue arrow */
+  color: #7dd3fc !important;
+}
+
+:where(.dark) .text-btn:hover svg,
+:where(.dark) .text-btn:hover i {
+  stroke: #bae6fd !important;
+  color: #bae6fd !important;
+}
+
+:where(.dark) .hp-team-caption a.hp-team-link {
+  background: #7dd3fc !important;
+  color: #001f40 !important;
+}
+
+:where(.dark) .hp-team-caption a.hp-team-link svg {
+  stroke: #001f40 !important;
+  color: #001f40 !important;
+}
+
+:where(.dark) .hp-team-caption a.hp-team-link:hover {
+  background: #bae6fd !important;
+  color: #001f40 !important;
+}
+
+:where(.dark) #carousel-prev-btn,
+:where(.dark) #carousel-next-btn {
+  background-color: #7dd3fc !important;
+  border-color: #7dd3fc !important;
+  color: #001f40 !important;
+}
+
+:where(.dark) #carousel-prev-btn svg,
+:where(.dark) #carousel-next-btn svg {
+  stroke: #001f40 !important;
+}
+
+:where(.dark) .journal-badge,
+:where(.dark) .doi-pill,
+:where(.dark) .single-tag {
+  background-color: #7dd3fc !important;
+  color: #001f40 !important;
+  border-color: #7dd3fc !important;
+  font-weight: 800 !important;
+}
+
+:where(.dark) .doi-pill span.bg-white\/20 {
+  background-color: #001f40 !important;
+  color: #7dd3fc !important;
+}
+
+:where(.dark) .doi-pill svg {
+  stroke: #001f40 !important;
+}
+
+/* 4. Search and Input Fields in Dark Mode */
+:where(.dark) .search-input-field input,
+:where(.dark) input[type="search"] {
+  background-color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+:where(.dark) [data-search-trigger] {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+:where(.dark) #search-modal-container {
+  background-color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 5. 3D Card Flip on Scroll (Smooth & GPU accelerated) */
 .card-flip-3d {
   opacity: 0 !important;
   transform: perspective(1200px) rotateY(-80deg) scale(0.96) !important;
-  transform-origin: 50% 50% !important; /* Held along center vertical axis */
+  transform-origin: 50% 50% !important;
   transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.65s ease-out !important;
   backface-visibility: hidden;
   will-change: transform, opacity;
@@ -626,7 +912,6 @@
   transform: perspective(1200px) rotateY(0deg) scale(1) !important;
 }
 
-/* Fallback for users preferring reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .card-flip-3d {
     opacity: 1 !important;

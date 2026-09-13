@@ -71,7 +71,7 @@ const orcidUrl =
   </div>
 
   <!-- 3. 2-COLUMN PUBLICATIONS GRID (Signature Notch & Cutout Cards) -->
-  <div class="py-8 sm:py-12 bg-white dark:bg-[#070c18]">
+  <div class="py-8 sm:py-12 bg-white dark:bg-black">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-6">
       <!-- Search Filter Bar -->
       <div class="max-w-xl mx-auto">
@@ -93,17 +93,17 @@ const orcidUrl =
             type="search"
             id="pub-search-input"
             placeholder={`Search papers...`}
-            class="w-full rounded-2xl border border-gray-200/80 bg-gray-50/70 py-3.5 pl-12 pr-4 text-sm font-medium text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-[#001f40] focus:bg-white focus:ring-2 focus:ring-[#001f40]/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-gray-500"
+            class="w-full rounded-2xl border border-gray-200/80 bg-gray-50/70 py-3.5 pl-12 pr-4 text-sm font-medium text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-[#001f40] focus:bg-white focus:ring-2 focus:ring-[#001f40]/10 dark:border-white/20 dark:bg-black dark:text-white dark:placeholder-gray-400"
           />
         </div>
       </div>
 
       <!-- Controls Row: Count Badge & View Toggle (Recent 10 vs All) -->
-      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 dark:border-white/5 pb-4 pt-2">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 dark:border-white/10 pb-4 pt-2">
         <div class="flex items-center gap-2">
           <span
             id="pub-count-badge"
-            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#001f40]/5 text-[#001f40] dark:bg-white/10 dark:text-blue-300"
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#001f40]/5 text-[#001f40] dark:bg-[#001f40] dark:text-[#7dd3fc] dark:border dark:border-[#7dd3fc]/30"
           >
             Showing Recent 10
           </span>
@@ -114,14 +114,14 @@ const orcidUrl =
             <button
               id="btn-view-recent"
               type="button"
-              class="px-3.5 py-1.5 rounded-lg transition-all shadow-sm bg-white dark:bg-[#001f40] text-gray-900 dark:text-white font-bold"
+              class="px-3.5 py-1.5 rounded-lg transition-all shadow-sm bg-white dark:bg-[#7dd3fc] text-gray-900 dark:text-[#001f40] font-bold"
             >
               Recent 10
             </button>
             <button
               id="btn-view-all"
               type="button"
-              class="px-3.5 py-1.5 rounded-lg transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+              class="px-3.5 py-1.5 rounded-lg transition-all text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-[#7dd3fc]"
             >
               All Papers ({publications.length})
             </button>
