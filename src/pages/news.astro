@@ -1,197 +1,215 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import { fetchNews } from '../lib/fetchSheetData.js';
+import { url } from '../lib/paths.js';
+import { fetchNews, fetchSettings } from '../lib/fetchSheetData.js';
 
 const allNews = await fetchNews();
-const featuredNews = allNews.find((n) => n.is_featured) || allNews[0];
-const standardNews = allNews;
+const settings = await fetchSettings();
 
-const categories = Array.from(new Set(allNews.map((n) => n.category))).filter(Boolean);
+function formatNewsDate(dateStr: string) {
+  if (!dateStr) return '';
+  // If already textual like "April 2026" or "September 26, 2025", return as is
+  if (/[a-zA-Z]/.test(dateStr)) return dateStr;
+  try {
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) {
+      return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    }
+  } catch (e) {}
+  return dateStr;
+}
 ---
 
 <Layout
-  title="News & Updates | The ABCD Lab"
-  description="Stay up to date with Dr. Ramanujam Srinivasan's ABCD Laboratory at NISER: grants, awards, publication breakthroughs, and scientific achievements."
+  title="News | The ABCD Lab"
+  description="Stay up to date with Dr. Ramanujam Srinivasan's ABCD Laboratory at NISER: research breakthroughs, competitive grants, awards, and team updates."
 >
-  <PageHeader
-    title="News & Updates"
-    subtitle="Latest research breakthroughs, competitive grants, awards, team milestones, and scientific events."
-    badge="Laboratory News"
-  />
+  <!-- 1. TOP HEADER TITLE (Clean White/Themed matching Team, Home and Contact pages) -->
+  <div class="border-b border-gray-100 pt-10 pb-4 text-center sm:pt-14 sm:pb-6 dark:border-white/10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h1 class="font-urbanist text-4xl font-extrabold tracking-tight text-gray-950 sm:text-5xl lg:text-6xl dark:text-white">
+        News
+      </h1>
+    </div>
+  </div>
 
-  <section class="py-16 sm:py-24 bg-synbio-tint/20 dark:bg-transparent">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
-      <!-- 1. FEATURED SPOTLIGHT CARD -->
-      {
-        featuredNews && (
-          <div class="synbio-card overflow-hidden p-8 sm:p-12 border-2 border-synbio-orange/30 shadow-xl">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div class="lg:col-span-8 space-y-4">
-                <div class="flex items-center gap-3">
-                  <span class="rounded-full bg-synbio-orange px-3.5 py-1 text-xs font-bold text-white uppercase tracking-wider">
-                    Featured Spotlight &bull; {featuredNews.category}
-                  </span>
-                  <span class="text-xs font-mono font-bold text-gray-400">
-                    {featuredNews.date}
-                  </span>
-                </div>
+  <div class="bg-white py-10 sm:py-16 dark:bg-[#070c18]">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-14">
+      
+      <!-- 2. SECTION SUBTITLE (Matching Naseri Lab Reference Headline) -->
+      <div>
+        <h2 class="font-urbanist text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight text-[#001f40] dark:text-white">
+          Stay up to date with #ABCD Lab<br class="hidden sm:inline" /> Our latest news
+        </h2>
+      </div>
 
-                <h2 class="font-urbanist text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-950 dark:text-white">
-                  {featuredNews.title}
-                </h2>
-
-                <p class="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                  {featuredNews.excerpt}
-                </p>
-
-                {featuredNews.content && (
-                  <p class="text-sm text-gray-600 dark:text-gray-400">
-                    {featuredNews.content}
-                  </p>
-                )}
-
-                <div class="pt-4">
-                  {featuredNews.link && (
-                    <a
-                      href={featuredNews.link}
-                      class="theme-btn text-xs px-6 py-3"
-                    >
-                      Read Story & Explore
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              {featuredNews.image_url && (
-                <div class="lg:col-span-4 overflow-hidden rounded-2xl">
-                  <img
-                    src={featuredNews.image_url}
-                    alt={featuredNews.title}
-                    class="h-64 w-full object-cover rounded-2xl shadow-md transition-transform duration-500 hover:scale-105"
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        )
-      }
-
-      <!-- 2. CATEGORY FILTERS -->
-      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-6 dark:border-white/10">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="text-xs font-bold uppercase tracking-wider text-gray-500 mr-2 dark:text-gray-400">Category:</span>
-          <button class="news-cat-btn active rounded-full bg-synbio-navy px-3.5 py-1.5 text-xs font-bold text-white dark:bg-synbio-orange" data-cat="all">
-            All ({allNews.length})
-          </button>
+      <!-- 3. MAIN CONTENT: 2-COLUMN LAYOUT (News Stack on Left, Tweets/Socials on Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        
+        <!-- LEFT COLUMN: Vertical Stack of Signature SynBio News Cards -->
+        <div class="lg:col-span-8 space-y-8">
           {
-            categories.map((cat) => (
-              <button class="news-cat-btn rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-gray-700 shadow-sm hover:border-synbio-orange dark:bg-synbio-darkSurface dark:text-gray-300" data-cat={cat}>
-                {cat}
-              </button>
-            ))
+            allNews.map((item: any) => {
+              const itemLink = item.link ? url(item.link) : '#';
+              const formattedDate = formatNewsDate(item.date);
+
+              return (
+                <div class="post-card style-2 publication-card w-full card-flip-3d">
+                  <div class="content">
+                    <!-- Date & Optional Category Badge -->
+                    <div class="post-meta">
+                      <span class="single-post-meta font-medium">{formattedDate}</span>
+                      {item.category && (
+                        <>
+                          <span class="dots"></span>
+                          <span class="single-post-meta font-bold uppercase tracking-wider text-xs text-[#001f40] dark:text-blue-300">
+                            {item.category}
+                          </span>
+                        </>
+                      )}
+                    </div>
+
+                    <!-- News Headline -->
+                    <h3 class="title text-xl sm:text-2xl font-bold leading-snug text-[#001f40] dark:text-white mt-2">
+                      <a href={itemLink} class="hover:underline">
+                        {item.title}
+                      </a>
+                    </h3>
+
+                    <!-- Optional Excerpt / Summary -->
+                    {item.excerpt && (
+                      <p class="mt-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        {item.excerpt}
+                      </p>
+                    )}
+
+                    <!-- Read more link button -->
+                    <div class="btn-wrapper mt-5">
+                      <a href={itemLink} class="text-btn">
+                        <span>Read more</span>
+                        <span>
+                          <svg
+                            class="inline-block h-4 w-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                          </svg>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Circular Arrow Button sitting in top-right notch cutout -->
+                  <div class="btn-wrapper">
+                    <a
+                      href={itemLink}
+                      class="circle-arrow-btn"
+                      aria-label={`Read more about ${item.title}`}
+                    >
+                      <svg
+                        class="h-5 w-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </a>
+                  </div>
+
+                  <!-- Signature SVG Shape Cutout (Disappears and slides on hover) -->
+                  <div class="shape">
+                    <svg
+                      width="111"
+                      height="111"
+                      viewBox="0 0 111 111"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              );
+            })
           }
         </div>
 
-        <span class="text-xs font-semibold text-gray-400 font-mono">
-          #MicrobialSynBio
-        </span>
+        <!-- RIGHT COLUMN: Sticky Twitter / X Timeline (Matching Reference Screenshot) -->
+        <div class="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
+          <div class="rounded-3xl border border-gray-200/80 dark:border-white/10 p-6 bg-white dark:bg-[#0c1626] shadow-sm space-y-4">
+            
+            <div class="flex items-center justify-between border-b border-gray-100 dark:border-white/10 pb-3">
+              <div class="flex items-center gap-2">
+                <svg class="h-4 w-4 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+                <span class="font-urbanist font-bold text-sm text-gray-900 dark:text-white">
+                  Tweets by #ABCD Lab
+                </span>
+              </div>
+              <a
+                href={settings.twitter || 'https://twitter.com/NISERer'}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                @NISERer
+              </a>
+            </div>
+
+            <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+              Live updates, conference presentations, student achievements, and notices from Dr. Ramanujam Srinivasan's laboratory and the School of Biological Sciences.
+            </p>
+
+            <!-- Interactive Live Twitter / X Feed Container -->
+            <div class="rounded-2xl border border-gray-100 dark:border-white/5 p-2 bg-gray-50/60 dark:bg-white/5 overflow-hidden">
+              <a
+                class="twitter-timeline"
+                data-height="460"
+                data-theme="light"
+                data-chrome="noheader nofooter noborders transparent"
+                href="https://twitter.com/NISERer?ref_src=twsrc%5Etfw"
+              >
+                Loading live updates from @NISERer...
+              </a>
+              <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+
+            <!-- Follow Button -->
+            <div class="pt-1">
+              <a
+                href={settings.twitter || 'https://twitter.com/NISERer'}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="theme-btn w-full text-center text-xs py-3 flex items-center justify-center gap-2"
+              >
+                <span>Follow on X (Twitter)</span>
+                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
-      <!-- 3. CHRONOLOGICAL NEWS GRID -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="news-grid">
-        {
-          standardNews.map((item) => (
-            <article
-              class="news-card synbio-card overflow-hidden p-7 flex flex-col justify-between"
-              data-category={item.category}
-            >
-              <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                  <span class="rounded-full bg-synbio-orange/10 px-3 py-1 text-xs font-bold text-synbio-orange">
-                    {item.category}
-                  </span>
-                  <span class="text-xs font-mono font-semibold text-gray-400">
-                    {item.date}
-                  </span>
-                </div>
-
-                {item.image_url && (
-                  <div class="overflow-hidden rounded-xl">
-                    <img
-                      src={item.image_url}
-                      alt={item.title}
-                      class="h-44 w-full object-cover transition-transform duration-500 hover:scale-105"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-
-                <h3 class="font-urbanist text-xl font-bold leading-snug text-gray-900 dark:text-white hover:text-synbio-orange transition-colors">
-                  {item.link ? (
-                    <a href={item.link}>
-                      {item.title}
-                    </a>
-                  ) : (
-                    item.title
-                  )}
-                </h3>
-
-                <p class="text-xs leading-relaxed text-gray-600 dark:text-gray-300 line-clamp-3">
-                  {item.excerpt}
-                </p>
-              </div>
-
-              <div class="mt-6 pt-4 border-t border-gray-100 dark:border-white/10 flex items-center justify-between">
-                {item.link ? (
-                  <a
-                    href={item.link}
-                    class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-synbio-orange hover:text-synbio-navy dark:hover:text-white transition-colors"
-                  >
-                    <span>Read More</span>
-                    <span>→</span>
-                  </a>
-                ) : (
-                  <span class="text-xs text-gray-400">Laboratory Archive</span>
-                )}
-                <span class="text-[11px] font-mono text-gray-400">NISER Bhubaneswar</span>
-              </div>
-            </article>
-          ))
-        }
-      </div>
     </div>
-  </section>
+  </div>
 </Layout>
-
-<script>
-  function setupNewsFilter() {
-    const btns = document.querySelectorAll('.news-cat-btn');
-    const cards = document.querySelectorAll('.news-card');
-
-    btns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        btns.forEach((b) => {
-          b.classList.remove('active', 'bg-synbio-navy', 'text-white', 'dark:bg-synbio-orange');
-          b.classList.add('bg-white', 'text-gray-700', 'dark:bg-synbio-darkSurface', 'dark:text-gray-300');
-        });
-        btn.classList.add('active', 'bg-synbio-navy', 'text-white', 'dark:bg-synbio-orange');
-        btn.classList.remove('bg-white', 'text-gray-700', 'dark:bg-synbio-darkSurface', 'dark:text-gray-300');
-
-        const cat = btn.getAttribute('data-cat') || 'all';
-
-        cards.forEach((card) => {
-          const cardCat = card.getAttribute('data-category') || '';
-          if (cat === 'all' || cardCat.toLowerCase() === cat.toLowerCase()) {
-            (card as HTMLElement).style.display = 'flex';
-          } else {
-            (card as HTMLElement).style.display = 'none';
-          }
-        });
-      });
-    });
-  }
-
-  setupNewsFilter();
-  document.addEventListener('astro:after-swap', setupNewsFilter);
-</script>
