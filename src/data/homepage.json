@@ -1,98 +1,36 @@
-[
-  {
-    "key": "hero_title",
-    "value": "The ABCD Lab"
-  },
-  {
-    "key": "hero_subtitle",
-    "value": "NISER, Jatni"
-  },
-  {
-    "key": "hero_image",
-    "value": ""
-  },
-  {
-    "key": "cta1_title",
-    "value": "Stay up to date with #ABCD Lab"
-  },
-  {
-    "key": "cta1_btn_text",
-    "value": "Our News"
-  },
-  {
-    "key": "cta1_btn_link",
-    "value": "/news"
-  },
-  {
-    "key": "cta2_text",
-    "value": "Join Us"
-  },
-  {
-    "key": "cta2_btn_text",
-    "value": "Contact Us"
-  },
-  {
-    "key": "cta2_btn_link",
-    "value": "/contact"
-  },
-  {
-    "key": "research_title",
-    "value": "Our Research"
-  },
-  {
-    "key": "research_1_title",
-    "value": "Effect of delminCDE in Swarming in P. aeruginosa"
-  },
-  {
-    "key": "research_1_description",
-    "value": "We are trying to find the role of minCDE in flagellar assembly and swarming"
-  },
-  {
-    "key": "research_1_image",
-    "value": ""
-  },
-  {
-    "key": "research_2_title",
-    "value": ""
-  },
-  {
-    "key": "research_2_description",
-    "value": ""
-  },
-  {
-    "key": "research_2_image",
-    "value": ""
-  },
-  {
-    "key": "publications_title",
-    "value": "Publications"
-  },
-  {
-    "key": "team_title",
-    "value": "Our Team"
-  },
-  {
-    "key": "team_photo",
-    "value": ""
-  },
-  {
-    "key": "team_pi_photo",
-    "value": ""
-  },
-  {
-    "key": "team_pi_name",
-    "value": "Dr. Ramanujam Srinivasan"
-  },
-  {
-    "key": "team_pi_role",
-    "value": "Principal Investigator"
-  },
-  {
-    "key": "team_pi_subrole",
-    "value": "Associate Professor"
-  },
-  {
-    "key": "news_title",
-    "value": "Latest News"
-  }
-]
+{
+  "hero_title": "The ABCD Lab",
+  "hero_subtitle": "NISER, Jatni",
+  "hero_image": "",
+  "cta1_title": "Stay up to date with #ABCD Lab",
+  "cta1_btn_text": "Our News",
+  "cta1_btn_link": "/news",
+  "cta2_text": "Join Us",
+  "cta2_btn_text": "Contact Us",
+  "cta2_btn_link": "/contact",
+  "research_title": "Our Research",
+  "research_blocks": [
+    {
+      "title": "Effect of delminCDE in Swarming in P. aeruginosa",
+      "description": "We are trying to find the role of minCDE in flagellar assembly and swarming",
+      "image": "",
+      "link": "/research",
+      "order": 1
+    }
+  ],
+  "publications_title": "Publications",
+  "publications_count": 3,
+  "team_title": "Our Team",
+  "team_photo": "",
+  "team_pi_photo": "",
+  "team_pi_name": "Dr. Ramanujam Srinivasan",
+  "team_pi_role": "Principal Investigator",
+  "team_pi_subrole": "Associate Professor",
+  "news_title": "Latest News",
+  "research_1_title": "Effect of delminCDE in Swarming in P. aeruginosa",
+  "research_1_description": "We are trying to find the role of minCDE in flagellar assembly and swarming",
+  "research_1_image": "",
+  "research_2_title": "",
+  "research_2_description": "",
+  "research_2_image": ""
+}

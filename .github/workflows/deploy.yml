@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  repository_dispatch:
+    types: [sheet-sync, deploy]
+  schedule:
+    # Automatically rebuild every 3 hours to pull latest Google Sheet data
+    - cron: '0 */3 * * *'
 
 permissions:
   contents: read
