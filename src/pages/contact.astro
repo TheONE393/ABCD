@@ -1,232 +1,354 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PageHeader from '../components/PageHeader.astro';
 import { fetchSettings } from '../lib/fetchSheetData.js';
 
 const settings = await fetchSettings();
 ---
 
 <Layout
-  title="Contact & Location | The ABCD Lab"
-  description="Contact Dr. Ramanujam Srinivasan's ABCD Laboratory at NISER Bhubaneswar, India. Location, address, visitor guide, and inquiry form."
+  title="Contact | The ABCD Lab"
+  description="Get in touch with Dr. Ramanujam Srinivasan's ABCD Laboratory at the School of Biological Sciences, NISER Bhubaneswar, India."
 >
-  <PageHeader
-    title="Contact & Visit Us"
-    subtitle="Reach out for scientific inquiries, collaborations, postdoc/doctoral applications, or visiting our laboratories."
-    badge="Connect With Us"
-  />
+  <!-- 1. TOP HEADER TITLE (Clean White/Themed matching Team and Home page) -->
+  <div class="pt-10 pb-4 sm:pt-14 sm:pb-6 text-center border-b border-gray-100 dark:border-white/10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h1 class="font-urbanist text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-950 dark:text-white tracking-tight">
+        Contact
+      </h1>
+    </div>
+  </div>
 
-  <section class="py-16 sm:py-24 bg-synbio-tint/20 dark:bg-transparent">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        <!-- Left Column: Lab Directory & Arrival Guide -->
-        <div class="lg:col-span-5 space-y-8">
-          <div class="synbio-card p-8 sm:p-10 space-y-6">
-            <span class="sec-sub-badge">Official Address</span>
-            <h2 class="font-urbanist text-2xl font-extrabold text-synbio-navy dark:text-white">
-              Laboratory Location
-            </h2>
+  <div class="py-10 sm:py-16 bg-white dark:bg-[#070c18]">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+      
+      <!-- 2. AFFILIATION & WELCOME NOTE (Matching Naseri Lab Reference) -->
+      <div class="space-y-4 max-w-4xl">
+        <div class="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed space-y-2">
+          <p>
+            We are part of the{' '}
+            <a
+              href="https://www.niser.ac.in/sbs/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-bold text-gray-950 dark:text-white underline decoration-gray-400 hover:text-synbio-orange transition-colors"
+            >
+              School of Biological Sciences
+            </a>{' '}
+            at the{' '}
+            <a
+              href="https://www.niser.ac.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-bold text-gray-950 dark:text-white underline decoration-gray-400 hover:text-synbio-orange transition-colors"
+            >
+              National Institute of Science Education and Research (NISER)
+            </a>, Bhubaneswar, India.
+          </p>
+          <p>
+            We are located in the{' '}
+            <strong class="font-bold text-gray-950 dark:text-white">
+              School of Biological Sciences (SBS) Building
+            </strong>{' '}
+            on the permanent NISER Campus, Jatni, Khurda.
+          </p>
+        </div>
 
-            <div class="space-y-4 text-sm text-gray-700 dark:text-gray-300">
+        <h2 class="font-urbanist text-xl sm:text-2xl font-bold text-gray-950 dark:text-white pt-3">
+          If you would like to get in touch please reach out at The ABCD Lab:
+        </h2>
+      </div>
+
+      <!-- 3. TWO NAVY CARDS (Address & Contact matching Reference Design) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        
+        <!-- CARD 1: ADDRESS -->
+        <div class="card-flip-3d rounded-[28px] sm:rounded-[32px] bg-[#001f40] text-white p-8 sm:p-10 shadow-xl border border-white/10 flex flex-col justify-between space-y-6">
+          <div class="space-y-6">
+            <h3 class="font-urbanist text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+              Address
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm text-blue-100/90 leading-relaxed">
+              <!-- Campus Location -->
+              <div class="space-y-1">
+                <p class="font-bold text-white text-base">NISER Bhubaneswar</p>
+                <p>Post-Bhimpur-Padanpur,</p>
+                <p>Via-Jatni, District-Khurda,</p>
+                <p>Odisha – 752050,</p>
+                <p>India</p>
+              </div>
+
+              <!-- Department & Office -->
+              <div class="space-y-1 sm:border-l sm:border-white/15 sm:pl-6">
+                <p class="font-bold text-white text-base">SBS Building</p>
+                <p>Room 314 (PI Office),</p>
+                <p>3rd Floor, School of Biological Sciences,</p>
+                <p>NISER Campus, Jatni,</p>
+                <p>India</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-white/15 flex items-center justify-between text-xs text-blue-200">
+            <span>Khurda Road Jn (KUR): ~4 km</span>
+            <span>Bhubaneswar Airport (BBI): ~25 km</span>
+          </div>
+        </div>
+
+        <!-- CARD 2: CONTACT -->
+        <div class="card-flip-3d rounded-[28px] sm:rounded-[32px] bg-[#001f40] text-white p-8 sm:p-10 shadow-xl border border-white/10 flex flex-col justify-between space-y-6">
+          <div class="space-y-6">
+            <h3 class="font-urbanist text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+              Contact
+            </h3>
+
+            <div class="space-y-3.5 text-sm text-blue-100/90 leading-relaxed">
               <div>
-                <p class="font-bold text-gray-950 dark:text-white">{settings.institution}</p>
-                <p>{settings.address_line2}</p>
-                <p>{settings.address_line3}</p>
+                <p class="font-bold text-white text-base">Dr. Ramanujam Srinivasan (Srini)</p>
+                <p class="text-xs text-blue-200 font-medium">Principal Investigator • Associate Professor</p>
               </div>
 
-              <div class="rounded-xl bg-synbio-tint/60 p-4 dark:bg-white/5 border border-synbio-navy/10 dark:border-white/10">
-                <span class="text-xs font-bold uppercase tracking-wider text-synbio-orange block mb-1">
-                  Rooms & Facilities
-                </span>
-                <p class="font-semibold text-gray-900 dark:text-white">{settings.lab_building}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">PI Office: Room 314 &bull; Research Labs: SBS Building, NISER</p>
-              </div>
-
-              <div class="space-y-2 pt-2 border-t border-gray-100 dark:border-white/10">
+              <div class="space-y-2 pt-2 text-sm">
                 <div class="flex items-center gap-3">
-                  <svg class="h-5 w-5 text-synbio-orange shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  <a href={`mailto:${settings.email}`} class="font-semibold text-synbio-navy hover:text-synbio-orange dark:text-white">
-                    {settings.email}
+                  <span class="text-blue-300 text-xs font-bold uppercase tracking-wider w-16 shrink-0">Email:</span>
+                  <a
+                    href="mailto:rsrini@niser.ac.in"
+                    class="text-white hover:underline hover:text-blue-200 font-mono font-bold truncate"
+                  >
+                    rsrini@niser.ac.in
                   </a>
                 </div>
 
-                {settings.email_secondary && (
-                  <div class="flex items-center gap-3">
-                    <svg class="h-5 w-5 text-synbio-orange shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    <a href={`mailto:${settings.email_secondary}`} class="text-xs text-gray-500 hover:text-synbio-orange dark:text-gray-400">
-                      {settings.email_secondary}
+                <div class="flex items-center gap-3">
+                  <span class="text-blue-300 text-xs font-bold uppercase tracking-wider w-16 shrink-0">Phone:</span>
+                  <a
+                    href="tel:+916742494000"
+                    class="text-white hover:underline hover:text-blue-200 font-mono"
+                  >
+                    +91 674 249 4000
+                  </a>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <span class="text-blue-300 text-xs font-bold uppercase tracking-wider w-16 shrink-0">Socials:</span>
+                  <div class="flex items-center gap-3 text-xs">
+                    <a
+                      href="https://twitter.com/NISERer"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-white hover:underline hover:text-blue-200"
+                    >
+                      Twitter / X
+                    </a>
+                    <span class="text-blue-400">•</span>
+                    <a
+                      href="https://linkedin.com/school/niser-bhubaneswar"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-white hover:underline hover:text-blue-200"
+                    >
+                      LinkedIn
+                    </a>
+                    <span class="text-blue-400">•</span>
+                    <a
+                      href="https://www.niser.ac.in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-white hover:underline hover:text-blue-200"
+                    >
+                      NISER
                     </a>
                   </div>
-                )}
-
-                <div class="flex items-center gap-3">
-                  <svg class="h-5 w-5 text-synbio-orange shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                  <a href={`tel:${settings.phone?.replace(/\s+/g, '')}`} class="font-semibold text-synbio-navy hover:text-synbio-orange dark:text-white">
-                    {settings.phone}
-                  </a>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Public Transit Guide Card -->
-          <div class="synbio-card p-8 space-y-4">
-            <span class="sec-sub-badge">Arrival & Transit</span>
-            <h3 class="font-urbanist text-xl font-bold text-gray-950 dark:text-white">
-              How to Reach NISER Campus
-            </h3>
-            <div class="space-y-3 text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
-              <div class="flex items-start gap-2.5">
-                <span class="rounded bg-blue-600 px-1.5 py-0.5 font-bold text-white">Air</span>
-                <span><strong>Biju Patnaik Airport (BBI):</strong> ~25 km from NISER campus (~45 min by taxi).</span>
-              </div>
-              <div class="flex items-start gap-2.5">
-                <span class="rounded bg-green-700 px-1.5 py-0.5 font-bold text-white">Rail</span>
-                <span><strong>Khurda Road Junction (KUR):</strong> ~4 km from NISER main gate (~10 min auto/cab).</span>
-              </div>
-              <div class="flex items-start gap-2.5">
-                <span class="rounded bg-red-600 px-1.5 py-0.5 font-bold text-white">Road</span>
-                <span><strong>NH-16:</strong> Well connected via Bhubaneswar / Jatni road network.</span>
-              </div>
-            </div>
+          <div class="pt-4 border-t border-white/15 flex items-center justify-between">
+            <a
+              href="mailto:rsrini@niser.ac.in?subject=Inquiry%20to%20The%20ABCD%20Lab"
+              class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-[#001f40] hover:bg-blue-50 font-urbanist text-xs font-bold uppercase tracking-wider transition-all shadow-md"
+            >
+              <span>Email the Lab</span>
+              <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+            <span class="text-xs text-blue-200 font-mono">Room 314 &bull; SBS</span>
           </div>
         </div>
 
-        <!-- Right Column: Interactive Inquiry Form -->
-        <div class="lg:col-span-7 synbio-card p-8 sm:p-12">
-          <span class="sec-sub-badge">Online Inquiry</span>
-          <h2 class="mt-2 font-urbanist text-2xl sm:text-3xl font-extrabold text-synbio-navy dark:text-white">
-            Send a Direct Message
-          </h2>
-          <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
-            Fill in the form below to contact Dr. Ramanujam Srinivasan or the laboratory team. We typically respond within 2-3 business days.
-          </p>
-
-          <form id="contact-form" class="mt-8 space-y-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
-                <label for="contact-name" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
-                  Your Full Name *
-                </label>
-                <input
-                  type="text"
-                  id="contact-name"
-                  required
-                  placeholder="e.g. Dr. Alex Doe"
-                  class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none focus:border-synbio-orange focus:bg-white dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white"
-                />
-              </div>
-
-              <div>
-                <label for="contact-email" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
-                  Your Email Address *
-                </label>
-                <input
-                  type="email"
-                  id="contact-email"
-                  required
-                  placeholder="name@university.edu"
-                  class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none focus:border-synbio-orange focus:bg-white dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white"
-                />
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
-                <label for="contact-subject" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
-                  Inquiry Topic *
-                </label>
-                <select
-                  id="contact-subject"
-                  required
-                  class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none focus:border-synbio-orange focus:bg-white dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white"
-                >
-                  <option value="Research Collaboration">Research Collaboration</option>
-                  <option value="Postdoctoral Fellowship">Postdoctoral Fellowship (DFG/MSCA/EMBO)</option>
-                  <option value="PhD Position Application">PhD Position Application</option>
-                  <option value="Master Thesis / Internship">Master's Thesis / Student Internship</option>
-                  <option value="Undergraduate Research">Undergraduate Summer Research</option>
-                  <option value="Reagent / Plasmid Request">Reagent / Plasmid Request</option>
-                  <option value="General Inquiry">General Inquiry</option>
-                </select>
-              </div>
-
-              <div>
-                <label for="contact-affiliation" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
-                  Institution / Organization
-                </label>
-                <input
-                  type="text"
-                  id="contact-affiliation"
-                  placeholder="e.g. University / Company"
-                  class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none focus:border-synbio-orange focus:bg-white dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label for="contact-message" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
-                Message / Research Background *
-              </label>
-              <textarea
-                id="contact-message"
-                rows="5"
-                required
-                placeholder="Describe your inquiry, project proposal, or background..."
-                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none focus:border-synbio-orange focus:bg-white dark:border-white/10 dark:bg-synbio-darkSurface dark:text-white"
-              ></textarea>
-            </div>
-
-            <div class="flex items-center justify-between pt-2">
-              <button
-                type="submit"
-                id="contact-submit-btn"
-                class="theme-btn text-sm px-8 py-3.5"
-              >
-                Send Message
-              </button>
-              <span class="text-xs text-gray-400">Directly routed to Dr. Ramanujam Srinivasan (rsrini@niser.ac.in)</span>
-            </div>
-          </form>
-        </div>
       </div>
+
+      <!-- 4. LOWER SECTION: MAPS (LEFT) + OPPORTUNITIES & FELLOWSHIPS (RIGHT) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start pt-4">
+        
+        <!-- LEFT: DUAL INTERACTIVE MAPS (Matching Reference Style) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <!-- Map 1: NISER Campus Overview -->
+            <div class="overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-md bg-white dark:bg-[#0c1527] relative group">
+              <!-- Location Pill Header -->
+              <div class="p-3 bg-gray-50/90 dark:bg-white/5 border-b border-gray-100 dark:border-white/10 flex items-center justify-between text-xs">
+                <span class="font-bold text-gray-900 dark:text-white truncate">NISER Main Campus</span>
+                <a
+                  href="https://maps.google.com/?q=National+Institute+of+Science+Education+and+Research+Bhubaneswar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline shrink-0"
+                >
+                  Directions ↗
+                </a>
+              </div>
+              <div class="h-64 sm:h-72 w-full bg-slate-100 dark:bg-slate-800">
+                <iframe
+                  title="NISER Bhubaneswar Campus Map"
+                  src="https://maps.google.com/maps?q=National+Institute+of+Science+Education+and+Research+Bhubaneswar&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                  class="w-full h-full border-0"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+            </div>
+
+            <!-- Map 2: School of Biological Sciences Building -->
+            <div class="overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-md bg-white dark:bg-[#0c1527] relative group">
+              <!-- Location Pill Header -->
+              <div class="p-3 bg-gray-50/90 dark:bg-white/5 border-b border-gray-100 dark:border-white/10 flex items-center justify-between text-xs">
+                <span class="font-bold text-gray-900 dark:text-white truncate">SBS Building (Lab Location)</span>
+                <a
+                  href="https://maps.google.com/?q=School+of+Biological+Sciences,+NISER+Bhubaneswar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline shrink-0"
+                >
+                  Directions ↗
+                </a>
+              </div>
+              <div class="h-64 sm:h-72 w-full bg-slate-100 dark:bg-slate-800">
+                <iframe
+                  title="School of Biological Sciences Map"
+                  src="https://maps.google.com/maps?q=School+of+Biological+Sciences,+NISER+Bhubaneswar&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                  class="w-full h-full border-0"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Helpful Transit Note Below Maps -->
+          <div class="rounded-xl p-4 bg-gray-50 dark:bg-white/5 border border-gray-200/60 dark:border-white/10 text-xs text-gray-600 dark:text-gray-300 flex items-center justify-between">
+            <span>📍 <strong>Visiting us?</strong> Report to NISER Main Gate security for visitor badge & proceed to SBS Building, 3rd Floor.</span>
+            <a
+              href="https://maps.google.com/?q=School+of+Biological+Sciences,+NISER+Bhubaneswar"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-bold text-blue-600 dark:text-blue-400 hover:underline shrink-0 ml-3"
+            >
+              Open Google Maps
+            </a>
+          </div>
+        </div>
+
+        <!-- RIGHT: OPPORTUNITIES & FELLOWSHIPS (Exact Replica from Naseri Lab Template) -->
+        <div class="lg:col-span-5 space-y-5 text-sm sm:text-base leading-relaxed text-gray-700 dark:text-gray-300">
+          <div>
+            <p>
+              We'll post funded PhD and postdoctoral positions on the{' '}
+              <a
+                href="https://www.niser.ac.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-bold text-[#f7941d] hover:underline"
+              >
+                University
+              </a>{' '}
+              and departmental portals, and this webpage when they're available. But, feel free to reach out, if you're a talented individual who can cover your stay in the lab with funded fellowships as those below:
+            </p>
+          </div>
+
+          <!-- Fellowship Links matching reference style -->
+          <div class="space-y-1.5 font-semibold text-sm">
+            <div>
+              <a
+                href="https://csirhrdg.res.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[#f7941d] hover:underline inline-flex items-center gap-1 font-bold"
+              >
+                <span>CSIR / UGC-JRF Fellowships</span>
+                <span class="text-xs">↗</span>
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://dbtindia.gov.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[#f7941d] hover:underline inline-flex items-center gap-1 font-bold"
+              >
+                <span>DBT-JRF / Biotechnology Research Fellowship</span>
+                <span class="text-xs">↗</span>
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://main.icmr.nic.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[#f7941d] hover:underline inline-flex items-center gap-1 font-bold"
+              >
+                <span>ICMR-JRF Fellowship</span>
+                <span class="text-xs">↗</span>
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://online-inspire.gov.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[#f7941d] hover:underline inline-flex items-center gap-1 font-bold"
+              >
+                <span>DST INSPIRE Faculty & Fellowship</span>
+                <span class="text-xs">↗</span>
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://www.indiaalliance.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[#f7941d] hover:underline inline-flex items-center gap-1 font-bold"
+              >
+                <span>Wellcome Trust / DBT India Alliance Fellowships</span>
+                <span class="text-xs">↗</span>
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://serbonline.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[#f7941d] hover:underline inline-flex items-center gap-1 font-bold"
+              >
+                <span>SERB National Postdoctoral Fellowship (N-PDF)</span>
+                <span class="text-xs">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              If you're an academic, researcher, or student from another institution or company seeking a short-term collaboration (like a summer research internship for your MSc/BSc program or PhD program), reach out to us. We'll explore your research interests and potential support options if we have availability.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
     </div>
-  </section>
+  </div>
 </Layout>
-
-<script>
-  function setupContactForm() {
-    const form = document.getElementById('contact-form') as HTMLFormElement;
-    if (!form) return;
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = (document.getElementById('contact-name') as HTMLInputElement)?.value;
-      const email = (document.getElementById('contact-email') as HTMLInputElement)?.value;
-      const subject = (document.getElementById('contact-subject') as HTMLSelectElement)?.value;
-      const msg = (document.getElementById('contact-message') as HTMLTextAreaElement)?.value;
-
-      // Construct mailto fallback
-      const mailtoLink = `mailto:rsrini@niser.ac.in?subject=${encodeURIComponent(`[${subject}] Inquiry from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`)}`;
-
-      // @ts-ignore
-      if (window.showToast) {
-        // @ts-ignore
-        window.showToast('Preparing email inquiry...');
-      }
-
-      setTimeout(() => {
-        window.location.href = mailtoLink;
-      }, 400);
-    });
-  }
-
-  setupContactForm();
-  document.addEventListener('astro:after-swap', setupContactForm);
-</script>
