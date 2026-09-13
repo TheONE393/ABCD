@@ -34,7 +34,7 @@
     "order": 2
   },
   {
-    "name": "Neelratna",
+    "name": "Nilaratna",
     "role": "Doctoral Candidate (PhD)",
     "category": "phd",
     "photo_url": "",
@@ -156,7 +156,7 @@
     "name": "Piyush Ranjan",
     "role": "MSc Researcher",
     "category": "msc_bsc",
-    "photo_url": "/images/member_pics/piyush-ranjan.jpg?v=1789037342022",
+    "photo_url": "https://lh3.googleusercontent.com/d/1jETOUMeZ9s4uaUOHuiO-xBbZmdkxrOfK",
     "bio": "NA",
     "email": "piyush.ranjan@niser.ac.in",
     "scholar_url": "",
@@ -187,7 +187,7 @@
     "order": 12
   },
   {
-    "name": "Smruti Ranjan Panda",
+    "name": "Smruti Ranjan",
     "role": "MSc Researcher",
     "category": "msc_bsc",
     "photo_url": "",

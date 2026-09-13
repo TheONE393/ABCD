@@ -955,6 +955,8 @@ export function enrichTeamWithLocalPhotos(members) {
   const localFiles = getLocalMemberFiles();
   if (localFiles.length === 0) return members;
 
+  const usedFileStems = new Set();
+
   return members.map((member) => {
     const isPi = member.category === 'pi';
     const nameClean = (member.name || '')
@@ -966,50 +968,53 @@ export function enrichTeamWithLocalPhotos(members) {
     const nameCompact = nameClean.replace(/[\s_-]+/g, '');
     const nameParts = nameClean.split(/\s+/).filter(Boolean);
     const firstName = nameParts[0] || '';
-    const lastName = nameParts[nameParts.length - 1] || '';
+    const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
 
     let matched = null;
 
     if (isPi) {
-      // 1. Check for dedicated PI filenames
+      // 1. Dedicated PI filenames
       matched = localFiles.find(
         (f) =>
-          f.stem === 'pi' ||
-          f.stem === 'piphoto' ||
-          f.stem === 'srini' ||
-          f.stem === 'ramanujam' ||
-          f.stem === 'srinivasan' ||
-          f.stem.includes('drramanujam')
+          !usedFileStems.has(f.stem) &&
+          (f.stem === 'pi' ||
+            f.stem === 'piphoto' ||
+            f.stem === 'srini' ||
+            f.stem === 'ramanujam' ||
+            f.stem === 'srinivasan' ||
+            f.stem.includes('drramanujam'))
       );
     }
 
     if (!matched) {
-      // 2. Exact compact full name match (e.g. neelratnadas, srijita)
-      matched = localFiles.find((f) => f.stem === nameCompact);
+      // 2. Exact compact full name match (e.g. 'piyushranjan' matches 'Piyush Ranjan')
+      matched = localFiles.find((f) => !usedFileStems.has(f.stem) && f.stem === nameCompact);
     }
 
     if (!matched && firstName.length >= 3 && lastName.length >= 3) {
-      // 3. Combined first + last name match (e.g. vaishnavipawar for "Vaishnavi Kamlesh Pawar")
+      // 3. Combined first + last name match (e.g. 'vaishnavipawar' matches 'Vaishnavi Kamlesh Pawar')
       const firstLast = firstName + lastName;
       matched = localFiles.find(
         (f) =>
-          f.stem === firstLast ||
-          (f.stem.includes(firstName) && f.stem.includes(lastName))
+          !usedFileStems.has(f.stem) &&
+          (f.stem === firstLast ||
+            (f.stem.includes(firstName) && f.stem.includes(lastName)))
       );
     }
 
-    if (!matched && firstName.length >= 3) {
-      // 4. First name exact match
-      matched = localFiles.find((f) => f.stem === firstName || f.stem.startsWith(firstName));
+    if (!matched && nameParts.length === 1 && firstName.length >= 4) {
+      // 4. Exact single-name match (e.g. single-name 'Vaishnavi' matching 'vaishnavi-pawar.jpg' or 'vaishnavi.jpg')
+      matched = localFiles.find(
+        (f) => !usedFileStems.has(f.stem) && (f.stem === firstName || f.stem.startsWith(firstName))
+      );
     }
 
-    if (!matched && lastName.length >= 3 && lastName !== firstName) {
-      // 5. Last name match
-      matched = localFiles.find((f) => f.stem === lastName || f.stem.endsWith(lastName));
-    }
+    // Never match by last name alone (e.g. 'ranjan') because multiple members can share surnames!
 
     if (matched) {
-      return { ...member, photo_url: matched.url };
+      usedFileStems.add(matched.stem);
+      // Keep sheet photo if provided, otherwise use matched local file
+      return { ...member, photo_url: member.photo_url || matched.url };
     }
 
     return member;
