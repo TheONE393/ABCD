@@ -180,76 +180,39 @@ const settings = await fetchSettings();
 
       </div>
 
-      <!-- 4. LOWER SECTION: MAPS (LEFT) + OPPORTUNITIES & FELLOWSHIPS (RIGHT) -->
+      <!-- 4. LOWER SECTION: INTERACTIVE SBS MAP (LEFT) + OPPORTUNITIES & FELLOWSHIPS (RIGHT) -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start pt-4">
         
-        <!-- LEFT: DUAL INTERACTIVE MAPS (Matching Reference Style) -->
-        <div class="lg:col-span-7 space-y-6">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
-            <!-- Map 1: NISER Campus Overview -->
-            <div class="overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-md bg-white dark:bg-[#0c1527] relative group">
-              <!-- Location Pill Header -->
-              <div class="p-3 bg-gray-50/90 dark:bg-white/5 border-b border-gray-100 dark:border-white/10 flex items-center justify-between text-xs">
-                <span class="font-bold text-gray-900 dark:text-white truncate">NISER Main Campus</span>
-                <a
-                  href="https://maps.google.com/?q=National+Institute+of+Science+Education+and+Research+Bhubaneswar"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline shrink-0"
-                >
-                  Directions ↗
-                </a>
-              </div>
-              <div class="h-64 sm:h-72 w-full bg-slate-100 dark:bg-slate-800">
-                <iframe
-                  title="NISER Bhubaneswar Campus Map"
-                  src="https://maps.google.com/maps?q=National+Institute+of+Science+Education+and+Research+Bhubaneswar&t=&z=14&ie=UTF8&iwloc=&output=embed"
-                  class="w-full h-full border-0"
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-              </div>
+        <!-- LEFT: SINGLE INTERACTIVE SBS MAP -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="overflow-hidden rounded-3xl border border-gray-200/80 dark:border-white/10 shadow-lg bg-white dark:bg-[#0c1527] relative">
+            <!-- Header Bar -->
+            <div class="px-5 py-3.5 bg-gray-50/90 dark:bg-white/5 border-b border-gray-100 dark:border-white/10 flex items-center justify-between text-xs">
+              <span class="font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <span class="h-2.5 w-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                School of Biological Sciences (SBS Building) &bull; NISER Bhubaneswar
+              </span>
+              <span class="text-gray-500 dark:text-gray-400 font-mono text-[11px] hidden sm:inline-block">
+                Interactive Map
+              </span>
             </div>
 
-            <!-- Map 2: School of Biological Sciences Building -->
-            <div class="overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-md bg-white dark:bg-[#0c1527] relative group">
-              <!-- Location Pill Header -->
-              <div class="p-3 bg-gray-50/90 dark:bg-white/5 border-b border-gray-100 dark:border-white/10 flex items-center justify-between text-xs">
-                <span class="font-bold text-gray-900 dark:text-white truncate">SBS Building (Lab Location)</span>
-                <a
-                  href="https://maps.google.com/?q=School+of+Biological+Sciences,+NISER+Bhubaneswar"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline shrink-0"
-                >
-                  Directions ↗
-                </a>
-              </div>
-              <div class="h-64 sm:h-72 w-full bg-slate-100 dark:bg-slate-800">
-                <iframe
-                  title="School of Biological Sciences Map"
-                  src="https://maps.google.com/maps?q=School+of+Biological+Sciences,+NISER+Bhubaneswar&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                  class="w-full h-full border-0"
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-              </div>
+            <!-- Fully Interactive Map Area -->
+            <div class="h-[380px] sm:h-[440px] md:h-[460px] w-full bg-slate-100 dark:bg-slate-800">
+              <iframe
+                title="School of Biological Sciences, NISER Bhubaneswar Map"
+                src="https://maps.google.com/maps?q=School+of+Biological+Sciences,+NISER+Bhubaneswar&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                class="w-full h-full border-0"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
-
           </div>
 
-          <!-- Helpful Transit Note Below Maps -->
-          <div class="rounded-xl p-4 bg-gray-50 dark:bg-white/5 border border-gray-200/60 dark:border-white/10 text-xs text-gray-600 dark:text-gray-300 flex items-center justify-between">
-            <span>📍 <strong>Visiting us?</strong> Report to NISER Main Gate security for visitor badge & proceed to SBS Building, 3rd Floor.</span>
-            <a
-              href="https://maps.google.com/?q=School+of+Biological+Sciences,+NISER+Bhubaneswar"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="font-bold text-blue-600 dark:text-blue-400 hover:underline shrink-0 ml-3"
-            >
-              Open Google Maps
-            </a>
+          <!-- Helpful Arrival Note Below Map -->
+          <div class="rounded-2xl p-4 bg-gray-50/80 dark:bg-white/5 border border-gray-200/60 dark:border-white/10 text-xs text-gray-600 dark:text-gray-300">
+            📍 <strong>Visiting us?</strong> Enter via the NISER Main Gate security checkpoint for a visitor badge, then proceed to the <strong>School of Biological Sciences (SBS) Building, 3rd Floor (Room 314)</strong>.
           </div>
         </div>
 
