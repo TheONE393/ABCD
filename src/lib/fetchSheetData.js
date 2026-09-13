@@ -46,7 +46,9 @@ function getRuntimeSheetId() {
 export function getSheetCsvUrl(sheetName, gid = 0) {
   const sheetId = getRuntimeSheetId();
   if (sheetId) {
-    return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+    // 5-second window cache-busting parameter ensures Google edge CDN serves fresh data within 5-10 seconds
+    const t = Math.floor(Date.now() / 5000);
+    return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&t=${t}`;
   }
   return '';
 }
@@ -734,11 +736,13 @@ export const FALLBACK_DATA = {
 // contacted AT MOST ONCE per sheet tab every 5 minutes, preventing rate-limiting
 // (HTTP 429) or bot detection bans.
 const isDev = Boolean(envObj.DEV);
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes cache TTL
+// In development, cache for only 5 seconds (to deduplicate concurrent calls during a single page render)
+// so that whenever you refresh after updating Google Sheets (~10s for Google to publish), it pulls fresh data!
+const CACHE_TTL_MS = isDev ? 5 * 1000 : 15 * 1000;
 const MEMORY_CACHE = new Map();
 const IN_FLIGHT_PROMISES = new Map();
 
-// Safe disk cache (persists between builds in Node environment)
+// Safe disk cache (persists between production builds in Node environment)
 let cacheFilePath;
 try {
   const cacheDir = path.resolve('.cache');
@@ -746,7 +750,8 @@ try {
     fs.mkdirSync(cacheDir, { recursive: true });
   }
   cacheFilePath = path.join(cacheDir, 'sheet_cache.json');
-  if (fs.existsSync(cacheFilePath)) {
+  // Never load stale disk cache in development
+  if (!isDev && fs.existsSync(cacheFilePath)) {
     const raw = fs.readFileSync(cacheFilePath, 'utf-8');
     const parsed = JSON.parse(raw);
     for (const [k, v] of Object.entries(parsed)) {
@@ -825,8 +830,11 @@ export async function fetchSheetData(url, type) {
   const fetchPromise = (async () => {
     try {
       const response = await fetch(url, {
+        cache: 'no-store',
         headers: {
           'Accept': 'text/csv, text/plain, */*',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
         },
       });
 
@@ -1195,25 +1203,19 @@ export function getLocalCsvPublications() {
 }
 
 export async function fetchPublications(customUrl = SHEET_URLS.publications) {
-  // 1. If an explicit customUrl (different from default) is provided, fetch from it
-  if (customUrl && customUrl !== SHEET_URLS.publications) {
-    const data = await fetchSheetData(customUrl, 'publications');
-    if (data && data.length > 0) return data;
-  }
-
-  // 2. Derive dynamically from the local publications CSV (PUBLICATIONS_GOOGLE_SHEET.csv)
-  const localPubs = getLocalCsvPublications();
-  if (localPubs && localPubs.length > 0) {
-    return localPubs;
-  }
-
-  // 3. Fallback to Google Sheets tab query
+  // 1. Live Google Sheets tab query FIRST (or customUrl if provided)
   const sheetData = await fetchSheetData(customUrl, 'publications');
   if (sheetData && sheetData.length > 0) {
     return sheetData;
   }
 
-  // 4. Safe fallback
+  // 2. Fallback to local publications CSV (PUBLICATIONS_GOOGLE_SHEET.csv) if sheet is unreachable/offline
+  const localPubs = getLocalCsvPublications();
+  if (localPubs && localPubs.length > 0) {
+    return localPubs;
+  }
+
+  // 3. Safe fallback data
   return FALLBACK_DATA.publications;
 }
 
