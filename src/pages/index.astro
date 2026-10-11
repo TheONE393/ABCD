@@ -16,67 +16,63 @@ const localPiPhoto = getLocalPiPhoto();
 ---
 
 <Layout title="The ABCD Lab">
-  <!-- 1. FULLSCREEN INTRO TITLE (APPEARS ON WHOLE SCREEN FIRST, REDUCES ON SCROLL) -->
-  <div id="hero-scroll-wrapper" class="relative w-full" style="height: 140vh;">
-    <div
-      id="hero-sticky-frame"
-      class="sticky top-20 flex w-full flex-col items-center justify-center overflow-hidden transition-colors"
-      style="height: calc(100vh - 5rem);"
-    >
-      <!-- Ambient SynBio Glow Effect -->
-      <div
-        class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden"
-      >
-        <div
-          class="to-synbio-navy/15 h-[360px] w-[520px] rounded-full bg-gradient-to-tr from-sky-400/20 opacity-75 blur-3xl sm:h-[460px] sm:w-[750px] dark:from-sky-500/15 dark:to-white/5"
-        >
-        </div>
-      </div>
+  <!-- 1. HERO TITLE SECTION (Normal section, scrolls naturally, 3D text with cursor-reactive background) -->
+  <div id="hero-section" class="relative flex w-full flex-col items-center justify-center overflow-hidden" style="min-height: calc(100vh - 5rem);">
+    <!-- Cursor-responsive biological particle canvas -->
+    <canvas id="hero-bio-canvas" class="pointer-events-none absolute inset-0 z-0 h-full w-full"></canvas>
 
-      <!-- Main Animated Hero Container -->
-      <div
-        id="hero-title-box"
-        class="flex w-full max-w-7xl flex-col items-center justify-center px-4 text-center transition-all duration-75 will-change-transform sm:px-6 lg:px-8"
-      >
+    <!-- Ambient SynBio Glow Effect -->
+    <div class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
+      <div class="h-[360px] w-[520px] rounded-full bg-gradient-to-tr from-sky-400/20 to-[#001f40]/15 opacity-75 blur-3xl sm:h-[460px] sm:w-[750px] dark:from-sky-500/15 dark:to-white/5"></div>
+    </div>
+
+    <!-- Main Hero Container -->
+    <div id="hero-title-box" class="relative z-10 flex w-full max-w-7xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 sm:py-24 lg:px-8">
+
+      <!-- 3D Interactive Title -->
+      <div id="hero-3d-wrapper" class="hero-3d-perspective select-none" style="perspective: 1200px;">
         <h1
           id="hero-main-title"
-          class="font-urbanist font-black tracking-tight text-[#001f40] transition-all duration-75 select-none dark:text-white"
+          class="hero-3d-title font-urbanist font-black tracking-tight text-[#001f40] dark:text-white"
           style="font-size: clamp(2.8rem, 7.5vw, 6.2rem); line-height: 1.05;"
         >
-          {homepage.hero_title || 'The ABCD Lab'}
+          <span class="hero-word-static">The </span><span
+            id="letter-A"
+            class="hero-letter"
+            data-expanded="Archaea"
+            ><span class="hero-letter-original">A</span><span class="hero-letter-expanded">rchaea</span></span><span
+            id="letter-B"
+            class="hero-letter"
+            data-expanded="Bacterial"
+            ><span class="hero-letter-original">B</span><span class="hero-letter-expanded">acterial</span></span><span
+            id="letter-C"
+            class="hero-letter"
+            data-expanded="Cytoskeletal"
+            ><span class="hero-letter-original">C</span><span class="hero-letter-expanded">ytoskeletal</span></span><span
+            id="letter-D"
+            class="hero-letter"
+            data-expanded="Dynamics"
+            ><span class="hero-letter-original">D</span><span class="hero-letter-expanded">ynamics</span></span><span class="hero-word-static"> Lab</span>
         </h1>
-        <p
-          id="hero-subtitle"
-          class="mt-3 max-w-2xl text-base font-medium text-gray-600 transition-all duration-75 sm:mt-4 sm:text-lg md:text-xl dark:text-gray-300"
-        >
-          {homepage.hero_subtitle || 'School of Biological Sciences, NISER Bhubaneswar, India'}
-        </p>
-
-        <!-- Divider line that appears when title docks into standard header size -->
-        <div
-          id="hero-dock-divider"
-          class="mt-4 w-full max-w-3xl border-b border-gray-200/80 opacity-0 transition-opacity duration-200 sm:mt-6 dark:border-white/10"
-        >
-        </div>
       </div>
 
-      <!-- Scroll to explore cue (fades out as user scrolls) -->
-      <div
-        id="hero-scroll-cue"
-        class="absolute bottom-6 flex flex-col items-center gap-1.5 text-[11px] font-bold tracking-widest text-gray-400 uppercase transition-opacity duration-300 select-none sm:bottom-10 sm:text-xs dark:text-gray-500"
+      <p
+        id="hero-subtitle"
+        class="mt-3 max-w-2xl text-base font-medium text-gray-600 sm:mt-4 sm:text-lg md:text-xl dark:text-gray-300"
       >
-        <span>Scroll to explore</span>
-        <svg
-          class="h-4 w-4 animate-bounce text-gray-500 dark:text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2.5"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"
-          ></path>
-        </svg>
-      </div>
+        {homepage.hero_subtitle || 'School of Biological Sciences, NISER Bhubaneswar, India'}
+      </p>
+    </div>
+
+    <!-- Scroll to explore cue -->
+    <div
+      id="hero-scroll-cue"
+      class="absolute bottom-6 flex flex-col items-center gap-1.5 text-[11px] font-bold tracking-widest text-gray-400 uppercase transition-opacity duration-500 select-none sm:bottom-10 sm:text-xs dark:text-gray-500"
+    >
+      <span>Scroll to explore</span>
+      <svg class="h-4 w-4 animate-bounce text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
     </div>
   </div>
 
@@ -633,6 +629,7 @@ const localPiPhoto = getLocalPiPhoto();
     let ticking = false;
 
     function updateScroll() {
+      if (!heroTitleBox) return;
       const scrollY = window.scrollY || window.pageYOffset;
       // Scroll distance over which the title compresses (approx 320px)
       const threshold = Math.min(window.innerHeight * 0.45, 340);
