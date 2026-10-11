@@ -20,59 +20,77 @@ const localPiPhoto = getLocalPiPhoto();
   <div id="hero-scroll-wrapper" class="relative w-full" style="height: 140vh;">
     <div
       id="hero-sticky-frame"
-      class="sticky top-20 w-full flex flex-col justify-center items-center overflow-hidden transition-colors"
+      class="sticky top-20 flex w-full flex-col items-center justify-center overflow-hidden transition-colors"
       style="height: calc(100vh - 5rem);"
     >
       <!-- Ambient SynBio Glow Effect -->
-      <div class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
-        <div class="h-[360px] w-[520px] sm:h-[460px] sm:w-[750px] rounded-full bg-gradient-to-tr from-sky-400/20 to-synbio-navy/15 dark:from-sky-500/15 dark:to-white/5 blur-3xl opacity-75"></div>
+      <div
+        class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden"
+      >
+        <div
+          class="to-synbio-navy/15 h-[360px] w-[520px] rounded-full bg-gradient-to-tr from-sky-400/20 opacity-75 blur-3xl sm:h-[460px] sm:w-[750px] dark:from-sky-500/15 dark:to-white/5"
+        >
+        </div>
       </div>
 
       <!-- Main Animated Hero Container -->
       <div
         id="hero-title-box"
-        class="w-full max-w-7xl px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center transition-all duration-75 will-change-transform"
+        class="flex w-full max-w-7xl flex-col items-center justify-center px-4 text-center transition-all duration-75 will-change-transform sm:px-6 lg:px-8"
       >
         <h1
           id="hero-main-title"
-          class="font-urbanist font-black tracking-tight text-[#001f40] dark:text-white transition-all duration-75 select-none"
+          class="font-urbanist font-black tracking-tight text-[#001f40] transition-all duration-75 select-none dark:text-white"
           style="font-size: clamp(2.8rem, 7.5vw, 6.2rem); line-height: 1.05;"
         >
           {homepage.hero_title || 'The ABCD Lab'}
         </h1>
         <p
           id="hero-subtitle"
-          class="mt-3 sm:mt-4 max-w-2xl text-base sm:text-lg md:text-xl font-medium text-gray-600 dark:text-gray-300 transition-all duration-75"
+          class="mt-3 max-w-2xl text-base font-medium text-gray-600 transition-all duration-75 sm:mt-4 sm:text-lg md:text-xl dark:text-gray-300"
         >
           {homepage.hero_subtitle || 'School of Biological Sciences, NISER Bhubaneswar, India'}
         </p>
-        
+
         <!-- Divider line that appears when title docks into standard header size -->
-        <div id="hero-dock-divider" class="w-full max-w-3xl mt-4 sm:mt-6 border-b border-gray-200/80 dark:border-white/10 opacity-0 transition-opacity duration-200"></div>
+        <div
+          id="hero-dock-divider"
+          class="mt-4 w-full max-w-3xl border-b border-gray-200/80 opacity-0 transition-opacity duration-200 sm:mt-6 dark:border-white/10"
+        >
+        </div>
       </div>
 
       <!-- Scroll to explore cue (fades out as user scrolls) -->
       <div
         id="hero-scroll-cue"
-        class="absolute bottom-6 sm:bottom-10 flex flex-col items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 transition-opacity duration-300 select-none"
+        class="absolute bottom-6 flex flex-col items-center gap-1.5 text-[11px] font-bold tracking-widest text-gray-400 uppercase transition-opacity duration-300 select-none sm:bottom-10 sm:text-xs dark:text-gray-500"
       >
         <span>Scroll to explore</span>
-        <svg class="h-4 w-4 animate-bounce text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        <svg
+          class="h-4 w-4 animate-bounce text-gray-500 dark:text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"
+          ></path>
         </svg>
       </div>
     </div>
   </div>
 
   <!-- 2. HERO IMAGE SHOWCASE (Single Image Only, No Contact Us Button) -->
-  <div class="hero-image-area pb-20 sm:pb-28 pt-2 sm:pt-4">
+  <div class="hero-image-area pt-2 pb-20 sm:pt-4 sm:pb-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col items-center">
         <!-- Single Hero Image in a sleek rounded showcase frame -->
-        <div class="relative w-full max-w-4xl overflow-hidden rounded-3xl shadow-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] p-4 sm:p-8 card-flip-3d flex items-center justify-center">
+        <div
+          class="card-flip-3d relative flex w-full max-w-4xl items-center justify-center overflow-hidden rounded-3xl border border-gray-200/80 bg-white p-4 shadow-xl sm:p-8 dark:border-white/10 dark:bg-[#0c1626]"
+        >
           <img
             src={homepage.hero_image ? url(homepage.hero_image) : url('/images/hero-img.png')}
-            class="h-auto w-full max-h-[500px] object-contain transition-transform duration-700 hover:scale-102"
+            class="h-auto max-h-[500px] w-full object-contain transition-transform duration-700 hover:scale-102"
             alt="The ABCD Lab overview"
             referrerpolicy="no-referrer"
           />
@@ -82,189 +100,433 @@ const localPiPhoto = getLocalPiPhoto();
   </div>
 
   <!-- 3. ABOUT US SECTION -->
-  <section class="about-us-area relative bg-[#f8fafc] py-20 sm:py-28 dark:bg-black overflow-hidden border-t border-b border-gray-100 dark:border-white/10">
+  <section
+    class="about-us-area relative overflow-hidden border-t border-b border-gray-100 bg-[#f8fafc] py-20 sm:py-28 dark:border-white/10 dark:bg-black"
+  >
     <!-- Ambient Background Glows -->
-    <div class="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-blue-400/10 blur-3xl dark:bg-sky-500/10"></div>
-    <div class="pointer-events-none absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-indigo-400/10 blur-3xl dark:bg-blue-600/10"></div>
+    <div
+      class="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-blue-400/10 blur-3xl dark:bg-sky-500/10"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute -right-40 -bottom-40 h-[500px] w-[500px] rounded-full bg-indigo-400/10 blur-3xl dark:bg-blue-600/10"
+    >
+    </div>
 
-    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-20">
+    <div class="relative mx-auto max-w-7xl space-y-16 px-4 sm:space-y-20 sm:px-6 lg:px-8">
       <!-- Section Header -->
       <div class="max-w-3xl space-y-4">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-[#001f40]/10 text-[#001f40] dark:bg-white/10 dark:text-sky-300 dark:border dark:border-sky-300/20">
-          <span class="h-1.5 w-1.5 rounded-full bg-sky-500 animate-pulse"></span>
+        <h2
+          class="font-urbanist text-3xl leading-[1.15] font-black tracking-tight text-[#001f40] sm:text-4xl lg:text-5xl dark:text-white"
+        >
           About The ABCD Lab
-        </div>
-        <h2 class="font-urbanist text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-[#001f40] dark:text-white leading-[1.15]">
-          Unraveling the Architecture & Dynamics of Microbial Life
         </h2>
-        <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
-          Based at the School of Biological Sciences, National Institute of Science Education and Research (NISER), Bhubaneswar, our laboratory explores how microscopic cells engineer nanometer-scale protein machines to define shape, organize internal space, and complete accurate division.
-        </p>
       </div>
 
       <!-- Main Content Grid: Narrative Showcase & 4 Core Pillars -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+      <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-12">
         <!-- Left Column: Story, Vision & PI Statement (lg:col-span-5) -->
-        <div class="lg:col-span-5 flex flex-col justify-between space-y-8 rounded-[32px] border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#001f40] p-8 sm:p-10 shadow-sm dark:shadow-2xl">
+        <div
+          class="flex flex-col justify-between space-y-8 rounded-[32px] border border-gray-200/80 bg-white p-8 shadow-sm sm:p-10 lg:col-span-5 dark:border-white/10 dark:bg-[#001f40] dark:shadow-2xl"
+        >
           <div class="space-y-6">
             <div class="space-y-3">
-              <span class="text-xs font-mono font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">Our Mission</span>
-              <h3 class="font-urbanist text-2xl sm:text-3xl font-extrabold text-[#001f40] dark:text-white leading-snug">
-                From Single Molecules to Evolutionary Principles
+              <h3
+                class="font-urbanist text-2xl leading-snug font-extrabold text-[#001f40] sm:text-3xl dark:text-white"
+              >
+                Unraveling the Architecture & Dynamics of Microbial Life
               </h3>
             </div>
-            
-            <p class="text-sm sm:text-base leading-relaxed text-gray-700 dark:text-gray-200">
-              The <strong>ABCD Lab</strong> focuses on the fundamentals of <em>Bacterial Cytoskeleton and Cell Division</em>. Bacteria might appear simple, but their survival hinges on complex macromolecular assemblies—such as the tubulin homologue <strong>FtsZ</strong> and actin homologue <strong>MreB</strong>—that coordinate membrane constriction and cell wall peptidoglycan synthesis in three dimensions.
+
+            <p class="text-sm leading-relaxed text-gray-700 sm:text-base dark:text-gray-200">
+              The <strong>ABCD Lab</strong> focuses on the fundamentals of <em
+                >Bacterial Cytoskeleton and Cell Division</em
+              >. Bacteria might appear simple, but their survival hinges on complex macromolecular
+              assemblies—such as the tubulin homologue <strong>FtsZ</strong> and actin homologue <strong
+                >MreB</strong
+              >—that coordinate membrane constriction and cell wall peptidoglycan synthesis in three
+              dimensions.
             </p>
 
-            <p class="text-sm sm:text-base leading-relaxed text-gray-700 dark:text-gray-200">
-              By combining quantitative super-resolution live-cell fluorescence microscopy, biochemistry, and synthetic biology, we study model organisms like <em>E. coli</em> and <em>Pseudomonas</em>, alongside deeply divergent <em>Asgard archaea</em> that hold the evolutionary keys to eukaryotic cellular complexity.
+            <p class="text-sm leading-relaxed text-gray-700 sm:text-base dark:text-gray-200">
+              By combining quantitative super-resolution live-cell fluorescence microscopy,
+              biochemistry, and synthetic biology, we study model organisms like <em>E. coli</em> and
+              <em>Pseudomonas</em>, alongside deeply divergent <em>Asgard archaea</em> that hold the evolutionary
+              keys to eukaryotic cellular complexity.
             </p>
 
             <!-- PI Quote Callout -->
-            <div class="rounded-2xl border-l-4 border-sky-500 bg-gray-50 dark:bg-white/5 p-4 sm:p-5 text-sm italic text-gray-800 dark:text-gray-200">
+            <div
+              class="rounded-2xl border-l-4 border-sky-500 bg-gray-50 p-4 text-sm text-gray-800 italic sm:p-5 dark:bg-white/5 dark:text-gray-200"
+            >
               <p class="mb-2">
-                "Understanding cellular architecture is about uncovering the universal biophysical rules that transform non-living chemical components into self-organizing living matter."
+                "Understanding cellular architecture is about uncovering the universal biophysical
+                rules that transform non-living chemical components into self-organizing living
+                matter."
               </p>
-              <div class="not-italic font-bold font-urbanist text-xs text-[#001f40] dark:text-sky-300">
-                — Dr. Ramanujam Srinivasan <span class="font-normal text-gray-500 dark:text-gray-400">/ Principal Investigator</span>
+              <div
+                class="font-urbanist text-xs font-bold text-[#001f40] not-italic dark:text-sky-300"
+              >
+                — Dr. Ramanujam Srinivasan <span
+                  class="font-normal text-gray-500 dark:text-gray-400"
+                  >/ Principal Investigator</span
+                >
               </div>
             </div>
           </div>
 
           <!-- Action Links -->
-          <div class="pt-4 border-t border-gray-100 dark:border-white/10 flex flex-wrap items-center gap-4">
+          <div
+            class="flex flex-wrap items-center gap-4 border-t border-gray-100 pt-4 dark:border-white/10"
+          >
             <a href={url('/research')} class="theme-btn inline-flex items-center gap-2">
               <span>Explore Our Research</span>
-              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <svg
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
             </a>
-            <a
-              href={url('/team')}
-              class="inline-flex items-center gap-2 text-sm font-bold text-[#001f40] dark:text-white hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
-            >
-              <span>Meet the Researchers</span>
-              <span>&rarr;</span>
+            <a href={url('/team')} class="theme-btn inline-flex items-center gap-2">
+              <span>Meet The Team</span>
+              <svg
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
             </a>
           </div>
         </div>
 
-        <!-- Right Column: 4 Interactive Core Pillars (lg:col-span-7) -->
-        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
-          <!-- Pillar 1 -->
-          <div class="group relative rounded-3xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] p-6 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="space-y-4">
-              <div class="h-12 w-12 rounded-2xl bg-blue-50 dark:bg-white/10 flex items-center justify-center text-[#001f40] dark:text-sky-300 text-xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-dna"></i>
+        <!-- Right Column: 4 Click-to-Expand Research Topics in One Single Column (lg:col-span-7) -->
+        <div class="flex flex-col gap-3.5 sm:gap-4 lg:col-span-7" id="research-topics-grid">
+          <!-- Research 1 -->
+          <div
+            class="research-topic-card group relative flex cursor-pointer flex-col rounded-3xl border border-gray-200/80 bg-white p-5 shadow-xs transition-all duration-300 select-none hover:-translate-y-0.5 hover:shadow-md sm:p-6 dark:border-white/10 dark:bg-[#0c1626]"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            data-topic="1"
+          >
+            <!-- Header (Always Visible) -->
+            <div class="flex items-start justify-between gap-3 sm:gap-4">
+              <div class="flex min-w-0 items-start gap-3 sm:gap-4">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-base text-[#001f40] transition-transform group-hover:scale-105 dark:bg-white/10 dark:text-sky-300"
+                >
+                  <i class="fa-solid fa-dna"></i>
+                </div>
+                <div class="min-w-0">
+                  <span
+                    class="font-mono text-[11px] font-bold tracking-wider text-sky-600 uppercase dark:text-sky-400"
+                  >
+                    Research 1
+                  </span>
+                  <h4
+                    class="font-urbanist mt-0.5 text-base leading-snug font-bold text-[#001f40] transition-colors group-hover:text-sky-600 sm:text-lg dark:text-white dark:group-hover:text-sky-400"
+                  >
+                    Role of Flagellar proteins in Swarming of <em>P. aeruginosa</em> mutants
+                  </h4>
+                </div>
               </div>
-              <span class="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
-                Core Pillar 01
-              </span>
-              <h4 class="font-urbanist text-xl font-bold text-[#001f40] dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
-                Bacterial Cell Division
-              </h4>
-              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                Investigating the spatiotemporal assembly, treadmilling dynamics, and mechanical force generation of the FtsZ ring and the multi-protein divisome complex.
-              </p>
+              <div
+                class="topic-toggle-btn mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#001f40] group-hover:text-white dark:bg-white/10 dark:text-gray-300 dark:group-hover:bg-sky-400 dark:group-hover:text-[#001f40]"
+                title="Click to expand/collapse"
+              >
+                <svg
+                  class="topic-toggle-chevron h-3.5 w-3.5 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
             </div>
-            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-white/10 text-[11px] font-bold text-gray-400 dark:text-gray-400 flex items-center justify-between">
-              <span>Divisome & Cytokinesis</span>
-              <span class="group-hover:translate-x-1 transition-transform text-[#001f40] dark:text-white">&rarr;</span>
+
+            <!-- Collapsible Text Content (Expands on Click) -->
+            <div
+              class="topic-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out"
+            >
+              <div class="overflow-hidden">
+                <div class="mt-3.5 space-y-3 border-t border-gray-100 pt-3.5 dark:border-white/10">
+                  <p class="text-xs leading-relaxed text-gray-600 sm:text-sm dark:text-gray-300">
+                    P. aeruginosa swarming motility is a fascinating example of collective cellular
+                    behavior that allows bacteria to rapidly colonize surfaces. This process relies
+                    on a complex interplay of flagellar-driven motility, quorum sensing, and biofilm
+                    formation. Furthermore, it involves the coordinated action of multiple flagellar
+                    proteins that work together to generate the forces required for coordinated
+                    movement across a surface. By studying the roles of various flagellar proteins
+                    in P. aeruginosa swarming, we can gain valuable insights into the fundamental
+                    mechanisms that govern bacterial motility, communication, and community behavior
+                  </p>
+                  <div
+                    class="flex items-center justify-between pt-1 text-[11px] font-bold text-gray-400 dark:text-gray-400"
+                  >
+                    <span class="font-mono text-sky-600 dark:text-sky-400"
+                      >Pseudomonas aeruginosa</span
+                    >
+                    <a
+                      href={url('/research/pseudomonas')}
+                      class="inline-flex items-center gap-1 text-[#001f40] hover:underline dark:text-white"
+                    >
+                      <span>Learn more</span>
+                      <span>&rarr;</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Pillar 2 -->
-          <div class="group relative rounded-3xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] p-6 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="space-y-4">
-              <div class="h-12 w-12 rounded-2xl bg-blue-50 dark:bg-white/10 flex items-center justify-center text-[#001f40] dark:text-sky-300 text-xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-cubes-stacked"></i>
+          <!-- Research 2 -->
+          <div
+            class="research-topic-card group relative flex cursor-pointer flex-col rounded-3xl border border-gray-200/80 bg-white p-5 shadow-xs transition-all duration-300 select-none hover:-translate-y-0.5 hover:shadow-md sm:p-6 dark:border-white/10 dark:bg-[#0c1626]"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            data-topic="2"
+          >
+            <!-- Header (Always Visible) -->
+            <div class="flex items-start justify-between gap-3 sm:gap-4">
+              <div class="flex min-w-0 items-start gap-3 sm:gap-4">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-base text-[#001f40] transition-transform group-hover:scale-105 dark:bg-white/10 dark:text-sky-300"
+                >
+                  <i class="fa-solid fa-cubes-stacked"></i>
+                </div>
+                <div class="min-w-0">
+                  <span
+                    class="font-mono text-[11px] font-bold tracking-wider text-sky-600 uppercase dark:text-sky-400"
+                  >
+                    Research 2
+                  </span>
+                  <h4
+                    class="font-urbanist mt-0.5 text-base leading-snug font-bold text-[#001f40] transition-colors group-hover:text-sky-600 sm:text-lg dark:text-white dark:group-hover:text-sky-400"
+                  >
+                    To see the effect of Drugs on cell division of <em>E. coli</em>.
+                  </h4>
+                </div>
               </div>
-              <span class="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
-                Core Pillar 02
-              </span>
-              <h4 class="font-urbanist text-xl font-bold text-[#001f40] dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
-                Cytoskeletal Polymers
-              </h4>
-              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                Dissecting bacterial tubulin and actin homologues (FtsZ, FtsA, MreB), polymer architecture, nucleotide hydrolysis cycles, and membrane-binding interactions.
-              </p>
+              <div
+                class="topic-toggle-btn mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#001f40] group-hover:text-white dark:bg-white/10 dark:text-gray-300 dark:group-hover:bg-sky-400 dark:group-hover:text-[#001f40]"
+                title="Click to expand/collapse"
+              >
+                <svg
+                  class="topic-toggle-chevron h-3.5 w-3.5 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
             </div>
-            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-white/10 text-[11px] font-bold text-gray-400 dark:text-gray-400 flex items-center justify-between">
-              <span>Polymer Biomechanics</span>
-              <span class="group-hover:translate-x-1 transition-transform text-[#001f40] dark:text-white">&rarr;</span>
+
+            <!-- Collapsible Text Content (Expands on Click) -->
+            <div
+              class="topic-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out"
+            >
+              <div class="overflow-hidden">
+                <div class="mt-3.5 space-y-3 border-t border-gray-100 pt-3.5 dark:border-white/10">
+                  <p class="text-xs leading-relaxed text-gray-600 sm:text-sm dark:text-gray-300">
+                    The division of bacterial cells, a process critical for reproduction and
+                    survival, is a highly orchestrated event involving a complex molecular
+                    machinery. At the heart of this process lies the FtsZ protein, a bacterial
+                    homologue of tubulin, which polymerizes to form a contractile ring that
+                    constricts the cell and orchestrates the formation of a new cell wall.
+                  </p>
+                  <div
+                    class="flex items-center justify-between pt-1 text-[11px] font-bold text-gray-400 dark:text-gray-400"
+                  >
+                    <span class="font-mono text-sky-600 dark:text-sky-400">Drug Screening</span>
+                    <a
+                      href={url('/research/ecoli')}
+                      class="inline-flex items-center gap-1 text-[#001f40] hover:underline dark:text-white"
+                    >
+                      <span>Learn more</span>
+                      <span>&rarr;</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Pillar 3 -->
-          <div class="group relative rounded-3xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] p-6 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="space-y-4">
-              <div class="h-12 w-12 rounded-2xl bg-blue-50 dark:bg-white/10 flex items-center justify-center text-[#001f40] dark:text-sky-300 text-xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-microscope"></i>
+          <!-- Research 3 -->
+          <div
+            class="research-topic-card group relative flex cursor-pointer flex-col rounded-3xl border border-gray-200/80 bg-white p-5 shadow-xs transition-all duration-300 select-none hover:-translate-y-0.5 hover:shadow-md sm:p-6 dark:border-white/10 dark:bg-[#0c1626]"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            data-topic="3"
+          >
+            <!-- Header (Always Visible) -->
+            <div class="flex items-start justify-between gap-3 sm:gap-4">
+              <div class="flex min-w-0 items-start gap-3 sm:gap-4">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-base text-[#001f40] transition-transform group-hover:scale-105 dark:bg-white/10 dark:text-sky-300"
+                >
+                  <i class="fa-solid fa-microscope"></i>
+                </div>
+                <div class="min-w-0">
+                  <span
+                    class="font-mono text-[11px] font-bold tracking-wider text-sky-600 uppercase dark:text-sky-400"
+                  >
+                    Research 3
+                  </span>
+                  <h4
+                    class="font-urbanist mt-0.5 text-base leading-snug font-bold text-[#001f40] transition-colors group-hover:text-sky-600 sm:text-lg dark:text-white dark:group-hover:text-sky-400"
+                  >
+                    Cryo-Electron Tomography
+                  </h4>
+                </div>
               </div>
-              <span class="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
-                Core Pillar 03
-              </span>
-              <h4 class="font-urbanist text-xl font-bold text-[#001f40] dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
-                Super-Resolution Imaging
-              </h4>
-              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                Visualizing single molecules and nanometer macromolecular complexes in real time using multi-channel TIRF, SIM, and advanced live-cell fluorescence microscopy.
-              </p>
+              <div
+                class="topic-toggle-btn mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#001f40] group-hover:text-white dark:bg-white/10 dark:text-gray-300 dark:group-hover:bg-sky-400 dark:group-hover:text-[#001f40]"
+                title="Click to expand/collapse"
+              >
+                <svg
+                  class="topic-toggle-chevron h-3.5 w-3.5 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
             </div>
-            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-white/10 text-[11px] font-bold text-gray-400 dark:text-gray-400 flex items-center justify-between">
-              <span>Quantitative Microscopy</span>
-              <span class="group-hover:translate-x-1 transition-transform text-[#001f40] dark:text-white">&rarr;</span>
+
+            <!-- Collapsible Text Content (Expands on Click) -->
+            <div
+              class="topic-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out"
+            >
+              <div class="overflow-hidden">
+                <div class="mt-3.5 space-y-3 border-t border-gray-100 pt-3.5 dark:border-white/10">
+                  <p class="text-xs leading-relaxed text-gray-600 sm:text-sm dark:text-gray-300">
+                    We use Cryo-Electron Tomography (Cryo-ET) to visualize the nanoscale
+                    architecture of cellular structures. By freezing biological samples at cryogenic
+                    temperatures and imaging them with an electron microscope, we can capture
+                    three-dimensional snapshots of macromolecular complexes in their native cellular
+                    environment. This technique allows us to resolve structures as small as a few
+                    nanometers, providing unprecedented insights into the molecular mechanisms
+                    underlying fundamental cellular processes. Our current work focuses on
+                    understanding how proteins assemble into functional machines and how these
+                    machines are regulated within the complex cellular milieu.
+                  </p>
+                  <div
+                    class="flex items-center justify-between pt-1 text-[11px] font-bold text-gray-400 dark:text-gray-400"
+                  >
+                    <span class="font-mono text-sky-600 dark:text-sky-400"
+                      >Cryo-Electron Tomography</span
+                    >
+                    <a
+                      href={url('/research')}
+                      class="inline-flex items-center gap-1 text-[#001f40] hover:underline dark:text-white"
+                    >
+                      <span>Learn more</span>
+                      <span>&rarr;</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Pillar 4 -->
-          <div class="group relative rounded-3xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] p-6 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="space-y-4">
-              <div class="h-12 w-12 rounded-2xl bg-blue-50 dark:bg-white/10 flex items-center justify-center text-[#001f40] dark:text-sky-300 text-xl group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-volcano"></i>
+          <!-- Research 4 -->
+          <div
+            class="research-topic-card group relative flex cursor-pointer flex-col rounded-3xl border border-gray-200/80 bg-white p-5 shadow-xs transition-all duration-300 select-none hover:-translate-y-0.5 hover:shadow-md sm:p-6 dark:border-white/10 dark:bg-[#0c1626]"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            data-topic="4"
+          >
+            <!-- Header (Always Visible) -->
+            <div class="flex items-start justify-between gap-3 sm:gap-4">
+              <div class="flex min-w-0 items-start gap-3 sm:gap-4">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-base text-[#001f40] transition-transform group-hover:scale-105 dark:bg-white/10 dark:text-sky-300"
+                >
+                  <i class="fa-solid fa-volcano"></i>
+                </div>
+                <div class="min-w-0">
+                  <span
+                    class="font-mono text-[11px] font-bold tracking-wider text-sky-600 uppercase dark:text-sky-400"
+                  >
+                    Research 4
+                  </span>
+                  <h4
+                    class="font-urbanist mt-0.5 text-base leading-snug font-bold text-[#001f40] transition-colors group-hover:text-sky-600 sm:text-lg dark:text-white dark:group-hover:text-sky-400"
+                  >
+                    To observe the mechanism of branching and biofilm formation in <em
+                      >P. aeruginosa</em
+                    >.
+                  </h4>
+                </div>
               </div>
-              <span class="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
-                Core Pillar 04
-              </span>
-              <h4 class="font-urbanist text-xl font-bold text-[#001f40] dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
-                Evolution & Asgard Archaea
-              </h4>
-              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                Characterizing primordial cytoskeletal homologues in deep-sea Asgard archaea to trace the evolutionary leap from prokaryotic scaffolds to eukaryotic cells.
-              </p>
+              <div
+                class="topic-toggle-btn mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors group-hover:bg-[#001f40] group-hover:text-white dark:bg-white/10 dark:text-gray-300 dark:group-hover:bg-sky-400 dark:group-hover:text-[#001f40]"
+                title="Click to expand/collapse"
+              >
+                <svg
+                  class="topic-toggle-chevron h-3.5 w-3.5 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
             </div>
-            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-white/10 text-[11px] font-bold text-gray-400 dark:text-gray-400 flex items-center justify-between">
-              <span>Origin of Eukaryotes</span>
-              <span class="group-hover:translate-x-1 transition-transform text-[#001f40] dark:text-white">&rarr;</span>
+
+            <!-- Collapsible Text Content (Expands on Click) -->
+            <div
+              class="topic-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out"
+            >
+              <div class="overflow-hidden">
+                <div class="mt-3.5 space-y-3 border-t border-gray-100 pt-3.5 dark:border-white/10">
+                  <p class="text-xs leading-relaxed text-gray-600 sm:text-sm dark:text-gray-300">
+                    <em>Pseudomonas aeruginosa</em> is a Gram-negative bacterium that is known for its
+                    ability to form biofilms, which are complex communities of microorganisms that are
+                    embedded in a self-produced matrix of extracellular polymeric substances. Biofilms
+                    are of particular interest because they are often resistant to antibiotics and disinfectants,
+                    and they can be difficult to eradicate. In addition, P. aeruginosa is an opportunistic
+                    pathogen that can cause a variety of infections, including pneumonia, urinary tract
+                    infections, and wound infections. Research on P. aeruginosa biofilms has led to the
+                    development of new strategies for preventing and treating biofilm-associated infections.
+                  </p>
+                  <div
+                    class="flex items-center justify-between pt-1 text-[11px] font-bold text-gray-400 dark:text-gray-400"
+                  >
+                    <span class="font-mono text-sky-600 dark:text-sky-400"
+                      ><em>P. aeruginosa</em></span
+                    >
+                    <a
+                      href={url('/research/pseudomonas')}
+                      class="inline-flex items-center gap-1 text-[#001f40] hover:underline dark:text-white"
+                    >
+                      <span>Learn more</span>
+                      <span>&rarr;</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Quick Highlights Strip -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-4">
-        <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 sm:p-5 text-center backdrop-blur-xs">
-          <div class="text-xs font-mono font-bold uppercase text-sky-600 dark:text-sky-400">Host Institute</div>
-          <div class="mt-1 font-urbanist text-sm sm:text-base font-extrabold text-[#001f40] dark:text-white">NISER Bhubaneswar</div>
-          <div class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">School of Biological Sciences</div>
-        </div>
-        <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 sm:p-5 text-center backdrop-blur-xs">
-          <div class="text-xs font-mono font-bold uppercase text-sky-600 dark:text-sky-400">Major Grants</div>
-          <div class="mt-1 font-urbanist text-sm sm:text-base font-extrabold text-[#001f40] dark:text-white">DAE & DBT Alliance</div>
-          <div class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">SERB & Wellcome Trust Supported</div>
-        </div>
-        <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 sm:p-5 text-center backdrop-blur-xs">
-          <div class="text-xs font-mono font-bold uppercase text-sky-600 dark:text-sky-400">Methodology</div>
-          <div class="mt-1 font-urbanist text-sm sm:text-base font-extrabold text-[#001f40] dark:text-white">Super-Resolution & TIRF</div>
-          <div class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">Live-Cell Biophysics</div>
-        </div>
-        <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 sm:p-5 text-center backdrop-blur-xs">
-          <div class="text-xs font-mono font-bold uppercase text-sky-600 dark:text-sky-400">Lab Culture</div>
-          <div class="mt-1 font-urbanist text-sm sm:text-base font-extrabold text-[#001f40] dark:text-white">Curiosity & Rigor</div>
-          <div class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">Mentoring Future Leaders</div>
         </div>
       </div>
     </div>
@@ -281,7 +543,11 @@ const localPiPhoto = getLocalPiPhoto();
 
       <div class="testimonial-bg-wrapper hp-tbg shadow-lg">
         <img
-          src={localTeamPhoto ? url(localTeamPhoto) : (homepage.team_photo ? url(homepage.team_photo) : url('/images/home-team-photo.jpg'))}
+          src={localTeamPhoto
+            ? url(localTeamPhoto)
+            : homepage.team_photo
+              ? url(homepage.team_photo)
+              : url('/images/home-team-photo.jpg')}
           alt="The ABCD Lab group photo"
           class="hp-bg-photo"
           referrerpolicy="no-referrer"
@@ -291,7 +557,13 @@ const localPiPhoto = getLocalPiPhoto();
         <!-- PI Portrait in Top Right Corner -->
         <div class="hp-pi-portrait">
           <img
-            src={localPiPhoto ? url(localPiPhoto) : (homepage.team_pi_photo ? url(homepage.team_pi_photo) : (pi.photo_url ? url(pi.photo_url) : url('/images/home-pi-photo.jpg')))}
+            src={localPiPhoto
+              ? url(localPiPhoto)
+              : homepage.team_pi_photo
+                ? url(homepage.team_pi_photo)
+                : pi.photo_url
+                  ? url(pi.photo_url)
+                  : url('/images/home-pi-photo.jpg')}
             alt={homepage.team_pi_name || pi.name || 'Dr. Ramanujam Srinivasan'}
             referrerpolicy="no-referrer"
           />
@@ -323,16 +595,39 @@ const localPiPhoto = getLocalPiPhoto();
       </div>
     </div>
   </div>
-
 </Layout>
+
+<style>
+  .topic-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .research-topic-card.is-expanded .topic-content {
+    grid-template-rows: 1fr;
+  }
+  .research-topic-card.is-expanded .topic-toggle-chevron {
+    transform: rotate(180deg);
+  }
+  .research-topic-card.is-expanded {
+    border-color: rgba(56, 189, 248, 0.5) !important;
+    box-shadow:
+      0 10px 25px -5px rgba(0, 31, 64, 0.08),
+      0 8px 10px -6px rgba(0, 31, 64, 0.05);
+  }
+  :global(.dark) .research-topic-card.is-expanded {
+    border-color: rgba(56, 189, 248, 0.35) !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  }
+</style>
 
 <script>
   // Smooth scroll interpolation for Hero Title
   function initHeroScroll() {
-    const heroTitleBox = document.getElementById('hero-title-box');
-    const heroMainTitle = document.getElementById('hero-main-title');
-    const scrollCue = document.getElementById('hero-scroll-cue');
-    const heroDivider = document.getElementById('hero-dock-divider');
+    const heroTitleBox = document.getElementById('hero-title-box') as HTMLElement | null;
+    const heroMainTitle = document.getElementById('hero-main-title') as HTMLElement | null;
+    const scrollCue = document.getElementById('hero-scroll-cue') as HTMLElement | null;
+    const heroDivider = document.getElementById('hero-dock-divider') as HTMLElement | null;
     if (!heroTitleBox || !heroMainTitle) return;
 
     let ticking = false;
@@ -383,6 +678,52 @@ const localPiPhoto = getLocalPiPhoto();
     updateScroll();
   }
 
+  // Interactive Research Topics Accordion (Expand on click, snug fit)
+  function initResearchAccordions() {
+    const cards = document.querySelectorAll<HTMLElement>('.research-topic-card');
+    cards.forEach((card) => {
+      if (card.dataset.accordionBound === 'true') return;
+      card.dataset.accordionBound = 'true';
+
+      const toggleCard = (e: Event) => {
+        const target = e.target as HTMLElement | null;
+        if (target && target.closest('a')) {
+          return;
+        }
+
+        const isCurrentlyExpanded = card.classList.contains('is-expanded');
+
+        // Close other open cards so only the clicked topic is expanded
+        cards.forEach((otherCard) => {
+          if (otherCard !== card && otherCard.classList.contains('is-expanded')) {
+            otherCard.classList.remove('is-expanded');
+            otherCard.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        if (isCurrentlyExpanded) {
+          card.classList.remove('is-expanded');
+          card.setAttribute('aria-expanded', 'false');
+        } else {
+          card.classList.add('is-expanded');
+          card.setAttribute('aria-expanded', 'true');
+        }
+      };
+
+      card.addEventListener('click', toggleCard);
+      card.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleCard(e);
+        }
+      });
+    });
+  }
+
   initHeroScroll();
-  document.addEventListener('astro:page-load', initHeroScroll);
+  initResearchAccordions();
+  document.addEventListener('astro:page-load', () => {
+    initHeroScroll();
+    initResearchAccordions();
+  });
 </script>
