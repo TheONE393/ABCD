@@ -657,12 +657,22 @@
 :where(.dark) h5,
 :where(.dark) h6,
 :where(.dark) p,
-:where(.dark) span:not(.theme-btn *):not(.circle-arrow-btn *):not(.journal-badge *):not(.doi-pill *),
+:where(.dark) span:not(.theme-btn *):not(.circle-arrow-btn *):not(.journal-badge *):not(.doi-pill *):not(.year-badge):not(.year-badge *),
 :where(.dark) li,
 :where(.dark) label,
 :where(.dark) strong,
 :where(.dark) b {
   color: #ffffff !important;
+}
+
+.year-badge {
+  background-color: #001f40 !important;
+  color: #ffffff !important;
+}
+
+:where(.dark) .year-badge {
+  background-color: #ffffff !important;
+  color: #001f40 !important;
 }
 
 /* Header & Mobile Menu in Dark Mode */
@@ -731,14 +741,26 @@
 }
 
 :where(.dark) .member-card {
-  background-color: #001f40 !important; /* Dark blue in dark mode */
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: #001f40;
+  border-color: rgba(255, 255, 255, 0.15);
   color: #ffffff !important;
 }
 
-:where(.dark) .member-card > div:last-of-type {
-  background-color: #001f40 !important;
-  color: #ffffff !important;
+:where(.dark) .member-card:hover,
+:where(.dark) .member-card.is-active {
+  background-color: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+:where(.dark) .member-card:hover .member-details-panel,
+:where(.dark) .member-card.is-active .member-details-panel {
+  background-color: #000000 !important;
+}
+
+:where(.dark) .member-card:hover .member-avatar-box,
+:where(.dark) .member-card.is-active .member-avatar-box {
+  background-color: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
 }
 
 :where(.dark) .member-card h3,

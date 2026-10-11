@@ -186,6 +186,7 @@ function transformRow(row, type) {
         orcid_url: row.orcid_url || '',
         twitter_url: row.twitter_url || row.twitter || '',
         linkedin_url: row.linkedin_url || row.linkedin || '',
+        link: row.link || row.profile_url || row.url || row.website || '',
         year_joined: yearJoined,
         year_left: yearLeft,
         current_position: row.current_position || '',
@@ -1335,9 +1336,9 @@ export async function fetchHomepage() {
     hero_subtitle: 'National Institute of Science Education and Research (NISER), India',
     hero_image: '/images/hero-img.png',
 
-    cta1_title: 'Stay up to date with \n#ABCD Lab',
-    cta1_btn_text: 'Our News',
-    cta1_btn_link: '/news',
+    cta1_title: 'Explore Our\nResearch Thrusts',
+    cta1_btn_text: 'Our Research',
+    cta1_btn_link: '/research',
 
     cta2_text: 'Join us as we push the boundaries of microbial swarm intelligence and synthetic biology, driving towards a more sustainable and bio-based future',
     cta2_btn_text: 'Contact Us',

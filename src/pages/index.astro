@@ -3,426 +3,274 @@ import Layout from '../layouts/Layout.astro';
 import { url } from '../lib/paths.js';
 import {
   fetchHomepage,
-  fetchNews,
-  fetchPublications,
-  fetchResearch,
   fetchTeam,
   getLocalHomepageTeamPhoto,
   getLocalPiPhoto,
 } from '../lib/fetchSheetData.js';
 
 const homepage = await fetchHomepage();
-const newsItems = await fetchNews();
-const allPublications = await fetchPublications();
-const allResearch = await fetchResearch();
 const allMembers = await fetchTeam();
 const pi = allMembers.find((m: any) => m.category === 'pi') || allMembers[0];
 const localTeamPhoto = getLocalHomepageTeamPhoto();
 const localPiPhoto = getLocalPiPhoto();
-
-const latestNews = newsItems[0] || {
-  date: 'September 2026',
-  title:
-    'Recent research developments in bacterial cell division and cytoskeletal filament dynamics at The ABCD Laboratory.',
-  link: '/news',
-};
-
-// Top 3 Publications
-const featuredPublications = allPublications.length > 0 ? allPublications.slice(0, 3) : [];
-
-// Determine research blocks on homepage:
-// Priority 1: Specifically configured research blocks in 'Homepage' tab (if any)
-// Priority 2: Projects from the 'Research' sheet tab
-// Priority 3: Default fallback research block
-let researchBlocks: any[] = [];
-if (homepage.research_blocks && homepage.research_blocks.length > 0) {
-  researchBlocks = homepage.research_blocks;
-} else if (allResearch && allResearch.length > 0) {
-  researchBlocks = allResearch.map((item: any, idx: number) => ({
-    title: item.title,
-    description: item.short_summary || item.full_description,
-    image: item.image_url || (idx === 0 ? '/images/research-img1.png' : ''),
-    link: `/research#${item.id || ''}`,
-    order: item.order || idx + 1,
-  }));
-} else {
-  researchBlocks = [
-    {
-      title: 'ABCD',
-      description:
-        'We focus on the fundamental processes of bacterial cell division and morphogenesis, investigating how cells maintain their shape and divide accurately. By integrating cutting-edge synthetic biology with advanced super-resolution imaging, we visualize the spatiotemporal dynamics of cytoskeletal proteins in living bacteria, aiming to uncover the core principles of bacterial cell construction and division.',
-      image: '/images/research-img1.png',
-      link: '/research',
-      order: 1,
-    },
-  ];
-}
 ---
 
 <Layout title="The ABCD Lab">
-  <!-- Top Hero Header: The ABCD Lab -->
-  <div class="hero-top-area pt-10 pb-4 sm:pt-14 sm:pb-6 lg:pt-16 lg:pb-8">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="border-b border-gray-100 pb-6 text-center sm:pb-8 dark:border-white/10">
+  <!-- 1. FULLSCREEN INTRO TITLE (APPEARS ON WHOLE SCREEN FIRST, REDUCES ON SCROLL) -->
+  <div id="hero-scroll-wrapper" class="relative w-full" style="height: 140vh;">
+    <div
+      id="hero-sticky-frame"
+      class="sticky top-20 w-full flex flex-col justify-center items-center overflow-hidden transition-colors"
+      style="height: calc(100vh - 5rem);"
+    >
+      <!-- Ambient SynBio Glow Effect -->
+      <div class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
+        <div class="h-[360px] w-[520px] sm:h-[460px] sm:w-[750px] rounded-full bg-gradient-to-tr from-sky-400/20 to-synbio-navy/15 dark:from-sky-500/15 dark:to-white/5 blur-3xl opacity-75"></div>
+      </div>
+
+      <!-- Main Animated Hero Container -->
+      <div
+        id="hero-title-box"
+        class="w-full max-w-7xl px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center transition-all duration-75 will-change-transform"
+      >
         <h1
-          class="font-urbanist text-5xl font-extrabold tracking-tight text-[#001f40] sm:text-6xl lg:text-7xl dark:text-white"
+          id="hero-main-title"
+          class="font-urbanist font-black tracking-tight text-[#001f40] dark:text-white transition-all duration-75 select-none"
+          style="font-size: clamp(2.8rem, 7.5vw, 6.2rem); line-height: 1.05;"
         >
           {homepage.hero_title || 'The ABCD Lab'}
         </h1>
-        <p class="mt-2 text-base font-medium text-gray-600 sm:text-lg dark:text-gray-300">
+        <p
+          id="hero-subtitle"
+          class="mt-3 sm:mt-4 max-w-2xl text-base sm:text-lg md:text-xl font-medium text-gray-600 dark:text-gray-300 transition-all duration-75"
+        >
           {homepage.hero_subtitle || 'School of Biological Sciences, NISER Bhubaneswar, India'}
         </p>
+        
+        <!-- Divider line that appears when title docks into standard header size -->
+        <div id="hero-dock-divider" class="w-full max-w-3xl mt-4 sm:mt-6 border-b border-gray-200/80 dark:border-white/10 opacity-0 transition-opacity duration-200"></div>
+      </div>
+
+      <!-- Scroll to explore cue (fades out as user scrolls) -->
+      <div
+        id="hero-scroll-cue"
+        class="absolute bottom-6 sm:bottom-10 flex flex-col items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 transition-opacity duration-300 select-none"
+      >
+        <span>Scroll to explore</span>
+        <svg class="h-4 w-4 animate-bounce text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
       </div>
     </div>
   </div>
 
-  <!-- 2. CTA AREA (Hero Image on Left + Two Cards on Right) -->
-  <div class="cta-area style-1 pb-24 sm:pb-32">
+  <!-- 2. HERO IMAGE SHOWCASE (Single Image Only, No Contact Us Button) -->
+  <div class="hero-image-area pb-20 sm:pb-28 pt-2 sm:pt-4">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
-        <!-- Left: Illustration -->
-        <div class="lg:col-span-7">
-          <div class="image-wrapper flex justify-center">
-            <img
-              src={homepage.hero_image ? url(homepage.hero_image) : url('/images/hero-img.png')}
-              class="h-auto w-full max-w-2xl object-contain"
-              alt="Laboratory workflow"
-              referrerpolicy="no-referrer"
-            />
-          </div>
-        </div>
-
-        <!-- Right: 2 Stacked Cards -->
-        <div class="space-y-6 lg:col-span-5">
-          <!-- Card 1: Navy Card -->
-          <div class="space-y-6 rounded-[30px] bg-[#001f40] p-8 text-white shadow-md sm:p-10 card-flip-3d">
-            <h4 class="font-urbanist text-2xl leading-snug font-bold sm:text-3xl whitespace-pre-line">
-              {homepage.cta1_title || 'Stay up to date with \n#ABCD Lab'}
-            </h4>
-            <div>
-              <a href={url(homepage.cta1_btn_link || '/news')} class="theme-btn theme-btn-white">
-                {homepage.cta1_btn_text || 'Our News'}
-              </a>
-            </div>
-          </div>
-
-          <!-- Card 2: Light Blue Card with Shape Overlay -->
-          <div class="info-card style-3 shadow-md card-flip-3d">
-            <div class="overlay">
-              <img src={url('/images/card-shape.png')} alt="shape" />
-            </div>
-            <div class="info-card-inner">
-              <p class="desc">
-                {homepage.cta2_text ||
-                  'Join us as we push the boundaries of microbial swarm intelligence and synthetic biology, driving towards a more sustainable and bio-based future'}
-              </p>
-              <div>
-                <a href={url(homepage.cta2_btn_link || '/contact')} class="theme-btn">
-                  {homepage.cta2_btn_text || 'Contact Us'}
-                </a>
-              </div>
-            </div>
-          </div>
+      <div class="flex flex-col items-center">
+        <!-- Single Hero Image in a sleek rounded showcase frame -->
+        <div class="relative w-full max-w-4xl overflow-hidden rounded-3xl shadow-xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] p-4 sm:p-8 card-flip-3d flex items-center justify-center">
+          <img
+            src={homepage.hero_image ? url(homepage.hero_image) : url('/images/hero-img.png')}
+            class="h-auto w-full max-h-[500px] object-contain transition-transform duration-700 hover:scale-102"
+            alt="The ABCD Lab overview"
+            referrerpolicy="no-referrer"
+          />
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 3. RESEARCH AREA (Alternating layout: Odd -> Image on Right, Even -> Image on Left) -->
-  <div class="research-area style-1 bg-[#f4f7fb] py-20 sm:py-28 dark:bg-white/5">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
+  <!-- 3. ABOUT US SECTION -->
+  <section class="about-us-area relative bg-[#f8fafc] py-20 sm:py-28 dark:bg-black overflow-hidden border-t border-b border-gray-100 dark:border-white/10">
+    <!-- Ambient Background Glows -->
+    <div class="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-blue-400/10 blur-3xl dark:bg-sky-500/10"></div>
+    <div class="pointer-events-none absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-indigo-400/10 blur-3xl dark:bg-blue-600/10"></div>
+
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-20">
       <!-- Section Header -->
-      <div class="flex items-center justify-between">
-        <h2 class="font-urbanist text-3xl font-bold text-[#001f40] sm:text-4xl dark:text-white">
-          {homepage.research_title || 'Our Research'}
+      <div class="max-w-3xl space-y-4">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-[#001f40]/10 text-[#001f40] dark:bg-white/10 dark:text-sky-300 dark:border dark:border-sky-300/20">
+          <span class="h-1.5 w-1.5 rounded-full bg-sky-500 animate-pulse"></span>
+          About The ABCD Lab
+        </div>
+        <h2 class="font-urbanist text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-[#001f40] dark:text-white leading-[1.15]">
+          Unraveling the Architecture & Dynamics of Microbial Life
         </h2>
+        <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
+          Based at the School of Biological Sciences, National Institute of Science Education and Research (NISER), Bhubaneswar, our laboratory explores how microscopic cells engineer nanometer-scale protein machines to define shape, organize internal space, and complete accurate division.
+        </p>
+      </div>
 
-        <div class="flex items-center gap-3">
-          <a href={url('/research')} class="theme-btn">View All Research</a>
-          <a
-            href={url('/research')}
-            class="circle-arrow-btn"
-            aria-label="View all research projects"
-          >
-            <svg
-              class="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+      <!-- Main Content Grid: Narrative Showcase & 4 Core Pillars -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+        <!-- Left Column: Story, Vision & PI Statement (lg:col-span-5) -->
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-8 rounded-[32px] border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#001f40] p-8 sm:p-10 shadow-sm dark:shadow-2xl">
+          <div class="space-y-6">
+            <div class="space-y-3">
+              <span class="text-xs font-mono font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">Our Mission</span>
+              <h3 class="font-urbanist text-2xl sm:text-3xl font-extrabold text-[#001f40] dark:text-white leading-snug">
+                From Single Molecules to Evolutionary Principles
+              </h3>
+            </div>
+            
+            <p class="text-sm sm:text-base leading-relaxed text-gray-700 dark:text-gray-200">
+              The <strong>ABCD Lab</strong> focuses on the fundamentals of <em>Bacterial Cytoskeleton and Cell Division</em>. Bacteria might appear simple, but their survival hinges on complex macromolecular assemblies—such as the tubulin homologue <strong>FtsZ</strong> and actin homologue <strong>MreB</strong>—that coordinate membrane constriction and cell wall peptidoglycan synthesis in three dimensions.
+            </p>
+
+            <p class="text-sm sm:text-base leading-relaxed text-gray-700 dark:text-gray-200">
+              By combining quantitative super-resolution live-cell fluorescence microscopy, biochemistry, and synthetic biology, we study model organisms like <em>E. coli</em> and <em>Pseudomonas</em>, alongside deeply divergent <em>Asgard archaea</em> that hold the evolutionary keys to eukaryotic cellular complexity.
+            </p>
+
+            <!-- PI Quote Callout -->
+            <div class="rounded-2xl border-l-4 border-sky-500 bg-gray-50 dark:bg-white/5 p-4 sm:p-5 text-sm italic text-gray-800 dark:text-gray-200">
+              <p class="mb-2">
+                "Understanding cellular architecture is about uncovering the universal biophysical rules that transform non-living chemical components into self-organizing living matter."
+              </p>
+              <div class="not-italic font-bold font-urbanist text-xs text-[#001f40] dark:text-sky-300">
+                — Dr. Ramanujam Srinivasan <span class="font-normal text-gray-500 dark:text-gray-400">/ Principal Investigator</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Links -->
+          <div class="pt-4 border-t border-gray-100 dark:border-white/10 flex flex-wrap items-center gap-4">
+            <a href={url('/research')} class="theme-btn inline-flex items-center gap-2">
+              <span>Explore Our Research</span>
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a
+              href={url('/team')}
+              class="inline-flex items-center gap-2 text-sm font-bold text-[#001f40] dark:text-white hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
             >
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
+              <span>Meet the Researchers</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: 4 Interactive Core Pillars (lg:col-span-7) -->
+        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+          <!-- Pillar 1 -->
+          <div class="group relative rounded-3xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] p-6 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="h-12 w-12 rounded-2xl bg-blue-50 dark:bg-white/10 flex items-center justify-center text-[#001f40] dark:text-sky-300 text-xl group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-dna"></i>
+              </div>
+              <span class="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                Core Pillar 01
+              </span>
+              <h4 class="font-urbanist text-xl font-bold text-[#001f40] dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+                Bacterial Cell Division
+              </h4>
+              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Investigating the spatiotemporal assembly, treadmilling dynamics, and mechanical force generation of the FtsZ ring and the multi-protein divisome complex.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-white/10 text-[11px] font-bold text-gray-400 dark:text-gray-400 flex items-center justify-between">
+              <span>Divisome & Cytokinesis</span>
+              <span class="group-hover:translate-x-1 transition-transform text-[#001f40] dark:text-white">&rarr;</span>
+            </div>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="group relative rounded-3xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] p-6 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="h-12 w-12 rounded-2xl bg-blue-50 dark:bg-white/10 flex items-center justify-center text-[#001f40] dark:text-sky-300 text-xl group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-cubes-stacked"></i>
+              </div>
+              <span class="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                Core Pillar 02
+              </span>
+              <h4 class="font-urbanist text-xl font-bold text-[#001f40] dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+                Cytoskeletal Polymers
+              </h4>
+              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Dissecting bacterial tubulin and actin homologues (FtsZ, FtsA, MreB), polymer architecture, nucleotide hydrolysis cycles, and membrane-binding interactions.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-white/10 text-[11px] font-bold text-gray-400 dark:text-gray-400 flex items-center justify-between">
+              <span>Polymer Biomechanics</span>
+              <span class="group-hover:translate-x-1 transition-transform text-[#001f40] dark:text-white">&rarr;</span>
+            </div>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="group relative rounded-3xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] p-6 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="h-12 w-12 rounded-2xl bg-blue-50 dark:bg-white/10 flex items-center justify-center text-[#001f40] dark:text-sky-300 text-xl group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-microscope"></i>
+              </div>
+              <span class="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                Core Pillar 03
+              </span>
+              <h4 class="font-urbanist text-xl font-bold text-[#001f40] dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+                Super-Resolution Imaging
+              </h4>
+              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Visualizing single molecules and nanometer macromolecular complexes in real time using multi-channel TIRF, SIM, and advanced live-cell fluorescence microscopy.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-white/10 text-[11px] font-bold text-gray-400 dark:text-gray-400 flex items-center justify-between">
+              <span>Quantitative Microscopy</span>
+              <span class="group-hover:translate-x-1 transition-transform text-[#001f40] dark:text-white">&rarr;</span>
+            </div>
+          </div>
+
+          <!-- Pillar 4 -->
+          <div class="group relative rounded-3xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] p-6 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="h-12 w-12 rounded-2xl bg-blue-50 dark:bg-white/10 flex items-center justify-center text-[#001f40] dark:text-sky-300 text-xl group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-volcano"></i>
+              </div>
+              <span class="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                Core Pillar 04
+              </span>
+              <h4 class="font-urbanist text-xl font-bold text-[#001f40] dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+                Evolution & Asgard Archaea
+              </h4>
+              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Characterizing primordial cytoskeletal homologues in deep-sea Asgard archaea to trace the evolutionary leap from prokaryotic scaffolds to eukaryotic cells.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-white/10 text-[11px] font-bold text-gray-400 dark:text-gray-400 flex items-center justify-between">
+              <span>Origin of Eukaryotes</span>
+              <span class="group-hover:translate-x-1 transition-transform text-[#001f40] dark:text-white">&rarr;</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Alternating Research Blocks -->
-      {
-        researchBlocks.map((block: any, index: number) => {
-          const blockNum = index + 1;
-          const isOdd = blockNum % 2 !== 0; // 1, 3, 5... -> Image on RIGHT
-          const isEven = !isOdd;             // 2, 4, 6... -> Image on LEFT
-          const blockImage = block.image || (index === 0 ? '/images/research-img1.png' : '');
-
-          return (
-            <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
-              {/* If EVEN: Image on LEFT (desktop lg:col-span-5) */}
-              {isEven && (
-                <div class="flex justify-center lg:col-span-5 order-2 lg:order-1">
-                  {blockImage ? (
-                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-lg border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] aspect-[4/3] flex items-center justify-center p-3 card-flip-3d">
-                      <img
-                        src={url(blockImage)}
-                        class="h-full w-full object-contain rounded-2xl transition-transform duration-500 hover:scale-105"
-                        alt={block.title}
-                        loading="lazy"
-                        referrerpolicy="no-referrer"
-                      />
-                    </div>
-                  ) : (
-                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-md border border-gray-200/80 dark:border-white/10 bg-gradient-to-br from-[#001f40] to-slate-900 aspect-[4/3] flex items-center justify-center p-6 text-white text-center card-flip-3d">
-                      <span class="font-urbanist text-2xl font-bold tracking-tight opacity-80">{block.title}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Text Card (lg:col-span-7) */}
-              <div
-                class={`space-y-6 rounded-[30px] border border-gray-100 bg-white p-8 shadow-sm sm:p-12 dark:border-white/10 dark:bg-[#0c1626] lg:col-span-7 card-flip-3d ${
-                  isEven ? 'order-1 lg:order-2' : 'order-1'
-                }`}
-              >
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-synbio-tint/20 text-[#001f40] dark:bg-white/10 dark:text-white">
-                  Research Thrust 0{blockNum}
-                </div>
-
-                <h3 class="font-urbanist text-2xl font-bold text-[#001f40] sm:text-3xl dark:text-white">
-                  <a href={url(block.link || '/research')} class="hover:text-synbio-orange transition-colors">
-                    {block.title}
-                  </a>
-                </h3>
-
-                <p class="text-base leading-relaxed text-gray-700 dark:text-gray-300">
-                  {block.description}
-                </p>
-
-                <div class="btn-wrapper flex items-center gap-3 pt-2">
-                  <a href={url(block.link || '/research')} class="theme-btn">Read More</a>
-                  <a
-                    href={url(block.link || '/research')}
-                    class="circle-arrow-btn"
-                    aria-label={`Read more about ${block.title}`}
-                  >
-                    <svg
-                      class="h-5 w-5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </a>
-                </div>
-              </div>
-
-              {/* If ODD: Image on RIGHT (desktop lg:col-span-5) */}
-              {isOdd && (
-                <div class="flex justify-center lg:col-span-5 order-2">
-                  {blockImage ? (
-                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-lg border border-gray-200/80 dark:border-white/10 bg-white dark:bg-[#0c1626] aspect-[4/3] flex items-center justify-center p-3 card-flip-3d">
-                      <img
-                        src={url(blockImage)}
-                        class="h-full w-full object-contain rounded-2xl transition-transform duration-500 hover:scale-105"
-                        alt={block.title}
-                        loading="lazy"
-                        referrerpolicy="no-referrer"
-                      />
-                    </div>
-                  ) : (
-                    <div class="relative w-full max-w-md overflow-hidden rounded-3xl shadow-md border border-gray-200/80 dark:border-white/10 bg-gradient-to-br from-[#001f40] to-slate-900 aspect-[4/3] flex items-center justify-center p-6 text-white text-center card-flip-3d">
-                      <span class="font-urbanist text-2xl font-bold tracking-tight opacity-80">{block.title}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })
-      }
-    </div>
-  </div>
-
-  <!-- 4. PUBLICATION AREA (Dynamic Publications with Cutout Notch & Hover Animation) -->
-  <div class="latest-posts-area style-2 bg-white py-20 sm:py-28 dark:bg-[#070c18]">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <!-- Section Title & View All Button -->
-      <div class="mb-12 flex items-center justify-between">
-        <h2 class="font-urbanist text-3xl font-bold text-[#001f40] sm:text-4xl dark:text-white">
-          {homepage.publications_title || 'Publication'}
-        </h2>
-
-        <div class="flex items-center gap-3">
-          <a href={url('/publications')} class="theme-btn">View All</a>
-          <a
-            href={url('/publications')}
-            class="circle-arrow-btn"
-            aria-label="View all publications"
-          >
-            <svg
-              class="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
+      <!-- Quick Highlights Strip -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-4">
+        <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 sm:p-5 text-center backdrop-blur-xs">
+          <div class="text-xs font-mono font-bold uppercase text-sky-600 dark:text-sky-400">Host Institute</div>
+          <div class="mt-1 font-urbanist text-sm sm:text-base font-extrabold text-[#001f40] dark:text-white">NISER Bhubaneswar</div>
+          <div class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">School of Biological Sciences</div>
+        </div>
+        <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 sm:p-5 text-center backdrop-blur-xs">
+          <div class="text-xs font-mono font-bold uppercase text-sky-600 dark:text-sky-400">Major Grants</div>
+          <div class="mt-1 font-urbanist text-sm sm:text-base font-extrabold text-[#001f40] dark:text-white">DAE & DBT Alliance</div>
+          <div class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">SERB & Wellcome Trust Supported</div>
+        </div>
+        <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 sm:p-5 text-center backdrop-blur-xs">
+          <div class="text-xs font-mono font-bold uppercase text-sky-600 dark:text-sky-400">Methodology</div>
+          <div class="mt-1 font-urbanist text-sm sm:text-base font-extrabold text-[#001f40] dark:text-white">Super-Resolution & TIRF</div>
+          <div class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">Live-Cell Biophysics</div>
+        </div>
+        <div class="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 sm:p-5 text-center backdrop-blur-xs">
+          <div class="text-xs font-mono font-bold uppercase text-sky-600 dark:text-sky-400">Lab Culture</div>
+          <div class="mt-1 font-urbanist text-sm sm:text-base font-extrabold text-[#001f40] dark:text-white">Curiosity & Rigor</div>
+          <div class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">Mentoring Future Leaders</div>
         </div>
       </div>
-
-      <!-- Publication Cards Grid -->
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {
-          featuredPublications.map((pub: any) => {
-            const rawDoi = (pub.doi || '').trim();
-            const cleanDoi = rawDoi.replace(/^https?:\/\/doi\.org\//i, '').replace(/^doi:\s*/i, '');
-            const doiUrl = cleanDoi ? `https://doi.org/${cleanDoi}` : '';
-            const paperUrl = pub.url || doiUrl || '#';
-
-            return (
-              <div class="post-card style-2 publication-card card-flip-3d">
-                <div class="content">
-                  <div class="post-meta">
-                    <span class="single-post-meta">{pub.authors}</span>
-                    <span class="dots"></span>
-                    <span class="single-post-meta">{pub.year}</span>
-                  </div>
-
-                  <!-- Meta Badges: Journal & DOI -->
-                  <div class="flex flex-wrap items-center gap-2 mb-4">
-                    {pub.journal && (
-                      <span class="journal-badge inline-flex items-center h-7 px-3.5 rounded-full bg-[#001f40] dark:bg-blue-600 text-white font-urbanist text-xs font-bold uppercase tracking-wider shadow-sm shrink-0">
-                        {pub.journal}
-                      </span>
-                    )}
-
-                    {cleanDoi && (
-                      <a
-                        href={doiUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="doi-pill inline-flex items-center h-7 gap-1.5 px-3 rounded-full bg-[#001f40] dark:bg-blue-600 text-white text-xs font-bold font-mono tracking-tight shadow-sm hover:bg-blue-700 dark:hover:bg-blue-500 transition-all"
-                        title={`Open DOI: ${cleanDoi}`}
-                      >
-                        <span class="bg-white/20 text-white text-[10px] font-black uppercase px-1.5 py-0.5 rounded tracking-wider leading-none">
-                          DOI
-                        </span>
-                        <span class="font-mono text-xs truncate max-w-[200px] leading-none">{cleanDoi}</span>
-                        <svg class="h-3.5 w-3.5 text-white/90 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </a>
-                    )}
-                  </div>
-
-                  <h3 class="title">
-                    <a
-                      href={paperUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {pub.title}
-                    </a>
-                  </h3>
-
-                  <div class="btn-wrapper">
-                    <a
-                      href={paperUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-btn"
-                    >
-                    <span>Read more</span>
-                    <span>
-                      <svg
-                        class="inline-block h-4 w-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                      </svg>
-                    </span>
-                  </a>
-                </div>
-              </div>
-
-              <!-- The Circle Arrow Button sitting in the top-right notch -->
-              <div class="btn-wrapper">
-                <a
-                  href={pub.url || (pub.doi ? `https://doi.org/${pub.doi}` : '#')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="circle-arrow-btn"
-                  aria-label={`Read ${pub.title}`}
-                >
-                  <svg
-                    class="h-5 w-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </a>
-              </div>
-
-              <!-- The SVG Shape Cutout (Disappears and slides on hover) -->
-              <div class="shape">
-                <svg
-                  width="111"
-                  height="111"
-                  viewBox="0 0 111 111"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
-                  ></path>
-                </svg>
-              </div>
-            </div>
-          );
-        })
-        }
-      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- 5. OUR TEAM SECTION (Full Photo with PI Portrait & Hover Reveal) -->
+  <!-- 4. OUR TEAM SECTION (Full Photo with PI Portrait & Hover Reveal) -->
   <div class="testimonial-slider-area style-1 bg-white py-20 dark:bg-[#070c18]">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mb-8">
@@ -476,109 +324,65 @@ if (homepage.research_blocks && homepage.research_blocks.length > 0) {
     </div>
   </div>
 
-  <!-- 6. NEWS SECTION (With Top-Right Notch Cutout & Hover Animation) -->
-  <div class="latest-posts-area style-1 bg-white py-20 dark:bg-[#070c18]">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mb-12 flex items-center justify-between">
-        <div>
-          <h2
-            class="font-urbanist text-3xl leading-tight font-bold text-[#001f40] sm:text-4xl dark:text-white whitespace-pre-line"
-          >
-            {homepage.news_title || 'Stay up to date with #ABCD Lab\nOur latest news'}
-          </h2>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <a href={url('/news')} class="theme-btn">View All</a>
-          <a href={url('/news')} class="circle-arrow-btn" aria-label="View all news">
-            <svg
-              class="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 gap-8">
-        <div class="post-card style-2 publication-card w-full card-flip-3d">
-          <div class="content">
-            <div class="post-meta">
-              <span class="single-post-meta">{latestNews.date}</span>
-            </div>
-
-            <h3
-              class="title text-xl leading-relaxed font-bold text-[#001f40] sm:text-2xl dark:text-white"
-            >
-              {latestNews.title}
-            </h3>
-
-            <div class="btn-wrapper">
-              <a href={url(latestNews.link || '/news')} class="text-btn">
-                <span>Read more</span>
-                <span>
-                  <svg
-                    class="inline-block h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-              </a>
-            </div>
-          </div>
-
-          <div class="btn-wrapper">
-            <a
-              href={url(latestNews.link || '/news')}
-              class="circle-arrow-btn"
-              aria-label="Read latest news"
-            >
-              <svg
-                class="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
-
-          <div class="shape">
-            <svg
-              width="111"
-              height="111"
-              viewBox="0 0 111 111"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M0 0C19.33 0 35 15.67 35 35V41C35 60.33 50.67 76 70 76H76C95.33 76 111 91.67 111 111V0H0Z"
-              ></path>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </Layout>
+
+<script>
+  // Smooth scroll interpolation for Hero Title
+  function initHeroScroll() {
+    const heroTitleBox = document.getElementById('hero-title-box');
+    const heroMainTitle = document.getElementById('hero-main-title');
+    const scrollCue = document.getElementById('hero-scroll-cue');
+    const heroDivider = document.getElementById('hero-dock-divider');
+    if (!heroTitleBox || !heroMainTitle) return;
+
+    let ticking = false;
+
+    function updateScroll() {
+      const scrollY = window.scrollY || window.pageYOffset;
+      // Scroll distance over which the title compresses (approx 320px)
+      const threshold = Math.min(window.innerHeight * 0.45, 340);
+      const progress = Math.min(Math.max(scrollY / threshold, 0), 1);
+
+      if (progress > 0) {
+        // Scale from 1.0 (fullscreen size) down to 0.65 (standard size)
+        const scale = 1 - progress * 0.35;
+        const translateY = -progress * 24;
+        heroTitleBox.style.transform = `translateY(${translateY}px) scale(${scale})`;
+        heroTitleBox.style.transformOrigin = 'center center';
+
+        if (scrollCue) {
+          scrollCue.style.opacity = String(Math.max(0, 1 - progress * 3));
+          scrollCue.style.pointerEvents = progress > 0.3 ? 'none' : 'auto';
+        }
+        if (heroDivider) {
+          heroDivider.style.opacity = String(progress);
+        }
+      } else {
+        heroTitleBox.style.transform = 'translateY(0) scale(1)';
+        if (scrollCue) {
+          scrollCue.style.opacity = '1';
+          scrollCue.style.pointerEvents = 'auto';
+        }
+        if (heroDivider) {
+          heroDivider.style.opacity = '0';
+        }
+      }
+
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScroll);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    updateScroll();
+  }
+
+  initHeroScroll();
+  document.addEventListener('astro:page-load', initHeroScroll);
+</script>

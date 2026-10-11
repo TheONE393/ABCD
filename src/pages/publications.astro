@@ -129,8 +129,8 @@ const orcidUrl =
         )}
       </div>
 
-      <!-- 2-Column Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10" id="publications-grid">
+      <!-- 4-Column Publications Grid (Compact cards with preserved original SynBio notch animation) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="publications-grid">
         {
           publications.map((pub: any, index: number) => {
             const rawDoi = (pub.doi || '').trim();
@@ -138,41 +138,42 @@ const orcidUrl =
             const doiUrl = cleanDoi ? `https://doi.org/${cleanDoi}` : '';
             const paperUrl = pub.url || doiUrl || '#';
             const journalBadge = pub.journal || '';
-            const pubDate = pub.date || String(pub.year || '');
+            const pubYear = String(pub.year || '').trim();
             const isBeyond10 = index >= 10;
 
             return (
               <div
-                class={`post-card style-2 publication-card card-flip-3d ${isBeyond10 ? 'beyond-recent-10' : ''}`}
+                class={`post-card style-2 publication-card compact-pub-card card-flip-3d ${isBeyond10 ? 'beyond-recent-10' : ''}`}
                 style={isBeyond10 ? 'display: none;' : ''}
                 data-index={index}
                 data-title={pub.title.toLowerCase()}
                 data-authors={pub.authors.toLowerCase()}
                 data-journal={journalBadge.toLowerCase()}
-                data-year={String(pub.year || '')}
+                data-year={pubYear}
                 data-doi={cleanDoi.toLowerCase()}
               >
                 <div class="content">
                   <div>
-                    <!-- Top Meta: Authors and Date -->
+                    <!-- Top Meta: Authors (with right padding away from top-right notch) -->
                     <div class="post-meta">
-                      <span class="single-post-meta text-sm font-medium text-gray-800 dark:text-gray-200">
+                      <span class="single-post-meta" title={pub.authors}>
                         {pub.authors}
                       </span>
-                      {pubDate && (
-                        <>
-                          <span class="dots"></span>
-                          <span class="single-post-meta text-sm font-medium text-gray-600 dark:text-gray-400">
-                            {pubDate}
-                          </span>
-                        </>
-                      )}
                     </div>
 
-                    <!-- Meta Badges: Journal & DOI -->
-                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                    <!-- Meta Badges: Year visible on LEFT (not in right top corner), Journal, DOI -->
+                    <div class="flex flex-wrap items-center gap-1.5 mb-3">
+                      {pubYear && (
+                        <span class="year-badge inline-flex items-center h-6 px-2.5 rounded-full font-mono text-xs font-black shadow-xs shrink-0">
+                          {pubYear}
+                        </span>
+                      )}
+
                       {journalBadge && (
-                        <span class="journal-badge inline-flex items-center h-7 px-3.5 rounded-full bg-[#001f40] dark:bg-blue-600 text-white font-urbanist text-xs font-bold uppercase tracking-wider shadow-sm shrink-0">
+                        <span
+                          class="journal-badge inline-flex items-center h-6 px-2.5 rounded-full font-urbanist text-[11px] font-bold uppercase tracking-wider bg-[#001f40] text-white dark:bg-sky-400 dark:!text-[#001f40] shadow-xs shrink-0 max-w-[130px] truncate"
+                          title={journalBadge}
+                        >
                           {journalBadge}
                         </span>
                       )}
@@ -182,16 +183,14 @@ const orcidUrl =
                           href={doiUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          class="doi-pill inline-flex items-center h-7 gap-1.5 px-3 rounded-full bg-[#001f40] dark:bg-blue-600 text-white text-xs font-bold font-mono tracking-tight shadow-sm hover:bg-blue-700 dark:hover:bg-blue-500 hover:shadow-md transition-all group/doi"
+                          class="doi-pill inline-flex items-center h-6 gap-1 px-2 rounded-full bg-[#001f40] text-white dark:bg-sky-400 dark:!text-[#001f40] text-[10px] font-mono font-bold shadow-xs hover:opacity-90 transition-all shrink-0"
                           title={`Open DOI: ${cleanDoi}`}
                         >
-                          <span class="bg-white/20 text-white text-[10px] font-black uppercase px-1.5 py-0.5 rounded tracking-wider leading-none">
+                          <span class="bg-white/20 dark:bg-black/20 text-white dark:text-[#001f40] text-[9px] font-black uppercase px-1 py-0.5 rounded tracking-wider leading-none">
                             DOI
                           </span>
-                          <span class="underline decoration-white/40 group-hover/doi:decoration-white font-mono text-[11px] leading-none">
-                            {cleanDoi}
-                          </span>
-                          <svg class="h-3.5 w-3.5 text-white/90 group-hover/doi:text-white shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                          <span class="font-mono text-[10px] truncate max-w-[90px] leading-none">{cleanDoi}</span>
+                          <svg class="h-2.5 w-2.5 opacity-80 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                         </a>
@@ -200,18 +199,15 @@ const orcidUrl =
                           href={paperUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          class="doi-pill inline-flex items-center h-7 gap-1.5 px-3 rounded-full bg-white/90 dark:bg-white/10 text-gray-700 dark:text-gray-300 border border-gray-300/80 dark:border-white/15 text-xs font-medium hover:bg-gray-50 dark:hover:bg-white/20 transition-all"
+                          class="doi-pill inline-flex items-center h-6 gap-1 px-2 rounded-full bg-white/80 dark:bg-white/10 text-gray-700 dark:text-gray-200 text-[10px] font-mono font-medium shadow-xs hover:opacity-90 transition-all shrink-0"
                           title="Open article link"
                         >
-                          <span class="bg-gray-200 dark:bg-white/20 text-gray-800 dark:text-gray-200 text-[10px] font-bold uppercase px-1.5 py-0.5 rounded tracking-wider leading-none">
-                            DOI
-                          </span>
-                          <span class="text-xs leading-none">via Scholar / Publisher ↗</span>
+                          <span class="font-mono text-[10px] leading-none">Link ↗</span>
                         </a>
                       )}
                     </div>
 
-                    <!-- Paper Title -->
+                    <!-- Paper Title: 3-line clamp -->
                     <h3 class="title">
                       <a href={paperUrl} target="_blank" rel="noopener noreferrer">
                         {pub.title}
@@ -246,7 +242,7 @@ const orcidUrl =
                   </div>
                 </div>
 
-                <!-- Circular Arrow Button sitting in top-right notch cutout -->
+                <!-- Circular Arrow Button in top-right notch cutout (Original size & animation) -->
                 <div class="btn-wrapper">
                   <a
                     href={paperUrl}
@@ -270,7 +266,7 @@ const orcidUrl =
                   </a>
                 </div>
 
-                <!-- Signature SVG Shape Cutout (Disappears and slides on hover) -->
+                <!-- Signature SVG Shape Cutout (Original 111x111 geometry) -->
                 <div class="shape">
                   <svg
                     width="111"
@@ -455,3 +451,49 @@ const orcidUrl =
   document.addEventListener('astro:page-load', setupPubInteractions);
   document.addEventListener('astro:after-swap', setupPubInteractions);
 </script>
+
+<style>
+  /* Reduce card sizes smartly without breaking the original notch geometry & animation */
+  .compact-pub-card .content {
+    padding: 26px 22px 20px !important;
+    border-radius: 26px !important;
+    min-height: 290px;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+  .compact-pub-card .content .post-meta {
+    margin-bottom: 8px !important;
+    padding-right: 70px !important; /* Clears the top-right 64px notch cutout */
+  }
+  .compact-pub-card .content .post-meta .single-post-meta {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .compact-pub-card .content .title {
+    font-size: 15px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 12px !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .compact-pub-card .content .btn-wrapper .text-btn {
+    font-size: 13px !important;
+    line-height: 22px !important;
+  }
+  .compact-pub-card .year-badge {
+    background-color: #001f40 !important;
+    color: #ffffff !important;
+  }
+  :where(.dark) .compact-pub-card .year-badge {
+    background-color: #ffffff !important;
+    color: #001f40 !important;
+    font-weight: 800 !important;
+  }
+</style>

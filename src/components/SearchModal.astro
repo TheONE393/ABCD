@@ -1,11 +1,10 @@
 ---
-import { fetchPublications, fetchResearch, fetchTeam, fetchNews } from '../lib/fetchSheetData.js';
+import { fetchPublications, fetchResearch, fetchTeam } from '../lib/fetchSheetData.js';
 import { url } from '../lib/paths.js';
 
 const publications = await fetchPublications();
 const research = await fetchResearch();
 const team = await fetchTeam();
-const news = await fetchNews();
 
 // Prepare search index data as JSON for client-side search
 const searchIndex = [
@@ -29,13 +28,6 @@ const searchIndex = [
     desc: `${t.role} — ${t.bio?.slice(0, 100)}...`,
     url: url('/team'),
     badge: 'Member',
-  })),
-  ...news.map((n) => ({
-    type: 'News',
-    title: n.title,
-    desc: `${n.date} — ${n.excerpt?.slice(0, 100)}...`,
-    url: url('/news'),
-    badge: 'News',
   })),
 ];
 ---
@@ -73,7 +65,7 @@ const searchIndex = [
         <input
           id="global-search-input"
           type="search"
-          placeholder="Search research, publications, team members, news..."
+          placeholder="Search research, publications, team members..."
           class="ml-3 flex-1 bg-transparent text-base font-medium text-gray-900 placeholder-gray-400 outline-none dark:text-white dark:placeholder-gray-500"
           autocomplete="off"
         />
@@ -103,7 +95,6 @@ const searchIndex = [
         <button class="search-filter-tag rounded-full bg-gray-200 px-2.5 py-0.5 hover:bg-gray-300 dark:bg-white/10 dark:hover:bg-white/20" data-category="Research">Research</button>
         <button class="search-filter-tag rounded-full bg-gray-200 px-2.5 py-0.5 hover:bg-gray-300 dark:bg-white/10 dark:hover:bg-white/20" data-category="Publication">Publications</button>
         <button class="search-filter-tag rounded-full bg-gray-200 px-2.5 py-0.5 hover:bg-gray-300 dark:bg-white/10 dark:hover:bg-white/20" data-category="Team">Team</button>
-        <button class="search-filter-tag rounded-full bg-gray-200 px-2.5 py-0.5 hover:bg-gray-300 dark:bg-white/10 dark:hover:bg-white/20" data-category="News">News</button>
       </div>
 
       <!-- Results Container -->
