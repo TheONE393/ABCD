@@ -17,51 +17,66 @@ const localPiPhoto = getLocalPiPhoto();
 
 <Layout title="The ABCD Lab">
   <!-- 1. HERO TITLE SECTION (Normal section, scrolls naturally, 3D text with cursor-reactive background) -->
-  <div id="hero-section" class="relative flex w-full flex-col items-center justify-center overflow-hidden" style="min-height: calc(100vh - 5rem);">
-    <!-- Cursor-responsive biological particle canvas -->
-    <canvas id="hero-bio-canvas" class="pointer-events-none absolute inset-0 z-0 h-full w-full"></canvas>
+  <div
+    id="hero-section"
+    class="relative flex w-full flex-col items-center justify-center overflow-hidden"
+    style="min-height: calc(100vh - 5rem);"
+  >
+    <!-- Cursor-responsive biological particle canvas (Temporarily commented out)
+    <canvas id="hero-bio-canvas" class="pointer-events-none absolute inset-0 z-0 h-full w-full"
+    ></canvas>
+    -->
 
     <!-- Ambient SynBio Glow Effect -->
-    <div class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
-      <div class="h-[360px] w-[520px] rounded-full bg-gradient-to-tr from-sky-400/20 to-[#001f40]/15 opacity-75 blur-3xl sm:h-[460px] sm:w-[750px] dark:from-sky-500/15 dark:to-white/5"></div>
+    <div
+      class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden"
+    >
+      <div
+        class="h-[360px] w-[520px] rounded-full bg-gradient-to-tr from-sky-400/20 to-[#001f40]/15 opacity-75 blur-3xl sm:h-[460px] sm:w-[750px] dark:from-sky-500/15 dark:to-white/5"
+      >
+      </div>
     </div>
 
     <!-- Main Hero Container -->
-    <div id="hero-title-box" class="relative z-10 flex w-full max-w-7xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 sm:py-24 lg:px-8">
-
+    <div
+      id="hero-title-box"
+      class="relative z-10 flex w-full max-w-7xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 sm:py-24 lg:px-8"
+    >
       <!-- 3D Interactive Title -->
-      <div id="hero-3d-wrapper" class="hero-3d-perspective select-none" style="perspective: 1200px;">
+      <div
+        id="hero-3d-wrapper"
+        class="hero-3d-perspective select-none"
+        style="perspective: 1200px;"
+      >
         <h1
           id="hero-main-title"
           class="hero-3d-title font-urbanist font-black tracking-tight text-[#001f40] dark:text-white"
-          style="font-size: clamp(2.8rem, 7.5vw, 6.2rem); line-height: 1.05;"
+          style="font-size: clamp(2rem, 5.5vw, 5.2rem); line-height: 1.1;"
         >
-          <span class="hero-word-static">The </span><span
-            id="letter-A"
-            class="hero-letter"
-            data-expanded="Archaea"
-            ><span class="hero-letter-original">A</span><span class="hero-letter-expanded">rchaea</span></span><span
-            id="letter-B"
-            class="hero-letter"
-            data-expanded="Bacterial"
-            ><span class="hero-letter-original">B</span><span class="hero-letter-expanded">acterial</span></span><span
-            id="letter-C"
-            class="hero-letter"
-            data-expanded="Cytoskeletal"
-            ><span class="hero-letter-original">C</span><span class="hero-letter-expanded">ytoskeletal</span></span><span
-            id="letter-D"
-            class="hero-letter"
-            data-expanded="Dynamics"
-            ><span class="hero-letter-original">D</span><span class="hero-letter-expanded">ynamics</span></span><span class="hero-word-static"> Lab</span>
+          <span class="hero-word-static">The </span><span class="hero-abcd-group"
+            ><span
+              id="letter-A"
+              class="hero-letter"
+              data-expanded="Archaea"
+              ><span class="hero-letter-original">A</span><span class="hero-letter-expanded"
+                >rchaea</span
+              ></span
+            ><span id="letter-B" class="hero-letter" data-expanded="Bacterial"
+              ><span class="hero-letter-original">B</span><span class="hero-letter-expanded"
+                >acterial</span
+              ></span
+            ><span id="letter-C" class="hero-letter" data-expanded="Cytoskeletal"
+              ><span class="hero-letter-original">C</span><span class="hero-letter-expanded"
+                >ytoskeletal</span
+              ></span
+            ><span id="letter-D" class="hero-letter" data-expanded="Dynamics"
+              ><span class="hero-letter-original">D</span><span class="hero-letter-expanded"
+                >ynamics</span
+              ></span
+            ></span
+          ><span class="hero-word-static"> Lab</span>
         </h1>
       </div>
-
-      <p
-        id="hero-subtitle"
-        class="mt-3 max-w-2xl text-base font-medium text-gray-600 sm:mt-4 sm:text-lg md:text-xl dark:text-gray-300"
-      >
-        {homepage.hero_subtitle || 'School of Biological Sciences, NISER Bhubaneswar, India'}
-      </p>
     </div>
 
     <!-- Scroll to explore cue -->
@@ -70,7 +85,13 @@ const localPiPhoto = getLocalPiPhoto();
       class="absolute bottom-6 flex flex-col items-center gap-1.5 text-[11px] font-bold tracking-widest text-gray-400 uppercase transition-opacity duration-500 select-none sm:bottom-10 sm:text-xs dark:text-gray-500"
     >
       <span>Scroll to explore</span>
-      <svg class="h-4 w-4 animate-bounce text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <svg
+        class="h-4 w-4 animate-bounce text-gray-500 dark:text-gray-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
         <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
       </svg>
     </div>
@@ -594,6 +615,7 @@ const localPiPhoto = getLocalPiPhoto();
 </Layout>
 
 <style>
+  /* ========== Research Accordion ========== */
   .topic-content {
     display: grid;
     grid-template-rows: 0fr;
@@ -615,67 +637,720 @@ const localPiPhoto = getLocalPiPhoto();
     border-color: rgba(56, 189, 248, 0.35) !important;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
   }
+
+  /* ========== 3D Hero Title ========== */
+  .hero-3d-perspective {
+    perspective: 1200px;
+    display: inline-block;
+  }
+
+  .hero-3d-title {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    align-items: baseline;
+    justify-content: center;
+    transform-style: preserve-3d;
+    max-width: 100%;
+    transition:
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      text-shadow 0.4s ease;
+    will-change: transform;
+  }
+
+  /* When the whole title wrapper is hovered, apply a subtle 3D curve */
+  .hero-3d-perspective:hover .hero-3d-title {
+    transform: rotateX(6deg) rotateY(-2deg) translateZ(30px);
+    text-shadow: 0 4px 24px rgba(14, 165, 233, 0.12);
+  }
+  :global(.dark) .hero-3d-perspective:hover .hero-3d-title {
+    text-shadow: 0 4px 24px rgba(56, 189, 248, 0.2);
+  }
+
+  /* Static words ("The", "Lab") */
+  .hero-word-static {
+    display: inline-block;
+    white-space: pre;
+    flex-shrink: 0;
+    font-size: 1em;
+    opacity: 1;
+    transform: translateZ(0);
+    transition:
+      font-size 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.45s ease,
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ABCD Acronym Group */
+  .hero-abcd-group {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-items: baseline;
+    font-size: 1em;
+    transform-style: preserve-3d;
+    transform: translateZ(0);
+    transition:
+      font-size 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      letter-spacing 0.4s ease;
+  }
+
+  /* Upon hovering "The ABCD Lab", make ABCD noticeably bigger and bring it forward */
+  .hero-3d-perspective:hover .hero-abcd-group {
+    font-size: 1.22em;
+    transform: translateZ(35px);
+    letter-spacing: 0.015em;
+  }
+
+  /* And make "The" and "Lab" recede slightly so ABCD dominates */
+  .hero-3d-perspective:hover .hero-word-static {
+    font-size: 0.85em;
+    opacity: 0.7;
+    transform: translateZ(5px);
+  }
+
+  /* Each ABCD letter wrapper */
+  .hero-letter {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-items: baseline;
+    position: relative;
+    cursor: pointer;
+    transition:
+      color 0.35s ease,
+      text-shadow 0.35s ease,
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-letter:hover {
+    transform: translateZ(15px);
+  }
+
+  .hero-letter-original {
+    display: inline;
+    transition: color 0.3s ease;
+  }
+
+  /* Expanded part: hidden by default with max-width trick for smooth animation */
+  .hero-letter-expanded {
+    display: inline-block;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    vertical-align: baseline;
+    transition:
+      max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.35s ease 0.05s;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* On individual letter hover, expand */
+  .hero-letter:hover .hero-letter-expanded {
+    max-width: 14ch;
+    opacity: 1;
+  }
+
+  /* Letter color accent on hover */
+  .hero-letter:hover .hero-letter-original {
+    color: #0ea5e9;
+  }
+  :global(.dark) .hero-letter:hover .hero-letter-original {
+    color: #38bdf8;
+  }
+
+  /* Space between expanded words */
+  .hero-letter::after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    transition: width 0.3s ease;
+  }
+  .hero-letter:hover::after {
+    width: 0.18em;
+  }
+
+  /* Canvas Layer (Temporarily commented out)
+  #hero-bio-canvas {
+    opacity: 0.95;
+  }
+  :global(.dark) #hero-bio-canvas {
+    opacity: 0.92;
+  }
+  */
 </style>
 
 <script>
-  // Smooth scroll interpolation for Hero Title
-  function initHeroScroll() {
-    const heroTitleBox = document.getElementById('hero-title-box') as HTMLElement | null;
-    const heroMainTitle = document.getElementById('hero-main-title') as HTMLElement | null;
-    const scrollCue = document.getElementById('hero-scroll-cue') as HTMLElement | null;
-    const heroDivider = document.getElementById('hero-dock-divider') as HTMLElement | null;
-    if (!heroTitleBox || !heroMainTitle) return;
+  // =========================================================================
+  // 2. Realistic Live Z-Ring Formation & Microbial Division Simulation (Commented out)
+  // =========================================================================
+  /*
+  function initBioCanvas() {
+    const canvas = document.getElementById('hero-bio-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    let ticking = false;
+    const heroSection = document.getElementById('hero-section');
+    if (!heroSection) return;
 
-    function updateScroll() {
-      if (!heroTitleBox) return;
-      const scrollY = window.scrollY || window.pageYOffset;
-      // Scroll distance over which the title compresses (approx 320px)
-      const threshold = Math.min(window.innerHeight * 0.45, 340);
-      const progress = Math.min(Math.max(scrollY / threshold, 0), 1);
+    let width = 0;
+    let height = 0;
+    let mouseX = -1000;
+    let mouseY = -1000;
+    let animId: number;
 
-      if (progress > 0) {
-        // Scale from 1.0 (fullscreen size) down to 0.65 (standard size)
-        const scale = 1 - progress * 0.35;
-        const translateY = -progress * 24;
-        heroTitleBox.style.transform = `translateY(${translateY}px) scale(${scale})`;
-        heroTitleBox.style.transformOrigin = 'center center';
+    function isDark() {
+      return document.documentElement.classList.contains('dark');
+    }
 
-        if (scrollCue) {
-          scrollCue.style.opacity = String(Math.max(0, 1 - progress * 3));
-          scrollCue.style.pointerEvents = progress > 0.3 ? 'none' : 'auto';
+    // Microscopic fluid ripple triggered by click or division
+    interface FluidRipple {
+      x: number;
+      y: number;
+      radius: number;
+      maxRadius: number;
+      alpha: number;
+    }
+
+    // Microbial Cell Model (Bacillus, Archaeon, Coccus)
+    interface MicrobeCell {
+      id: number;
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      length: number; // long axis
+      width: number; // short axis
+      angle: number; // orientation angle
+      angularSpeed: number;
+      type: 'bacillus' | 'archaea' | 'coccus';
+      phase: number; // 0 to 1 (division lifecycle)
+      divisionProgress: number; // 0 (normal) to 1 (fully pinched/separated)
+      zRingIntensity: number; // FtsZ ring brightness (0 to 1)
+      burstAlpha: number; // separation flash
+      birthScale: number; // 0.2 to 1 (smooth spawn appearance)
+      // Internal macromolecular granules (ribosomes/protein clusters)
+      granules: { ox: number; oy: number; r: number; phase: number }[];
+    }
+
+    let cells: MicrobeCell[] = [];
+    let ripples: FluidRipple[] = [];
+    const MAX_CELLS = 26;
+    let nextCellId = 1;
+
+    function resize() {
+      const rect = heroSection!.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas!.width = width * dpr;
+      canvas!.height = height * dpr;
+      canvas!.style.width = width + 'px';
+      canvas!.style.height = height + 'px';
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      initPopulation();
+    }
+
+    function createCell(
+      x?: number,
+      y?: number,
+      type?: 'bacillus' | 'archaea' | 'coccus',
+      initialPhase?: number,
+      isBirth?: boolean
+    ): MicrobeCell {
+      const cellType =
+        type || (Math.random() < 0.65 ? 'bacillus' : Math.random() < 0.6 ? 'archaea' : 'coccus');
+      // Substantially larger, high-visibility cell dimensions
+      const baseLen =
+        cellType === 'bacillus'
+          ? 66 + Math.random() * 20
+          : cellType === 'archaea'
+            ? 54 + Math.random() * 16
+            : 40 + Math.random() * 10;
+      const baseWid =
+        cellType === 'bacillus'
+          ? 25 + Math.random() * 5
+          : cellType === 'archaea'
+            ? 34 + Math.random() * 7
+            : baseLen * 0.92;
+
+      // Internal granules (ribosome & protein macromolecular complexes)
+      const granuleCount = 6 + Math.floor(Math.random() * 4);
+      const granules = [];
+      for (let g = 0; g < granuleCount; g++) {
+        granules.push({
+          ox: (Math.random() - 0.5) * (baseLen * 0.6),
+          oy: (Math.random() - 0.5) * (baseWid * 0.5),
+          r: 1.5 + Math.random() * 1.6,
+          phase: Math.random() * Math.PI * 2,
+        });
+      }
+
+      return {
+        id: nextCellId++,
+        x: x !== undefined ? x : Math.random() * width,
+        y: y !== undefined ? y : Math.random() * height,
+        // Slower, dignified viscous suspension drift
+        vx: (Math.random() - 0.5) * 0.1,
+        vy: (Math.random() - 0.5) * 0.1,
+        length: baseLen,
+        width: baseWid,
+        angle: Math.random() * Math.PI * 2,
+        angularSpeed: (Math.random() - 0.5) * 0.002,
+        type: cellType,
+        phase: initialPhase !== undefined ? initialPhase : Math.random() * 0.75,
+        divisionProgress: 0,
+        zRingIntensity: 0,
+        burstAlpha: isBirth ? 0.9 : 0,
+        birthScale: isBirth ? 0.25 : 1,
+        granules: granules,
+      };
+    }
+
+    function initPopulation() {
+      cells = [];
+      const count = Math.max(9, Math.min(15, Math.floor(width / 130)));
+      for (let i = 0; i < count; i++) {
+        cells.push(createCell(undefined, undefined, undefined, (i / count) * 0.88, false));
+      }
+    }
+
+    // Draw realistic microbial cell with lipid bilayer envelope, nucleoids, and FtsZ Z-ring
+    function drawCell(cell: MicrobeCell, dark: boolean, time: number) {
+      ctx!.save();
+      ctx!.translate(cell.x, cell.y);
+      ctx!.rotate(cell.angle);
+
+      if (cell.birthScale < 1) {
+        ctx!.scale(cell.birthScale, cell.birthScale);
+      }
+
+      const halfL = cell.length * 0.5;
+      const halfW = cell.width * 0.5;
+      const constrict = cell.divisionProgress; // 0 to 1
+      const waistWidth = halfW * (1 - constrict * 0.84); // deep anatomical cleavage furrow
+
+      // 1. Draw Cell Body Outer Membrane Contour
+      ctx!.beginPath();
+
+      if (cell.type === 'archaea') {
+        // Archaeal pleomorphic contour with undulating S-layer glycoprotein lobes
+        const lobes = 4;
+        for (let a = 0; a <= Math.PI * 2; a += 0.06) {
+          const rBase = (halfL + halfW) * 0.42;
+          const rLobe = rBase + Math.sin(a * lobes + cell.phase * 2) * 4.5;
+          const pinchFactor = 1 - Math.abs(Math.sin(a)) * (constrict * 0.52);
+          const r = rLobe * pinchFactor;
+          const px = Math.cos(a) * r * (halfL / rBase);
+          const py = Math.sin(a) * r * (halfW / rBase);
+          if (a === 0) ctx!.moveTo(px, py);
+          else ctx!.lineTo(px, py);
         }
-        if (heroDivider) {
-          heroDivider.style.opacity = String(progress);
-        }
+        ctx!.closePath();
       } else {
-        heroTitleBox.style.transform = 'translateY(0) scale(1)';
-        if (scrollCue) {
-          scrollCue.style.opacity = '1';
-          scrollCue.style.pointerEvents = 'auto';
+        // Bacillus / Coccus: Anatomical capsule with smooth hemispherical poles and constricting furrow
+        ctx!.moveTo(0, -waistWidth);
+        ctx!.bezierCurveTo(halfL * 0.35, -halfW, halfL, -halfW * 0.94, halfL, 0);
+        ctx!.bezierCurveTo(halfL, halfW * 0.94, halfL * 0.35, halfW, 0, waistWidth);
+        ctx!.bezierCurveTo(-halfL * 0.35, halfW, -halfL, halfW * 0.94, -halfL, 0);
+        ctx!.bezierCurveTo(-halfL, -halfW * 0.94, -halfL * 0.35, -halfW, 0, -waistWidth);
+        ctx!.closePath();
+      }
+
+      if (dark) {
+        // Confocal fluorescence: Translucent cytoplasm with bioluminescent membrane
+        const bodyGrad = ctx!.createRadialGradient(0, 0, 5, 0, 0, halfL);
+        bodyGrad.addColorStop(0, 'rgba(56, 189, 248, 0.16)');
+        bodyGrad.addColorStop(0.65, 'rgba(14, 165, 233, 0.08)');
+        bodyGrad.addColorStop(1, 'rgba(2, 132, 199, 0.03)');
+        ctx!.fillStyle = bodyGrad;
+        ctx!.fill();
+
+        // Outer lipid membrane
+        ctx!.strokeStyle = 'rgba(56, 189, 248, 0.65)';
+        ctx!.shadowColor = 'rgba(56, 189, 248, 0.7)';
+        ctx!.shadowBlur = 10;
+        ctx!.lineWidth = 2.0;
+        ctx!.stroke();
+
+        // Inner membrane boundary (periplasmic gap)
+        ctx!.strokeStyle = 'rgba(14, 165, 233, 0.28)';
+        ctx!.lineWidth = 1.0;
+        ctx!.stroke();
+      } else {
+        // DIC (Nomarski 3D optics) with directional refractive shadow casting
+        const dicGrad = ctx!.createLinearGradient(
+          -halfL * 0.5,
+          -halfW * 0.5,
+          halfL * 0.5,
+          halfW * 0.5
+        );
+        dicGrad.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
+        dicGrad.addColorStop(0.45, 'rgba(2, 132, 199, 0.1)');
+        dicGrad.addColorStop(1, 'rgba(15, 23, 42, 0.16)');
+        ctx!.fillStyle = dicGrad;
+        ctx!.fill();
+
+        ctx!.strokeStyle = 'rgba(2, 132, 199, 0.52)';
+        ctx!.shadowColor = 'rgba(2, 132, 199, 0.25)';
+        ctx!.shadowBlur = 6;
+        ctx!.lineWidth = 1.8;
+        ctx!.stroke();
+      }
+
+      // 2. Segregated Nucleoid Lobes (Bacterial Chromatin)
+      const nucOffset = halfL * 0.44 * (1 - constrict * 0.18);
+      const nucR = halfW * 0.46;
+
+      for (const sign of [-1, 1]) {
+        ctx!.beginPath();
+        ctx!.arc(sign * nucOffset, 0, nucR, 0, Math.PI * 2);
+        if (dark) {
+          ctx!.fillStyle = 'rgba(147, 197, 253, 0.24)';
+          ctx!.shadowColor = 'rgba(96, 165, 250, 0.5)';
+          ctx!.shadowBlur = 8;
+        } else {
+          ctx!.fillStyle = 'rgba(14, 165, 233, 0.15)';
+          ctx!.shadowBlur = 0;
         }
-        if (heroDivider) {
-          heroDivider.style.opacity = '0';
+        ctx!.fill();
+      }
+
+      // 3. Internal Macromolecular Ribosome Granules
+      for (const g of cell.granules) {
+        const gx = g.ox + Math.sin(time * 1.5 + g.phase) * 1.4;
+        const gy = g.oy + Math.cos(time * 1.5 + g.phase) * 1.0;
+        if (Math.abs(gx) < halfL * 0.85 && Math.abs(gy) < waistWidth * 0.82) {
+          ctx!.beginPath();
+          ctx!.arc(gx, gy, g.r, 0, Math.PI * 2);
+          ctx!.fillStyle = dark ? 'rgba(224, 242, 254, 0.3)' : 'rgba(2, 132, 199, 0.22)';
+          ctx!.fill();
         }
       }
 
+      // 4. Contractile FtsZ Z-Ring Assembly at Midcell
+      if (cell.zRingIntensity > 0.05) {
+        const ringAlpha = cell.zRingIntensity;
+
+        // Protofilament contractile band spanning across the waist
+        ctx!.beginPath();
+        ctx!.moveTo(0, -waistWidth);
+        ctx!.lineTo(0, waistWidth);
+
+        if (dark) {
+          // Intense GFP Fluorophore Emission with Optical Bloom
+          ctx!.strokeStyle = `rgba(34, 94, 94, ${ringAlpha * 0.98})`;
+          ctx!.shadowColor = 'rgba(74, 222, 128, 0.98)';
+          ctx!.shadowBlur = 15;
+          ctx!.lineWidth = 3.0 + constrict * 2.0;
+        } else {
+          // High-contrast dark protein furrow in DIC
+          ctx!.strokeStyle = `rgba(13, 148, 136, ${ringAlpha * 0.94})`;
+          ctx!.shadowColor = 'rgba(15, 118, 110, 0.6)';
+          ctx!.shadowBlur = 7;
+          ctx!.lineWidth = 2.6 + constrict * 1.6;
+        }
+        ctx!.stroke();
+
+        // Membrane-tethering FtsA/ZipA condensation complexes at ring poles
+        for (const yOffset of [-waistWidth, waistWidth]) {
+          ctx!.beginPath();
+          ctx!.arc(0, yOffset, 2.2 + constrict * 1.4, 0, Math.PI * 2);
+          ctx!.fillStyle = dark
+            ? `rgba(255, 255, 255, ${ringAlpha})`
+            : `rgba(13, 148, 136, ${ringAlpha})`;
+          ctx!.fill();
+        }
+
+        // Central catalytic GTPase core
+        ctx!.beginPath();
+        ctx!.arc(0, 0, 2.6 + constrict * 2.0, 0, Math.PI * 2);
+        ctx!.fillStyle = dark
+          ? `rgba(255, 255, 255, ${ringAlpha})`
+          : `rgba(15, 118, 110, ${ringAlpha})`;
+        ctx!.fill();
+      }
+
+      // 5. Division Fission Flash
+      if (cell.burstAlpha > 0.02) {
+        ctx!.beginPath();
+        ctx!.arc(0, 0, 16 + (1 - cell.burstAlpha) * 20, 0, Math.PI * 2);
+        ctx!.strokeStyle = dark
+          ? `rgba(74, 222, 128, ${cell.burstAlpha * 0.85})`
+          : `rgba(14, 165, 233, ${cell.burstAlpha * 0.75})`;
+        ctx!.lineWidth = 2.2;
+        ctx!.stroke();
+      }
+
+      ctx!.restore();
+    }
+
+    function animate() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, width, height);
+
+      const dark = isDark();
+      const time = performance.now() * 0.001;
+
+      // 1. Draw and update expanding fluid ripples
+      for (let rIdx = ripples.length - 1; rIdx >= 0; rIdx--) {
+        const rip = ripples[rIdx];
+        rip.radius += 1.8;
+        rip.alpha *= 0.95;
+
+        ctx!.beginPath();
+        ctx!.arc(rip.x, rip.y, rip.radius, 0, Math.PI * 2);
+        ctx!.strokeStyle = dark
+          ? `rgba(56, 189, 248, ${rip.alpha * 0.55})`
+          : `rgba(14, 165, 233, ${rip.alpha * 0.45})`;
+        ctx!.lineWidth = 1.5;
+        ctx!.stroke();
+
+        if (rip.alpha < 0.02 || rip.radius >= rip.maxRadius) {
+          ripples.splice(rIdx, 1);
+        }
+      }
+
+      // 2. Update and draw cells
+      for (let i = cells.length - 1; i >= 0; i--) {
+        const cell = cells[i];
+
+        if (cell.birthScale < 1) {
+          cell.birthScale = Math.min(1, cell.birthScale + 0.035);
+        }
+
+        // Slow, viscous Brownian motion
+        cell.x += cell.vx;
+        cell.y += cell.vy;
+        cell.angle += cell.angularSpeed;
+
+        // Wrap around margins smoothly
+        const margin = 80;
+        if (cell.x < -margin) cell.x = width + margin;
+        if (cell.x > width + margin) cell.x = -margin;
+        if (cell.y < -margin) cell.y = height + margin;
+        if (cell.y > height + margin) cell.y = -margin;
+
+        // Cursor Interaction: Gentle proximity stimulation
+        let distToCursor = 9999;
+        if (mouseX > 0 && mouseY > 0) {
+          const dx = mouseX - cell.x;
+          const dy = mouseY - cell.y;
+          distToCursor = Math.hypot(dx, dy);
+
+          if (distToCursor < 140 && distToCursor > 5) {
+            const push = (1 - distToCursor / 140) * 0.16;
+            cell.vx -= (dx / distToCursor) * push;
+            cell.vy -= (dy / distToCursor) * push;
+            const spd = Math.hypot(cell.vx, cell.vy);
+            if (spd > 0.5) {
+              cell.vx = (cell.vx / spd) * 0.5;
+              cell.vy = (cell.vy / spd) * 0.5;
+            }
+          }
+        }
+
+        // Viscous damping
+        cell.vx *= 0.992;
+        cell.vy *= 0.992;
+
+        // Division Lifecycle Rate (promoted naturally and boosted when hovered)
+        const cursorBoost = distToCursor < 160 ? (1 - distToCursor / 160) * 0.007 : 0;
+        cell.phase += 0.0013 + cursorBoost;
+
+        if (cell.burstAlpha > 0) {
+          cell.burstAlpha -= 0.025;
+        }
+
+        // Phase 0.0 - 0.4: Elongation / Homeostasis
+        if (cell.phase < 0.4) {
+          cell.divisionProgress = 0;
+          cell.zRingIntensity = Math.max(0, cell.zRingIntensity - 0.015);
+        }
+        // Phase 0.4 - 0.65: Z-Ring Condensation
+        else if (cell.phase < 0.65) {
+          const ringT = (cell.phase - 0.4) / 0.25;
+          cell.zRingIntensity = ringT;
+          cell.divisionProgress = ringT * 0.18;
+        }
+        // Phase 0.65 - 0.92: Active Constriction & Membrane Invagination
+        else if (cell.phase < 0.92) {
+          const constrictT = (cell.phase - 0.65) / 0.27;
+          cell.zRingIntensity = 1;
+          cell.divisionProgress = 0.18 + constrictT * 0.8;
+        }
+        // Phase >= 0.92: GUARANTEED FISSION / ABSCISSION (NEVER FUSE BACK)
+        else {
+          cell.burstAlpha = 1;
+
+          // Spawn fluid ripple at division cleavage furrow
+          ripples.push({
+            x: cell.x,
+            y: cell.y,
+            radius: 8,
+            maxRadius: 55,
+            alpha: 0.85,
+          });
+
+          // Population capping: If culture is full, remove an older quiescent cell elsewhere
+          if (cells.length >= MAX_CELLS) {
+            const removeIdx = cells.findIndex(
+              (c) => c !== cell && c.phase < 0.38 && c.birthScale >= 1
+            );
+            if (removeIdx !== -1) {
+              cells.splice(removeIdx, 1);
+            }
+          }
+
+          // Always complete cytokinesis into 2 distinct daughter cells!
+          const sepDist = cell.length * 0.32;
+          const cosA = Math.cos(cell.angle);
+          const sinA = Math.sin(cell.angle);
+
+          // Daughter 1 (Pole 1)
+          cell.x -= cosA * sepDist;
+          cell.y -= sinA * sepDist;
+          cell.length = Math.max(42, cell.length * 0.68);
+          cell.phase = 0.05 + Math.random() * 0.15;
+          cell.divisionProgress = 0;
+          cell.zRingIntensity = 0;
+          cell.vx -= cosA * 0.16;
+          cell.vy -= sinA * 0.16;
+
+          // Daughter 2 (Pole 2)
+          const d2 = createCell(
+            cell.x + cosA * (sepDist * 2.2),
+            cell.y + sinA * (sepDist * 2.2),
+            cell.type,
+            0.05 + Math.random() * 0.15,
+            false
+          );
+          d2.length = cell.length;
+          d2.width = cell.width;
+          d2.angle = cell.angle + (Math.random() - 0.5) * 0.25;
+          d2.vx = cell.vx + cosA * 0.2;
+          d2.vy = cell.vy + sinA * 0.2;
+          d2.burstAlpha = 0.95;
+          cells.push(d2);
+        }
+
+        drawCell(cell, dark, time);
+      }
+
+      animId = requestAnimationFrame(animate);
+    }
+
+    function onMouseMove(e: MouseEvent) {
+      const rect = heroSection!.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    }
+
+    function onMouseLeave() {
+      mouseX = -1000;
+      mouseY = -1000;
+    }
+
+    // Click on blank space to spawn a new microbial cell
+    function onHeroClick(e: MouseEvent) {
+      const target = e.target as HTMLElement | null;
+      if (target && target.closest('a, button, input, #hero-3d-wrapper, .hero-letter')) {
+        return;
+      }
+
+      const rect = heroSection!.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      ripples.push({
+        x: clickX,
+        y: clickY,
+        radius: 6,
+        maxRadius: 70,
+        alpha: 1,
+      });
+
+      for (const cell of cells) {
+        const dx = cell.x - clickX;
+        const dy = cell.y - clickY;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 180 && dist > 5) {
+          const push = (1 - dist / 180) * 0.3;
+          cell.vx += (dx / dist) * push;
+          cell.vy += (dy / dist) * push;
+        }
+      }
+
+      if (cells.length >= MAX_CELLS) {
+        const removeIdx = cells.findIndex((c) => c.phase < 0.38 && c.birthScale >= 1);
+        if (removeIdx !== -1) {
+          cells.splice(removeIdx, 1);
+        }
+      }
+
+      const newCell = createCell(clickX, clickY, undefined, 0.05 + Math.random() * 0.15, true);
+      cells.push(newCell);
+    }
+
+    heroSection.addEventListener('mousemove', onMouseMove, { passive: true });
+    heroSection.addEventListener('mouseleave', onMouseLeave, { passive: true });
+    heroSection.addEventListener('click', onHeroClick);
+    window.addEventListener('resize', resize, { passive: true });
+
+    resize();
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animId);
+      heroSection.removeEventListener('mousemove', onMouseMove);
+      heroSection.removeEventListener('mouseleave', onMouseLeave);
+      heroSection.removeEventListener('click', onHeroClick);
+      window.removeEventListener('resize', resize);
+    };
+  }
+  */
+
+  // ==========================================
+  // 2. Scroll Cue Fade
+  // ==========================================
+  function initScrollCueFade() {
+    const scrollCue = document.getElementById('hero-scroll-cue');
+    if (!scrollCue) return;
+
+    let ticking = false;
+    function updateCue() {
+      const scrollY = window.scrollY;
+      const fadeThreshold = 120;
+      const opacity = Math.max(0, 1 - scrollY / fadeThreshold);
+      scrollCue!.style.opacity = String(opacity);
+      scrollCue!.style.pointerEvents = opacity < 0.1 ? 'none' : 'auto';
       ticking = false;
     }
 
-    function onScroll() {
-      if (!ticking) {
-        window.requestAnimationFrame(updateScroll);
-        ticking = true;
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    updateScroll();
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          requestAnimationFrame(updateCue);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+    updateCue();
   }
 
-  // Interactive Research Topics Accordion (Expand on click, snug fit)
+  // ==========================================
+  // 3. Interactive Research Topics Accordion
+  // ==========================================
   function initResearchAccordions() {
     const cards = document.querySelectorAll<HTMLElement>('.research-topic-card');
     cards.forEach((card) => {
@@ -690,7 +1365,6 @@ const localPiPhoto = getLocalPiPhoto();
 
         const isCurrentlyExpanded = card.classList.contains('is-expanded');
 
-        // Close other open cards so only the clicked topic is expanded
         cards.forEach((otherCard) => {
           if (otherCard !== card && otherCard.classList.contains('is-expanded')) {
             otherCard.classList.remove('is-expanded');
@@ -717,10 +1391,18 @@ const localPiPhoto = getLocalPiPhoto();
     });
   }
 
-  initHeroScroll();
-  initResearchAccordions();
-  document.addEventListener('astro:page-load', () => {
-    initHeroScroll();
+  // ==========================================
+  // Initialize everything
+  // ==========================================
+  // let cleanupCanvas: (() => void) | undefined;
+
+  function initAll() {
+    // if (cleanupCanvas) cleanupCanvas();
+    // cleanupCanvas = initBioCanvas() || undefined;
+    initScrollCueFade();
     initResearchAccordions();
-  });
+  }
+
+  initAll();
+  document.addEventListener('astro:page-load', initAll);
 </script>
