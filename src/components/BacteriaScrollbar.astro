@@ -1,0 +1,581 @@
+---
+// BacteriaScrollbar.astro - Bio-luminescent Flagellated Bacteria Scrollbar
+---
+
+<div
+  id="bacteria-scroll-wrapper"
+  class="fixed top-0 right-0 h-screen w-12 sm:w-14 z-[9999] pointer-events-none select-none transition-opacity duration-300"
+  aria-hidden="true"
+>
+  <!-- Capillary Track Channel -->
+  <div
+    id="bacteria-track"
+    class="pointer-events-auto absolute top-0 bottom-0 right-0 w-full flex justify-center cursor-pointer group"
+    title="Click or drag to scroll"
+  >
+    <!-- Background Capillary Tube Glow -->
+    <div
+      class="absolute top-2 bottom-2 w-1.5 rounded-full bg-cyan-950/20 dark:bg-cyan-500/10 backdrop-blur-[1px] transition-all duration-300 group-hover:w-2.5 group-hover:bg-cyan-500/20"
+    >
+      <!-- Luminescent Capillary Core Wire -->
+      <div
+        class="w-full h-full rounded-full bg-gradient-to-b from-teal-400/30 via-cyan-400/40 to-blue-500/30 dark:from-teal-300/40 dark:via-cyan-300/50 dark:to-blue-400/40"
+      ></div>
+    </div>
+
+    <!-- Depth Graduation Pipette Markers -->
+    <div class="absolute top-2 bottom-2 w-3 flex flex-col justify-between py-6 pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity">
+      <div class="w-full h-[1px] bg-cyan-400/60 shadow-[0_0_4px_rgba(34,211,238,0.8)]"></div>
+      <div class="w-2/3 h-[1px] bg-cyan-400/40 mx-auto"></div>
+      <div class="w-full h-[1px] bg-cyan-400/60 shadow-[0_0_4px_rgba(34,211,238,0.8)]"></div>
+      <div class="w-2/3 h-[1px] bg-cyan-400/40 mx-auto"></div>
+      <div class="w-full h-[1px] bg-cyan-400/60 shadow-[0_0_4px_rgba(34,211,238,0.8)]"></div>
+    </div>
+
+    <!-- Floating HUD Tooltip (Percentage display on hover/drag) -->
+    <div
+      id="bacteria-hud"
+      class="absolute right-12 top-0 -translate-y-1/2 opacity-0 scale-90 pointer-events-none transition-all duration-200 px-2 py-0.5 rounded-full text-[11px] font-mono font-semibold tracking-wider text-cyan-200 bg-slate-950/90 border border-cyan-500/30 shadow-lg shadow-cyan-950/50 whitespace-nowrap"
+    >
+      <span id="bacteria-hud-pct">0%</span>
+    </div>
+
+    <!-- Bacteria Thumb -->
+    <div
+      id="bacteria-thumb"
+      class="pointer-events-auto absolute top-0 left-1/2 -translate-x-1/2 cursor-grab active:cursor-grabbing will-change-transform touch-none"
+      style="transform: translate(-50%, 8px);"
+    >
+      <!-- Multi-Flagellated Bacteria SVG -->
+      <svg
+        id="bacteria-svg"
+        class="w-11 h-24 sm:w-12 sm:h-28 overflow-visible filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] dark:drop-shadow-[0_0_16px_rgba(0,245,160,0.45)] transition-transform duration-200 hover:scale-105"
+        viewBox="0 0 70 130"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <!-- Bio-Glow Filter -->
+          <filter id="bactBioGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="glow" />
+            <feMerge>
+              <feMergeNode in="glow" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+
+          <!-- Outer Capsule Halo Glow -->
+          <filter id="capsuleAura" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+
+          <!-- Main Bacillus Body Gradient -->
+          <linearGradient id="bactBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00f5a0" />
+            <stop offset="45%" stop-color="#00d2ff" />
+            <stop offset="85%" stop-color="#0284c7" />
+            <stop offset="100%" stop-color="#0369a1" />
+          </linearGradient>
+
+          <!-- Inner 3D Cylindrical Highlight -->
+          <linearGradient id="bactSheen" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55" />
+            <stop offset="35%" stop-color="#ffffff" stop-opacity="0.1" />
+            <stop offset="70%" stop-color="#000000" stop-opacity="0.0" />
+            <stop offset="100%" stop-color="#000000" stop-opacity="0.45" />
+          </linearGradient>
+
+          <!-- Flagella Gradients (Vibrant bio-luminescent currents) -->
+          <linearGradient id="flagellaGrad1" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8" />
+            <stop offset="70%" stop-color="#2dd4bf" />
+            <stop offset="100%" stop-color="#4ade80" />
+          </linearGradient>
+
+          <linearGradient id="flagellaGrad2" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#60a5fa" />
+            <stop offset="60%" stop-color="#22d3ee" />
+            <stop offset="100%" stop-color="#a7f3d0" />
+          </linearGradient>
+
+          <linearGradient id="flagellaGrad3" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#818cf8" />
+            <stop offset="50%" stop-color="#38bdf8" />
+            <stop offset="100%" stop-color="#34d399" />
+          </linearGradient>
+        </defs>
+
+        <!-- ====================================================================
+             1. MULTIFLAGELLA TUFT (NORTH POLE)
+             Always located on one pole. Continuously beating sinusoidal waves.
+             ==================================================================== -->
+        <g id="flagella-group" filter="url(#bactBioGlow)">
+          <path id="flagellum-0" stroke="url(#flagellaGrad1)" stroke-width="2.3" stroke-linecap="round" fill="none" opacity="0.9" />
+          <path id="flagellum-1" stroke="url(#flagellaGrad2)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.95" />
+          <path id="flagellum-2" stroke="url(#flagellaGrad3)" stroke-width="2.7" stroke-linecap="round" fill="none" opacity="1.0" />
+          <path id="flagellum-3" stroke="url(#flagellaGrad2)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.95" />
+          <path id="flagellum-4" stroke="url(#flagellaGrad1)" stroke-width="2.3" stroke-linecap="round" fill="none" opacity="0.9" />
+        </g>
+
+        <!-- ====================================================================
+             2. LATERAL PILI / FIMBRIAE (Micro-bristles on cell sides)
+             ==================================================================== -->
+        <g id="pili-group" stroke="#38bdf8" stroke-width="1.1" stroke-linecap="round" opacity="0.75">
+          <!-- Left side pili (slanted slightly backward) -->
+          <line x1="21" y1="58" x2="14" y2="54" />
+          <line x1="21" y1="67" x2="13" y2="64" />
+          <line x1="21" y1="76" x2="13" y2="74" />
+          <line x1="21" y1="85" x2="14" y2="84" />
+          <line x1="21" y1="94" x2="15" y2="94" />
+
+          <!-- Right side pili -->
+          <line x1="49" y1="58" x2="56" y2="54" />
+          <line x1="49" y1="67" x2="57" y2="64" />
+          <line x1="49" y1="76" x2="57" y2="74" />
+          <line x1="49" y1="85" x2="56" y2="84" />
+          <line x1="49" y1="94" x2="55" y2="94" />
+        </g>
+
+        <!-- ====================================================================
+             3. CAPSULAR GLYCOCALYX AURA (Translucent protective outer halo)
+             ==================================================================== -->
+        <rect
+          x="18"
+          y="46"
+          width="34"
+          height="66"
+          rx="17"
+          ry="17"
+          fill="#00f5a0"
+          fill-opacity="0.18"
+          filter="url(#capsuleAura)"
+        />
+
+        <!-- ====================================================================
+             4. MAIN BACTERIUM BODY (Cell Wall & Outer Membrane)
+             Pole 1 (Flagellar Pole): North (Y=48)
+             Pole 2 (Smooth Capsule Pole): South (Y=110)
+             ==================================================================== -->
+        <rect
+          x="21"
+          y="48"
+          width="28"
+          height="62"
+          rx="14"
+          ry="14"
+          fill="url(#bactBodyGrad)"
+          stroke="#a7f3d0"
+          stroke-width="1.8"
+        />
+
+        <!-- 3D Cylindrical Surface Sheen -->
+        <rect
+          x="22"
+          y="49"
+          width="26"
+          height="60"
+          rx="13"
+          ry="13"
+          fill="url(#bactSheen)"
+          style="mix-blend-mode: overlay;"
+        />
+
+        <!-- ====================================================================
+             5. INTERNAL CYTOPLASMIC STRUCTURES
+             ==================================================================== -->
+        <!-- Nucleoid (Folded Genomic DNA Chromosome Loop) -->
+        <path
+          d="M 31 59 C 40 62, 38 67, 28 69 C 24 72, 43 75, 39 80 C 27 83, 40 88, 33 93 C 27 96, 37 99, 34 102"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          opacity="0.9"
+          filter="url(#bactBioGlow)"
+        />
+
+        <!-- Plasmids (Extrachromosomal DNA Rings) -->
+        <circle cx="27" cy="65" r="2.5" fill="none" stroke="#fde047" stroke-width="1.1" opacity="0.95" />
+        <circle cx="43" cy="87" r="2.2" fill="none" stroke="#fde047" stroke-width="1.0" opacity="0.95" />
+
+        <!-- Ribosomes & Granules (Protein factories & ATP energy nodes) -->
+        <circle cx="40" cy="60" r="1.1" fill="#67e8f9" opacity="0.9" />
+        <circle cx="28" cy="77" r="1.2" fill="#a7f3d0" opacity="0.9" />
+        <circle cx="42" cy="73" r="1.3" fill="#fde047" opacity="0.95" />
+        <circle cx="27" cy="89" r="1.1" fill="#67e8f9" opacity="0.9" />
+        <circle cx="41" cy="98" r="1.2" fill="#a7f3d0" opacity="0.9" />
+        <circle cx="35" cy="54" r="1.0" fill="#fde047" opacity="0.9" />
+
+        <!-- ====================================================================
+             6. BASAL BODIES / HOOK MOTOR RINGS (North Pole Insertion Points)
+             ==================================================================== -->
+        <g id="basal-bodies">
+          <circle cx="24" cy="48" r="1.8" fill="#f59e0b" stroke="#fef08a" stroke-width="0.8" />
+          <circle cx="29" cy="47" r="1.9" fill="#f59e0b" stroke="#fef08a" stroke-width="0.8" />
+          <circle cx="35" cy="46.5" r="2.1" fill="#f59e0b" stroke="#fef08a" stroke-width="0.9" />
+          <circle cx="41" cy="47" r="1.9" fill="#f59e0b" stroke="#fef08a" stroke-width="0.8" />
+          <circle cx="46" cy="48" r="1.8" fill="#f59e0b" stroke="#fef08a" stroke-width="0.8" />
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script>
+  /**
+   * BacteriaScrollbar Controller
+   * - Procedural sinusoidal wave physics for multiflagella beating
+   * - Velocity-responsive swimming speed (faster scrolling = rapid whipping & speed)
+   * - Directional polar orientation: Flagella ALWAYS away from scroll movement
+   *   (downward scroll -> flagella at North pole; upward scroll -> flagella at South pole)
+   * - Interactive draggable thumb & click-to-scroll capillary track
+   */
+  function initBacteriaScrollbar() {
+    const wrapper = document.getElementById('bacteria-scroll-wrapper');
+    const track = document.getElementById('bacteria-track');
+    const thumb = document.getElementById('bacteria-thumb');
+    const hud = document.getElementById('bacteria-hud');
+    const hudPct = document.getElementById('bacteria-hud-pct');
+
+    if (!wrapper || !track || !thumb) return;
+
+    // Flagella path elements
+    const flagellaPaths = [
+      document.getElementById('flagellum-0'),
+      document.getElementById('flagellum-1'),
+      document.getElementById('flagellum-2'),
+      document.getElementById('flagellum-3'),
+      document.getElementById('flagellum-4'),
+    ];
+
+    // Bacterial flagella base anchor specifications (North Pole, Y ~ 47)
+    const flagellaConfigs = [
+      { baseX: 24, baseY: 48, length: 42, angleSpread: -3.5, phaseOffset: 0.0, waveK: 1.15 },
+      { baseX: 29, baseY: 47, length: 45, angleSpread: -1.8, phaseOffset: 0.7, waveK: 1.25 },
+      { baseX: 35, baseY: 46.5, length: 48, angleSpread: 0.0, phaseOffset: 1.4, waveK: 1.3 },
+      { baseX: 41, baseY: 47, length: 45, angleSpread: 1.8, phaseOffset: 2.1, waveK: 1.25 },
+      { baseX: 46, baseY: 48, length: 42, angleSpread: 3.5, phaseOffset: 2.8, waveK: 1.15 },
+    ];
+
+    // State Variables
+    let currentScrollY = window.scrollY || document.documentElement.scrollTop;
+    let targetScrollY = currentScrollY;
+    let lastScrollY = currentScrollY;
+    let lastTime = performance.now();
+
+    let scrollVelocity = 0;       // instantaneous px/ms
+    let smoothVelocity = 0;       // smoothly damped velocity
+    let bacteriaY = 0;            // interpolated thumb Y position (px)
+    let targetY = 0;              // target thumb Y position (px)
+
+    // Direction state: 0 = heading south (flagella on North pole), 180 = heading north (flagella on South pole)
+    let currentRotation = 0;
+    let targetRotation = 0;
+    let wavePhase = 0;
+
+    let isDragging = false;
+    let dragStartY = 0;
+    let dragStartScroll = 0;
+    let isHovered = false;
+    let animationFrameId: number | null = null;
+
+    // Respect user motion preferences
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Track dimensions calculation
+    function getMetrics() {
+      const windowH = window.innerHeight;
+      const docH = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+      );
+      const maxScroll = Math.max(docH - windowH, 1);
+      const thumbH = thumb.offsetHeight || 96;
+      const minPadding = 8;
+      const travelDistance = Math.max(windowH - thumbH - minPadding * 2, 0);
+
+      return { windowH, docH, maxScroll, thumbH, minPadding, travelDistance };
+    }
+
+    // Convert an array of 2D points into a silky-smooth cubic SVG path string
+    function pointsToSmoothPath(points: { x: number; y: number }[]): string {
+      if (points.length < 2) return '';
+      let d = `M ${points[0].x.toFixed(2)} ${points[0].y.toFixed(2)}`;
+
+      for (let i = 1; i < points.length; i++) {
+        const pPrev = points[i - 1];
+        const pCurr = points[i];
+        const midX = (pPrev.x + pCurr.x) / 2;
+        const midY = (pPrev.y + pCurr.y) / 2;
+        d += ` Q ${pPrev.x.toFixed(2)} ${pPrev.y.toFixed(2)} ${midX.toFixed(2)} ${midY.toFixed(2)}`;
+      }
+
+      const pLast = points[points.length - 1];
+      d += ` L ${pLast.x.toFixed(2)} ${pLast.y.toFixed(2)}`;
+      return d;
+    }
+
+    // Update Flagella sinusoidal physics
+    function updateFlagella(deltaTime: number, speedNorm: number) {
+      // Idle frequency ~3.5 rad/s; Fast scroll up to ~18 rad/s
+      const baseFreq = prefersReducedMotion ? 1.5 : 3.5;
+      const maxFreq = prefersReducedMotion ? 4.0 : 18.0;
+      const beatingFreq = baseFreq + speedNorm * (maxFreq - baseFreq);
+
+      wavePhase += (beatingFreq * deltaTime) / 1000;
+
+      // Amplitude scales when swimming vigorously
+      const baseAmp = prefersReducedMotion ? 3.0 : 5.5;
+      const maxAmp = prefersReducedMotion ? 4.5 : 9.5;
+      const currentAmp = baseAmp + speedNorm * (maxAmp - baseAmp);
+
+      // Generate wavy path for each flagellum
+      for (let i = 0; i < flagellaConfigs.length; i++) {
+        const cfg = flagellaConfigs[i];
+        const pathEl = flagellaPaths[i];
+        if (!pathEl) continue;
+
+        const numSegments = 7;
+        const points = [];
+
+        for (let j = 0; j <= numSegments; j++) {
+          const s = j / numSegments; // 0 (base at pole) to 1 (free tip)
+
+          // Undulation grows progressively from rigid basal body to whip tip
+          const envelope = Math.pow(s, 1.25);
+          const waveAngle = s * Math.PI * 2 * cfg.waveK - wavePhase + cfg.phaseOffset;
+
+          // Primary harmonic + subtle secondary harmonic for authentic whiplike wave
+          const primaryWave = Math.sin(waveAngle) * currentAmp * envelope;
+          const secondaryWave = Math.sin(waveAngle * 1.8 - wavePhase * 0.5) * (currentAmp * 0.28) * envelope;
+          const totalWave = primaryWave + secondaryWave;
+
+          // Points travel UPWARD towards North (Y decreases from baseY towards top)
+          const px = cfg.baseX + s * cfg.angleSpread + totalWave;
+          const py = cfg.baseY - s * cfg.length;
+
+          points.push({ x: px, y: py });
+        }
+
+        pathEl.setAttribute('d', pointsToSmoothPath(points));
+      }
+    }
+
+    // Scroll listener: update velocity and orientation
+    function onScroll() {
+      const now = performance.now();
+      const dt = Math.max(now - lastTime, 8);
+      currentScrollY = window.scrollY || document.documentElement.scrollTop;
+
+      const delta = currentScrollY - lastScrollY;
+      const instSpeed = Math.abs(delta) / dt;
+
+      // Smoothly blend velocity
+      scrollVelocity = Math.min(instSpeed, 5.0);
+      smoothVelocity = smoothVelocity * 0.7 + scrollVelocity * 0.3;
+
+      // Directional Rule:
+      // "always away from the scroll movement, means, if i am scrolling downwards,
+      // it flagella should be on north pole of bacteria."
+      // delta > 1 => moving down => flagella at North (top), head pointing down => rotation 0 deg
+      // delta < -1 => moving up => flagella at South (bottom), head pointing up => rotation 180 deg
+      if (delta > 1.5) {
+        targetRotation = 0;
+      } else if (delta < -1.5) {
+        targetRotation = 180;
+      }
+
+      lastScrollY = currentScrollY;
+      lastTime = now;
+    }
+
+    // Main 60-120fps Animation Loop
+    let lastFrameTime = performance.now();
+
+    function render(time: number) {
+      const dt = Math.min(time - lastFrameTime, 64);
+      lastFrameTime = time;
+
+      const { maxScroll, minPadding, travelDistance } = getMetrics();
+
+      // Decay velocity with hydrodynamic fluid viscosity
+      smoothVelocity *= 0.93;
+      if (smoothVelocity < 0.005) smoothVelocity = 0;
+
+      // Normalized speed (0 = idle, 1 = maximum sprint)
+      const speedNorm = Math.min(smoothVelocity / 2.2, 1.0);
+
+      // Smoothly ease rotational direction (swimming turn-around)
+      // Handles 0 <-> 180 transition smoothly
+      let rotDiff = targetRotation - currentRotation;
+      if (rotDiff > 180) rotDiff -= 360;
+      if (rotDiff < -180) rotDiff += 360;
+      currentRotation += rotDiff * 0.16;
+
+      // Flagellar propulsion torque causes subtle rhythmic body yaw/wobble
+      const bodyWobble = Math.sin(wavePhase * 1.7) * (1.2 + speedNorm * 3.8);
+
+      // Compute Target Y position on track
+      const scrollProgress = maxScroll > 0 ? Math.min(Math.max(currentScrollY / maxScroll, 0), 1) : 0;
+      targetY = minPadding + scrollProgress * travelDistance;
+
+      // Interpolate bacteria vertical position (dynamic lerp: moves faster during fast scroll)
+      const lerpSpeed = isDragging ? 0.85 : 0.16 + speedNorm * 0.22;
+      bacteriaY += (targetY - bacteriaY) * lerpSpeed;
+
+      // Apply transform to bacteria thumb
+      const scale = isHovered ? 1.06 : 1.0;
+      const combinedRotation = currentRotation + bodyWobble;
+      thumb.style.transform = `translate(-50%, ${bacteriaY.toFixed(2)}px) rotate(${combinedRotation.toFixed(2)}deg) scale(${scale})`;
+
+      // Update HUD position and percentage
+      if (hud) {
+        hud.style.top = `${(bacteriaY + 48).toFixed(1)}px`;
+        if (hudPct) {
+          hudPct.textContent = `${Math.round(scrollProgress * 100)}%`;
+        }
+      }
+
+      // Update flagella procedural waving
+      updateFlagella(dt, speedNorm);
+
+      animationFrameId = requestAnimationFrame(render);
+    }
+
+    // Track clicking: smoothly jump/scroll to clicked position
+    track.addEventListener('click', (e) => {
+      // Don't jump if user was dragging
+      if (isDragging) return;
+      const { maxScroll, thumbH, minPadding, travelDistance } = getMetrics();
+      if (travelDistance <= 0) return;
+
+      const clickY = e.clientY;
+      const normalizedRatio = (clickY - minPadding - thumbH / 2) / travelDistance;
+      const targetScroll = Math.max(0, Math.min(normalizedRatio * maxScroll, maxScroll));
+
+      window.scrollTo({
+        top: targetScroll,
+        behavior: 'smooth',
+      });
+    });
+
+    // Bacteria Dragging (Pointer events)
+    thumb.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      isDragging = true;
+      dragStartY = e.clientY;
+      dragStartScroll = window.scrollY || document.documentElement.scrollTop;
+
+      thumb.setPointerCapture(e.pointerId);
+      document.body.classList.add('select-none');
+
+      if (hud) {
+        hud.classList.remove('opacity-0', 'scale-90');
+        hud.classList.add('opacity-100', 'scale-100');
+      }
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const { maxScroll, travelDistance } = getMetrics();
+      if (travelDistance <= 0) return;
+
+      const deltaY = e.clientY - dragStartY;
+      const scrollDelta = (deltaY / travelDistance) * maxScroll;
+      const newScroll = Math.max(0, Math.min(dragStartScroll + scrollDelta, maxScroll));
+
+      window.scrollTo({
+        top: newScroll,
+        behavior: 'auto',
+      });
+    });
+
+    const stopDrag = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      document.body.classList.remove('select-none');
+      if (hud && !isHovered) {
+        hud.classList.remove('opacity-100', 'scale-100');
+        hud.classList.add('opacity-0', 'scale-90');
+      }
+    };
+
+    window.addEventListener('pointerup', stopDrag);
+    window.addEventListener('pointercancel', stopDrag);
+
+    // Hover HUD toggles
+    track.addEventListener('mouseenter', () => {
+      isHovered = true;
+      if (hud) {
+        hud.classList.remove('opacity-0', 'scale-90');
+        hud.classList.add('opacity-100', 'scale-100');
+      }
+    });
+
+    track.addEventListener('mouseleave', () => {
+      isHovered = false;
+      if (hud && !isDragging) {
+        hud.classList.remove('opacity-100', 'scale-100');
+        hud.classList.add('opacity-0', 'scale-90');
+      }
+    });
+
+    // Window scroll event listener
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Window resize observer
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    // Initial positioning
+    onScroll();
+    bacteriaY = targetY;
+
+    // Start rendering
+    animationFrameId = requestAnimationFrame(render);
+
+    // Return cleanup callback for Astro View Transitions
+    return () => {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('pointerup', stopDrag);
+      window.removeEventListener('pointercancel', stopDrag);
+    };
+  }
+
+  // Lifecycle coordination with Astro
+  let currentCleanup: (() => void) | null = null;
+
+  function setup() {
+    if (currentCleanup) {
+      currentCleanup();
+      currentCleanup = null;
+    }
+    currentCleanup = initBacteriaScrollbar() || null;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
+
+  document.addEventListener('astro:page-load', setup);
+  document.addEventListener('astro:before-swap', () => {
+    if (currentCleanup) {
+      currentCleanup();
+      currentCleanup = null;
+    }
+  });
+</script>
