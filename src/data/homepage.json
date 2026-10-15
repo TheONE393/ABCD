@@ -1,36 +1,22 @@
 {
   "hero_title": "The ABCD Lab",
-  "hero_subtitle": "",
+  "hero_subtitle": "National Institute of Science Education and Research (NISER), India",
   "hero_image": "",
-  "cta1_title": "Stay up to date with #ABCD Lab",
-  "cta1_btn_text": "Our News",
-  "cta1_btn_link": "/news",
-  "cta2_text": "Join Us",
+  "cta1_title": "Explore Our\nResearch Thrusts",
+  "cta1_btn_text": "Our Research",
+  "cta1_btn_link": "/research",
+  "cta2_text": "Join us as we push the boundaries of microbial swarm intelligence and synthetic biology, driving towards a more sustainable and bio-based future",
   "cta2_btn_text": "Contact Us",
   "cta2_btn_link": "/contact",
   "research_title": "Our Research",
-  "research_blocks": [
-    {
-      "title": "Effect of delminCDE in Swarming in P. aeruginosa",
-      "description": "We are trying to find the role of minCDE in flagellar assembly and swarming",
-      "image": "",
-      "link": "/research",
-      "order": 1
-    }
-  ],
-  "publications_title": "Publications",
+  "research_blocks": [],
+  "publications_title": "Publication",
   "publications_count": 3,
   "team_title": "Our Team",
-  "team_photo": "",
-  "team_pi_photo": "",
-  "team_pi_name": "Dr. Ramanujam Srinivasan",
+  "team_photo": "/images/home-team-photo.jpg",
+  "team_pi_photo": "/images/member_pics/pi.jpg",
+  "team_pi_name": "Dr. Ramanujam Srinivasan (Srini)",
   "team_pi_role": "Principal Investigator",
-  "team_pi_subrole": "Associate Professor",
-  "news_title": "Latest News",
-  "research_1_title": "Effect of delminCDE in Swarming in P. aeruginosa",
-  "research_1_description": "We are trying to find the role of minCDE in flagellar assembly and swarming",
-  "research_1_image": "",
-  "research_2_title": "",
-  "research_2_description": "",
-  "research_2_image": ""
+  "team_pi_subrole": "Associate Professor, SBS, NISER",
+  "news_title": "Stay up to date with #ABCD Lab\nOur latest news"
 }
