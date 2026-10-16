@@ -432,6 +432,53 @@
   transform: scale(1.02);
 }
 
+/* ============================================================================
+   AUTOMATIC HORIZONTAL SCROLL / PAN LOOP FOR ANDROID / MOBILE VIEWPORTS
+   Pans smoothly from left to right across the team photo, pauses briefly at
+   edges, then reverses and loops continuously so no team member is cropped out.
+   ============================================================================ */
+@keyframes hpTeamPanLoop {
+  0% {
+    object-position: 0% 50%;
+  }
+  15% {
+    object-position: 0% 50%; /* Hold at left edge */
+  }
+  85% {
+    object-position: 100% 50%; /* Smoothly pan across to right edge */
+  }
+  100% {
+    object-position: 100% 50%; /* Hold at right edge */
+  }
+}
+
+@media (max-width: 1024px) {
+  .hp-tbg {
+    min-height: 460px;
+    border-radius: 26px;
+  }
+
+  .hp-tbg .hp-bg-photo {
+    animation: hpTeamPanLoop 10s ease-in-out infinite alternate;
+    will-change: object-position;
+  }
+
+  .hp-tbg:active .hp-bg-photo {
+    animation-play-state: paused;
+  }
+}
+
+@media (max-width: 640px) {
+  .hp-tbg {
+    min-height: 400px;
+    border-radius: 20px;
+  }
+
+  .hp-tbg .hp-bg-photo {
+    animation-duration: 9s;
+  }
+}
+
 .hp-tbg .hp-bg-overlay {
   position: absolute;
   inset: 0;
@@ -488,6 +535,33 @@
   margin-bottom: 2px;
 }
 
+@media (max-width: 640px) {
+  .hp-pi-portrait {
+    top: 14px;
+    right: 14px;
+    gap: 8px;
+  }
+
+  .hp-pi-portrait img {
+    width: 64px;
+    height: 64px;
+    border-width: 2.5px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .hp-pi-label {
+    font-size: 10px;
+    padding: 6px 10px;
+    max-width: 190px;
+    line-height: 1.35;
+  }
+
+  .hp-pi-label strong {
+    font-size: 11px;
+    margin-bottom: 1px;
+  }
+}
+
 .hp-team-caption {
   position: absolute;
   bottom: 32px;
@@ -503,6 +577,15 @@
   transform: translateY(0);
 }
 
+@media (max-width: 768px) {
+  .hp-team-caption {
+    opacity: 1;
+    transform: translateY(0);
+    bottom: 16px;
+    left: 16px;
+  }
+}
+
 .hp-team-caption a.hp-team-link {
   display: inline-flex;
   align-items: center;
@@ -516,6 +599,13 @@
   border-radius: 30px;
   box-shadow: 0 4px 16px rgba(247, 148, 29, 0.4);
   transition: all 0.3s ease;
+}
+
+@media (max-width: 640px) {
+  .hp-team-caption a.hp-team-link {
+    font-size: 13px;
+    padding: 9px 18px;
+  }
 }
 
 .hp-team-caption a.hp-team-link:hover {
