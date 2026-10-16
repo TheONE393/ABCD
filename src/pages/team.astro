@@ -97,23 +97,27 @@ function getInitials(name = '') {
                   referrerpolicy="no-referrer"
                 />
 
-                <!-- Clean Slide Info & Counter (Bottom-Left Badge) -->
-                <div class="absolute bottom-3 sm:bottom-4 left-4 sm:left-6 z-20 pointer-events-none flex items-center gap-2">
-                  <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-black/60 text-white/95 backdrop-blur-md border border-white/15 shadow-sm">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                    <span>
-                      {slide.title && !/^\d+$/.test(slide.title.trim())
-                        ? slide.title
-                        : `The ABCD Lab • Photo ${index + 1} of ${bannerSlides.length}`}
-                    </span>
-                  </span>
-                </div>
+                <!-- Optional Slide Title (only rendered if title is present and meaningful) -->
+                {slide.title && slide.title.trim().length > 0 && !/^\d+$/.test(slide.title.trim()) && (
+                  <div class="absolute bottom-3 sm:bottom-4 left-4 sm:left-6 z-20 pointer-events-none max-w-[70%] sm:max-w-md">
+                    <div class="inline-block bg-black/60 text-white backdrop-blur-md border border-white/15 px-3 sm:px-4 py-1.5 rounded-xl shadow-md">
+                      <h2 class="font-urbanist text-xs sm:text-sm font-bold text-white drop-shadow-sm truncate">
+                        {slide.title}
+                      </h2>
+                      {slide.subtitle && (
+                        <p class="text-[10px] sm:text-xs text-gray-300 drop-shadow-sm font-medium truncate">
+                          {slide.subtitle}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             ))
           }
         </div>
 
-        <!-- Carousel Navigation Arrows (Manual only, always visible on mobile and visible on hover on desktop) -->
+        <!-- Carousel Navigation Arrows (visible on mobile and on hover on desktop) -->
         <button
           type="button"
           id="carousel-prev-btn"
@@ -136,7 +140,7 @@ function getInitials(name = '') {
         </button>
 
         <!-- Carousel Pagination Dots -->
-        <div class="absolute bottom-3 sm:bottom-4 right-4 sm:right-6 z-30 flex items-center gap-1.5 sm:gap-2 bg-black/40 px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10">
+        <div class="absolute bottom-3 sm:bottom-4 right-4 sm:right-6 z-30 flex items-center gap-1.5 sm:gap-2 bg-black/50 px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10 shadow-sm">
           {
             bannerSlides.map((_: any, dotIdx: number) => (
               <button
@@ -472,6 +476,8 @@ function getInitials(name = '') {
     if (totalSlides <= 1) return;
 
     let currentIndex = 0;
+    let timer: ReturnType<typeof setInterval> | null = null;
+    const intervalTime = 4500; // 4.5 seconds auto-advance
 
     function showSlide(index: number) {
       // Loop wrapping
@@ -501,25 +507,46 @@ function getInitials(name = '') {
       });
     }
 
+    function startAutoScroll() {
+      stopAutoScroll();
+      timer = setInterval(() => {
+        showSlide(currentIndex + 1);
+      }, intervalTime);
+    }
+
+    function stopAutoScroll() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
     // Next / Prev manual buttons
     nextBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
       showSlide(currentIndex + 1);
+      startAutoScroll();
     });
 
     prevBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
       showSlide(currentIndex - 1);
+      startAutoScroll();
     });
 
-    // Dot indicators
+    // Dot indicators click
     dots.forEach((dot) => {
       dot.addEventListener('click', (e) => {
         e.stopPropagation();
         const targetIdx = parseInt(dot.getAttribute('data-dot-index') || '0', 10);
         showSlide(targetIdx);
+        startAutoScroll();
       });
     });
+
+    // Pause on hover
+    carousel.addEventListener('mouseenter', stopAutoScroll);
+    carousel.addEventListener('mouseleave', startAutoScroll);
 
     // Mobile touch swipe gestures (left/right swipe)
     let touchStartX = 0;
@@ -544,10 +571,14 @@ function getInitials(name = '') {
             // Swiped right -> prev photo
             showSlide(currentIndex - 1);
           }
+          startAutoScroll();
         }
       },
       { passive: true }
     );
+
+    // Start auto-scroll on mount
+    startAutoScroll();
   }
 
   // Mobile / Touch / Click Toggle for Member Cards
